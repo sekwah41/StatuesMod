@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class StatueBatRenderer extends MobRenderer<StatueBatEntity, StatueBatModel> {
-	private static final ResourceLocation BAT_TEXTURES = new ResourceLocation(Reference.MOD_ID, "textures/entity/statuebat.png");
+	private static final ResourceLocation BAT_TEXTURES = new ResourceLocation(Reference.MOD_ID, "textures/entity/statue_bat.png");
 
 	public StatueBatRenderer(Context context) {
 		super(context, new StatueBatModel(context.bakeLayer(ModelLayers.BAT)), 0.25F);
