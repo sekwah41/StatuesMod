@@ -26,6 +26,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
@@ -86,10 +87,16 @@ public class JEIPlugin implements IModPlugin {
 			if (statue.getEntity() == null) {
 				Statues.LOGGER.error("Tried adding info to statue but statue {} has no entity linked", BuiltInRegistries.ITEM.getKey(statue));
 			} else {
+				int chancePercentage = (int) (chance * 100);
+				if (statue.getEntity() == EntityType.WARDEN || statue.getEntity() == EntityType.ELDER_GUARDIAN) {
+					chancePercentage = 100;
+				} else if (statue.getEntity() == EntityType.RAVAGER) {
+					chancePercentage = 25;
+				}
 				registration.addItemStackInfo(statue.getDefaultInstance(),
 						Component.translatable("statues.gui.jei.statue.info",
 								Component.translatable(statue.getDescriptionId()).withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD),
-								Component.literal((int) (chance * 100) + "%").withStyle(ChatFormatting.DARK_GREEN).withStyle(ChatFormatting.BOLD),
+								Component.literal(chancePercentage + "%").withStyle(ChatFormatting.DARK_GREEN).withStyle(ChatFormatting.BOLD),
 								Component.translatable(statue.getEntity().getDescriptionId()).withStyle(ChatFormatting.RED).withStyle(ChatFormatting.BOLD)
 						)
 				);
