@@ -28,7 +28,7 @@ import java.util.Map;
 public class PlayerBEWLR extends BlockEntityWithoutLevelRenderer {
 	private final StatuePlayerTileModel model;
 	private final StatuePlayerTileModel slimModel;
-	public static boolean isSlim = false;
+	public boolean isSlim = false;
 
 	public PlayerBEWLR(BlockEntityRendererProvider.Context context) {
 		super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());

@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 public class PlayerBER implements BlockEntityRenderer<PlayerBlockEntity> {
 	private final StatuePlayerTileModel model;
 	private final StatuePlayerTileModel slimModel;
-	public static boolean isSlim = false;
+	public boolean isSlim = false;
 
 	public static final ResourceLocation defaultTexture = DefaultPlayerSkin.getDefaultTexture();
 

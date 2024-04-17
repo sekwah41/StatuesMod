@@ -26,7 +26,7 @@ public class PlayerStatueRenderer extends LivingEntityRenderer<PlayerStatue, Pla
 	private final PlayerStatueModel playerModel;
 	private final PlayerStatueModel slimPlayerModel;
 	public static final ResourceLocation defaultTexture = DefaultPlayerSkin.getDefaultTexture();
-	public static boolean isSlim = false;
+	public boolean isSlim = false;
 
 	public PlayerStatueRenderer(EntityRendererProvider.Context context) {
 		this(context, false);
