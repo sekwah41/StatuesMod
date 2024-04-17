@@ -1,4 +1,5 @@
-* Update NeoForge support (The mod now requires NeoForge **20.4.134-beta** or above)
-* Re-enable JEI support
-* Re-enable Curios rendering
-* Add networking related error localized messages
+* Change fakeplayer setup
+* Add Core Flower and Core Flower Seed
+* Fix Statue Bat texture
+* Fix JEI compat
+* Fix upgrade non-tropical-fish fish statues not functioning
