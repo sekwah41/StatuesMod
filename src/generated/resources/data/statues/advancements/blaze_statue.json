@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:blaze_statue"
-            ]
+            "items": "statues:blaze_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.blaze_statue.desc"
     },
     "icon": {
-      "item": "statues:blaze_statue"
+      "count": 1,
+      "id": "statues:blaze_statue"
     },
     "title": {
       "translate": "advancement.statues.blaze_statue.title"

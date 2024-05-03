@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:salmon_statue"
-            ]
+            "items": "statues:salmon_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.salmon_statue.desc"
     },
     "icon": {
-      "item": "statues:salmon_statue"
+      "count": 1,
+      "id": "statues:salmon_statue"
     },
     "title": {
       "translate": "advancement.statues.salmon_statue.title"

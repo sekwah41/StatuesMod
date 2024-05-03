@@ -4,14 +4,16 @@
     "item": "statues:pillager_statue"
   },
   "result": {
-    "item": "minecraft:arrow"
+    "count": 1,
+    "id": "minecraft:arrow"
   },
   "result2": {
-    "item": "minecraft:crossbow"
+    "count": 1,
+    "id": "minecraft:crossbow"
   },
   "result3": {
-    "item": "minecraft:white_banner",
-    "nbt": "{BlockEntityTag:{Patterns:[{Color:9,Pattern:\"mr\"},{Color:8,Pattern:\"bs\"},{Color:7,Pattern:\"cs\"},{Color:8,Pattern:\"bo\"},{Color:15,Pattern:\"ms\"},{Color:8,Pattern:\"hh\"},{Color:8,Pattern:\"mc\"},{Color:15,Pattern:\"bo\"}],id:\"minecraft:banner\"},HideFlags:32,display:{Name:'{\"translate\":\"block.minecraft.ominous_banner\",\"color\":\"gold\"}'}}"
+    "count": 1,
+    "id": "minecraft:emerald"
   },
   "result_chance2": 0.25,
   "result_chance3": 0.05

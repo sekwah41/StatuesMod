@@ -4,9 +4,11 @@
     "item": "statues:spider_statue"
   },
   "result": {
-    "item": "minecraft:string"
+    "count": 1,
+    "id": "minecraft:string"
   },
   "result2": {
-    "item": "minecraft:spider_eye"
+    "count": 1,
+    "id": "minecraft:spider_eye"
   }
 }

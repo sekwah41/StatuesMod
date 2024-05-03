@@ -4,12 +4,15 @@
     "item": "statues:brown_mooshroom_statue"
   },
   "result": {
-    "item": "minecraft:beef"
+    "count": 1,
+    "id": "minecraft:beef"
   },
   "result2": {
-    "item": "minecraft:brown_mushroom"
+    "count": 1,
+    "id": "minecraft:brown_mushroom"
   },
   "result3": {
-    "item": "minecraft:brown_mushroom_block"
+    "count": 1,
+    "id": "minecraft:brown_mushroom_block"
   }
 }

@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
 
@@ -24,13 +24,13 @@ public class ServerPayloadHandler {
 		return INSTANCE;
 	}
 
-	public void handleSyncData(final PlayerStatueSyncData syncData, final PlayPayloadContext context) {
+	public void handleSyncData(final PlayerStatueSyncData syncData, final IPayloadContext context) {
 		// Do something with the data, on the main thread
-		context.workHandler().submitAsync(() -> {
+		context.enqueueWork(() -> {
 					//Sync big Player Statue data
-					if (context.player().isPresent()) {
+					if (context.player() != null) {
 						final CompoundTag data = syncData.tag();
-						if (context.player().get() instanceof ServerPlayer serverPlayer) {
+						if (context.player() instanceof ServerPlayer serverPlayer) {
 							final ServerLevel serverLevel = serverPlayer.serverLevel();
 							Entity entity = serverLevel.getEntity(syncData.playerUUID());
 							if (entity instanceof PlayerStatue playerStatue && serverPlayer != null) {
@@ -73,17 +73,17 @@ public class ServerPayloadHandler {
 				})
 				.exceptionally(e -> {
 					// Handle exception
-					context.packetHandler().disconnect(Component.translatable("statues.networking.player_statue_sync.failed", e.getMessage()));
+					context.disconnect(Component.translatable("statues.networking.player_statue_sync.failed", e.getMessage()));
 					return null;
 				});
 	}
 
-	public void handleTableData(final StatueTableData tableData, final PlayPayloadContext context) {
+	public void handleTableData(final StatueTableData tableData, final IPayloadContext context) {
 		// Do something with the data, on the main thread
-		context.workHandler().submitAsync(() -> {
+		context.enqueueWork(() -> {
 					//Execute craft if button is pressed
-					if (context.player().isPresent()) {
-						Player player = context.player().get();
+					if (context.player() != null) {
+						Player player = context.player();
 						AbstractContainerMenu container = player.containerMenu;
 						if (container instanceof StatueTableMenu menu) {
 							if (tableData.isButtonPressed()) {
@@ -94,7 +94,7 @@ public class ServerPayloadHandler {
 				})
 				.exceptionally(e -> {
 					// Handle exception
-					context.packetHandler().disconnect(Component.translatable("statues.networking.table.failed", e.getMessage()));
+					context.disconnect(Component.translatable("statues.networking.table.failed", e.getMessage()));
 					return null;
 				});
 	}

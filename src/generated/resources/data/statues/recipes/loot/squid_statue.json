@@ -4,6 +4,7 @@
     "item": "statues:squid_statue"
   },
   "result2": {
-    "item": "minecraft:ink_sac"
+    "count": 1,
+    "id": "minecraft:ink_sac"
   }
 }

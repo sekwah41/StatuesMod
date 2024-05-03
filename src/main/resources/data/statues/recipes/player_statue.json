@@ -21,7 +21,7 @@
     }
   },
   "result": {
-    "item": "statues:player_statue"
+    "id": "statues:player_statue"
   },
   "show_notification": true
 }

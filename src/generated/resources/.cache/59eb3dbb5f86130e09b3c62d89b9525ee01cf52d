@@ -1,4 +1,4 @@
-// 1.20.4	2024-02-27T16:30:14.9821996	Loot Tables
+// 1.20.6	2024-05-03T21:59:39.7094241	Loot Tables
 63ebf6ea91a5210188bc8165299f0beaa5759208 data/statues/loot_tables/blocks/allay_statue.json
 0e0103dece0812379551b1784138d8a1da8d34b9 data/statues/loot_tables/blocks/angry_bee_statue.json
 b2974bee64db4765febe3eb74ef004981402308e data/statues/loot_tables/blocks/axolotl_blue_statue.json
@@ -60,10 +60,10 @@ b652c3af33c07206db2b57835a52f016d7ec0eb9 data/statues/loot_tables/blocks/panda_b
 cb2431c2d74b69eda24ab073aa8617b05ae23e8f data/statues/loot_tables/blocks/panda_playful_statue.json
 f33309abdb316eff0e4d063aa3c76303578b2f09 data/statues/loot_tables/blocks/panda_weak_statue.json
 c3cb52d30a78c1e039ef454a2a2ac46b9875887c data/statues/loot_tables/blocks/panda_worried_statue.json
-77d4512a7fafe08cfd0732e77f7f7c97fcb6857c data/statues/loot_tables/blocks/pebble.json
+f6f2bf186bd5821b37e248bdf78855dbab2b56e7 data/statues/loot_tables/blocks/pebble.json
 892b0bb6954713782845e081315349c9bc7e67f0 data/statues/loot_tables/blocks/pig_statue.json
 bd3bdbaf1319b1562295ac1981d41949b9231a3f data/statues/loot_tables/blocks/pillager_statue.json
-f76a63a74c06c357476bed948a3ff67559b438bc data/statues/loot_tables/blocks/player_statue.json
+f7e4d1b703f36cee729696a3cdee022ab1e229bb data/statues/loot_tables/blocks/player_statue.json
 9fe17fa06d6fbf9acd484659b832c6f0828ac222 data/statues/loot_tables/blocks/pufferfish_medium_statue.json
 80895fecbfd53053184c6b54c4ab736e3d2413c7 data/statues/loot_tables/blocks/pufferfish_small_statue.json
 4bd7a839a027b54f03ace313b4852738f68d64ea data/statues/loot_tables/blocks/pufferfish_statue.json

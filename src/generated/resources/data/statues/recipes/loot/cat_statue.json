@@ -36,10 +36,14 @@
     }
   ],
   "result": {
-    "item": "minecraft:string"
+    "count": 1,
+    "id": "minecraft:string"
   },
   "result3": {
-    "item": "minecraft:paper",
-    "nbt": "{display:{Name:'{\"text\":\"I.O.U\",\"color\":\"light_purple\"}'}}"
+    "components": {
+      "minecraft:custom_name": "{\"color\":\"light_purple\",\"text\":\"I.O.U\"}"
+    },
+    "count": 1,
+    "id": "minecraft:paper"
   }
 }

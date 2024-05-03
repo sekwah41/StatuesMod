@@ -1,11 +1,10 @@
 package com.shynieke.statues.handlers;
 
-import com.shynieke.statues.Reference;
-import com.shynieke.statues.Statues;
+import com.shynieke.statues.datacomponent.StatueStats;
 import com.shynieke.statues.fakeplayer.StatueFakePlayer;
 import com.shynieke.statues.items.StatueBlockItem;
+import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.storage.StatueSavedData;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,10 +13,10 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.bus.api.SubscribeEvent;
 
 public class StatueHandler {
 	@SubscribeEvent
@@ -38,23 +37,18 @@ public class StatueHandler {
 	}
 
 	private boolean upgraded(ItemStack stack) {
-		return stack.getTagElement("BlockEntityTag") != null && stack.getTagElement("BlockEntityTag").getBoolean(Reference.UPGRADED);
+		return stack.getOrDefault(StatueDataComponents.UPGRADED, false);
 	}
 
 	private void increaseKillCounter(ItemStack stack) {
-		CompoundTag tag = stack.getTagElement("BlockEntityTag");
-		if (tag == null) {
-			Statues.LOGGER.error("Statue was incorrectly upgraded {}", stack);
-			tag = new CompoundTag();
+		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+		stats.setKillCount(stats.killCount() + 1);
+		int level = getLevel(stats.killCount());
+		if (stats.level() != level) {
+			stats.setLevel(level);
+			stats.setUpgradeSlots(stats.upgradeSlots() + 1);
 		}
-		tag.putInt(Reference.KILL_COUNT, tag.getInt(Reference.KILL_COUNT) + 1);
-		int level = getLevel(tag.getInt(Reference.KILL_COUNT));
-		if (tag.getInt(Reference.LEVEL) != level) {
-			tag.putInt(Reference.LEVEL, level);
-			tag.putInt(Reference.UPGRADE_SLOTS, tag.getInt(Reference.UPGRADE_SLOTS) + 1);
-		}
-		stack.addTagElement("BlockEntityTag", tag);
-
+		stack.set(StatueDataComponents.STATS, stats);
 	}
 
 	public int getLevel(int killedMobs) {

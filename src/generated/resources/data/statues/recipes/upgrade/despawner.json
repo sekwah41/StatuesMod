@@ -2,7 +2,7 @@
   "type": "statues:upgrade",
   "catalysts": [
     {
-      "tag": "forge:heads"
+      "tag": "minecraft:skulls"
     },
     {
       "item": "minecraft:mycelium"

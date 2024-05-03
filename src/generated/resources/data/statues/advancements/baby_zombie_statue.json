@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:baby_zombie_statue"
-            ]
+            "items": "statues:baby_zombie_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.baby_zombie_statue.desc"
     },
     "icon": {
-      "item": "statues:baby_zombie_statue"
+      "count": 1,
+      "id": "statues:baby_zombie_statue"
     },
     "title": {
       "translate": "advancement.statues.baby_zombie_statue.title"

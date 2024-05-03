@@ -4,9 +4,11 @@
     "item": "statues:frog_warm_statue"
   },
   "result": {
-    "item": "minecraft:slime_ball"
+    "count": 1,
+    "id": "minecraft:slime_ball"
   },
   "result3": {
-    "item": "minecraft:pearlescent_froglight"
+    "count": 1,
+    "id": "minecraft:pearlescent_froglight"
   }
 }

@@ -4,6 +4,7 @@
     "item": "statues:evoker_statue"
   },
   "result3": {
-    "item": "minecraft:totem_of_undying"
+    "count": 1,
+    "id": "minecraft:totem_of_undying"
   }
 }

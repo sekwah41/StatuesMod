@@ -5,6 +5,7 @@ import com.shynieke.statues.blocks.statues.PlayerStatueBlock;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -19,8 +20,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent.ItemCraftedEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class SpecialHandler {
 	@SubscribeEvent
@@ -33,17 +34,14 @@ public class SpecialHandler {
 			}
 
 			player.hurt(player.damageSources().magic(), player.getMaxHealth() / 2);
-			resultStack.setHoverName(player.getName());
+			resultStack.set(DataComponents.CUSTOM_NAME, player.getName());
 		}
 	}
 
 	@SubscribeEvent
-	public void playerTick(TickEvent.PlayerTickEvent event) {
-		if (event.phase == TickEvent.Phase.START)
-			return;
-
-		if (!event.player.level().isClientSide) {
-			final Player player = event.player;
+	public void playerTick(PlayerTickEvent.Post event) {
+		final Player player = event.getEntity();
+		if (!player.level().isClientSide) {
 			Level level = player.level();
 			BlockPos pos = player.blockPosition();
 			AABB aabb = new AABB(pos.getX() - 0.5f, pos.getY() - 0.5f, pos.getZ() - 0.5f, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f)

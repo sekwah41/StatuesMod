@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_b"
-            ]
+            "items": "statues:tropical_fish_b"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_bb"
-            ]
+            "items": "statues:tropical_fish_bb"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_be"
-            ]
+            "items": "statues:tropical_fish_be"
           }
         ]
       },
@@ -41,9 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_bm"
-            ]
+            "items": "statues:tropical_fish_bm"
           }
         ]
       },
@@ -53,9 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_bmb"
-            ]
+            "items": "statues:tropical_fish_bmb"
           }
         ]
       },
@@ -65,9 +55,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_bms"
-            ]
+            "items": "statues:tropical_fish_bms"
           }
         ]
       },
@@ -77,9 +65,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_e"
-            ]
+            "items": "statues:tropical_fish_e"
           }
         ]
       },
@@ -89,9 +75,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_es"
-            ]
+            "items": "statues:tropical_fish_es"
           }
         ]
       },
@@ -101,9 +85,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_hb"
-            ]
+            "items": "statues:tropical_fish_hb"
           }
         ]
       },
@@ -113,9 +95,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_sb"
-            ]
+            "items": "statues:tropical_fish_sb"
           }
         ]
       },
@@ -125,9 +105,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_sd"
-            ]
+            "items": "statues:tropical_fish_sd"
           }
         ]
       },
@@ -137,9 +115,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tropical_fish_ss"
-            ]
+            "items": "statues:tropical_fish_ss"
           }
         ]
       },
@@ -152,7 +128,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "statues:tropical_fish_bb"
+      "count": 1,
+      "id": "statues:tropical_fish_bb"
     },
     "title": {
       "translate": "advancement.statues.tropical_fish_all_statue.title"

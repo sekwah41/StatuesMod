@@ -4,12 +4,15 @@
     "item": "statues:flood_statue"
   },
   "result": {
-    "item": "minecraft:firework_rocket"
+    "count": 1,
+    "id": "minecraft:firework_rocket"
   },
   "result2": {
-    "item": "minecraft:rotten_flesh"
+    "count": 1,
+    "id": "minecraft:rotten_flesh"
   },
   "result3": {
-    "item": "minecraft:emerald"
+    "count": 1,
+    "id": "minecraft:emerald"
   }
 }

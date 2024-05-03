@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:pig_statue"
-            ]
+            "items": "statues:pig_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.pig_statue.desc"
     },
     "icon": {
-      "item": "statues:pig_statue"
+      "count": 1,
+      "id": "statues:pig_statue"
     },
     "title": {
       "translate": "advancement.statues.pig_statue.title"

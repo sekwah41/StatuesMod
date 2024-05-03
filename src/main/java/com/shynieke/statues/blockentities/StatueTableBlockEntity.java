@@ -9,6 +9,8 @@ import com.shynieke.statues.registry.StatueBlockEntities;
 import com.shynieke.statues.registry.StatueTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
@@ -145,16 +147,16 @@ public class StatueTableBlockEntity extends BlockEntity implements MenuProvider 
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
-		handler.deserializeNBT(compound.getCompound("ItemStackHandler"));
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.loadAdditional(compound, provider);
+		handler.deserializeNBT(provider, compound.getCompound("ItemStackHandler"));
 		updateCachedRecipe();
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
-		compound.put("ItemStackHandler", handler.serializeNBT());
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.saveAdditional(compound, provider);
+		compound.put("ItemStackHandler", handler.serializeNBT(provider));
 	}
 
 	public ItemStackHandler getHandler(@Nullable Direction direction) {
@@ -166,24 +168,24 @@ public class StatueTableBlockEntity extends BlockEntity implements MenuProvider 
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		load(pkt.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider provider) {
+		loadAdditional(pkt.getTag(), provider);
 
 		BlockState state = level.getBlockState(getBlockPos());
 		level.sendBlockUpdated(getBlockPos(), state, state, 3);
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
+	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
 		CompoundTag nbt = new CompoundTag();
-		this.saveAdditional(nbt);
+		this.saveAdditional(nbt, provider);
 		return nbt;
 	}
 
 	@Override
 	public CompoundTag getPersistentData() {
 		CompoundTag nbt = new CompoundTag();
-		this.saveAdditional(nbt);
+		this.saveAdditional(nbt, level != null ? level.registryAccess() : VanillaRegistries.createLookup());
 		return nbt;
 	}
 

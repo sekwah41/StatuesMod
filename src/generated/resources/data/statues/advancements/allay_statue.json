@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:allay_statue"
-            ]
+            "items": "statues:allay_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.allay_statue.desc"
     },
     "icon": {
-      "item": "statues:allay_statue"
+      "count": 1,
+      "id": "statues:allay_statue"
     },
     "title": {
       "translate": "advancement.statues.allay_statue.title"

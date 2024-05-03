@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:flood_statue"
-            ]
+            "items": "statues:flood_statue"
           }
         ]
       },
@@ -21,7 +19,8 @@
     "frame": "goal",
     "hidden": true,
     "icon": {
-      "item": "statues:flood_statue"
+      "count": 1,
+      "id": "statues:flood_statue"
     },
     "title": {
       "translate": "advancement.statues.flood_statue.title"

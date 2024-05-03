@@ -2,6 +2,7 @@ package com.shynieke.statues.blockentities;
 
 import com.shynieke.statues.registry.StatueBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -16,15 +17,15 @@ public class TropicalFishBlockEntity extends StatueBlockEntity {
 	}
 
 	@Override
-	public void load(CompoundTag nbt) {
-		super.load(nbt);
-		this.MAIN_COLOR = nbt.getInt("MainColor");
-		this.SECONDARY_COLOR = nbt.getInt("SecondaryColor");
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.loadAdditional(compound, provider);
+		this.MAIN_COLOR = compound.getInt("MainColor");
+		this.SECONDARY_COLOR = compound.getInt("SecondaryColor");
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.saveAdditional(compound, provider);
 		compound.putInt("MainColor", MAIN_COLOR);
 		compound.putInt("SecondaryColor", SECONDARY_COLOR);
 	}

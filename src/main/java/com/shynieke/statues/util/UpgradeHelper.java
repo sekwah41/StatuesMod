@@ -1,5 +1,7 @@
 package com.shynieke.statues.util;
 
+import com.shynieke.statues.datacomponent.StatueUpgrades;
+import com.shynieke.statues.registry.StatueDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -38,29 +40,12 @@ public class UpgradeHelper {
 		return upgradeMap;
 	}
 
-	public static void upgrade(Map<String, Short> upgradeMap, String id) {
-		short level = upgradeMap.getOrDefault(id, (short) 0);
-		upgradeMap.put(id, (short) (level + 1));
-	}
-
-	public static void downgrade(Map<String, Short> upgradeMap, String id) {
-		short level = upgradeMap.getOrDefault(id, (short) 0);
-		if (level > 0) {
-			upgradeMap.put(id, (short) (level - 1));
-		}
-	}
-
 	public static Map<String, Short> getUpgradeMap(ItemStack stack) {
-		CompoundTag compoundtag = stack.getTagElement("BlockEntityTag");
-		if (compoundtag == null) {
+		StatueUpgrades statueUpgrades = stack.get(StatueDataComponents.UPGRADES.get());
+		if (statueUpgrades == null) {
 			return null;
 		}
-		return loadUpgradeMap(compoundtag);
-	}
-
-	public static int getUpgradeLevel(ItemStack stack, String id) {
-		Map<String, Short> upgradeMap = getUpgradeMap(stack);
-		return upgradeMap == null ? -1 : upgradeMap.getOrDefault(id, (short) 0);
+		return statueUpgrades.upgradeMap();
 	}
 
 	public static MutableComponent getUpgradeName(String id, int level) {

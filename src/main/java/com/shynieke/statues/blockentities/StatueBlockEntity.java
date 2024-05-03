@@ -9,6 +9,7 @@ import com.shynieke.statues.registry.StatueRegistry;
 import com.shynieke.statues.util.LootHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +18,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -105,10 +107,10 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity {
 	}
 
 	@Override
-	public InteractionResult interact(Level level, BlockPos pos, BlockState state, Player player, InteractionHand handIn, BlockHitResult result) {
+	public ItemInteractionResult interact(Level level, BlockPos pos, BlockState state, Player player, InteractionHand handIn, BlockHitResult result) {
 		AbstractStatueBase statueBase = getStatue();
 		if (statueBase == null)
-			return InteractionResult.PASS;
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
 		if (makesSounds()) {
 			playSound(statueBase.getSound(state), pos);
@@ -125,7 +127,7 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity {
 		if (hasSpecialInteraction()) {
 			onSpecialInteract(level, pos, state, player, handIn, result);
 		}
-		return InteractionResult.CONSUME;
+		return ItemInteractionResult.CONSUME;
 	}
 
 	public void onSpecialInteract(Level level, BlockPos pos, BlockState state, Player player, InteractionHand handIn, BlockHitResult result) {
@@ -253,7 +255,7 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity {
 			double d0 = (double) pos.getX() + (serverLevel.random.nextDouble() - serverLevel.random.nextDouble()) * (double) 4 + 0.5D;
 			double d1 = (double) (pos.getY() + serverLevel.random.nextInt(3) - 1);
 			double d2 = (double) pos.getZ() + (serverLevel.random.nextDouble() - serverLevel.random.nextDouble()) * (double) 4 + 0.5D;
-			if (serverLevel.noCollision(entityType.getAABB(d0, d1, d2))) {
+			if (serverLevel.noCollision(entityType.getSpawnAABB(d0, d1, d2))) {
 				BlockPos blockpos = BlockPos.containing(d0, d1, d2);
 				if (!serverLevel.isAreaLoaded(blockpos, 1)) continue;
 
@@ -279,9 +281,9 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity {
 						continue;
 					}
 
-					var event = EventHooks.onFinalizeSpawnSpawner(mob, serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()), null, null, null);
+					var event = EventHooks.onFinalizeSpawnSpawner(mob, serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()), null, null);
 					if (event != null) {
-						mob.finalizeSpawn(serverLevel, event.getDifficulty(), event.getSpawnType(), event.getSpawnData(), event.getSpawnTag());
+						mob.finalizeSpawn(serverLevel, event.getDifficulty(), event.getSpawnType(), event.getSpawnData());
 					}
 				}
 
@@ -356,11 +358,11 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity {
 		}
 	}
 
-	public void giveEffect(Player player, BlockPos pos, MobEffect effect) {
+	public void giveEffect(Player player, BlockPos pos, Holder<MobEffect> effectHolder) {
 		if (hasSpecialInteraction() && level != null && !level.isClientSide) {
 			if (level.random.nextDouble() <= 0.1F) {
-				if (player.getEffect(effect) == null) {
-					player.addEffect(new MobEffectInstance(effect, 20 * 20, 1, true, true));
+				if (player.getEffect(effectHolder) == null) {
+					player.addEffect(new MobEffectInstance(effectHolder, 20 * 20, 1, true, true));
 				}
 			}
 		}

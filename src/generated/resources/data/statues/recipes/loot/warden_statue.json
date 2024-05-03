@@ -4,12 +4,15 @@
     "item": "statues:warden_statue"
   },
   "result": {
-    "item": "minecraft:sculk_sensor"
+    "count": 1,
+    "id": "minecraft:sculk_sensor"
   },
   "result2": {
-    "item": "minecraft:sculk_shrieker"
+    "count": 1,
+    "id": "minecraft:sculk_shrieker"
   },
   "result3": {
-    "item": "minecraft:sculk_catalyst"
+    "count": 1,
+    "id": "minecraft:sculk_catalyst"
   }
 }

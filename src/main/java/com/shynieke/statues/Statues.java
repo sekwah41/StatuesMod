@@ -12,6 +12,7 @@ import com.shynieke.statues.handlers.TraderHandler;
 import com.shynieke.statues.network.StatuesNetworking;
 import com.shynieke.statues.recipe.StatuesRecipes;
 import com.shynieke.statues.registry.StatueBlockEntities;
+import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.registry.StatueEntities;
 import com.shynieke.statues.registry.StatueLootModifiers;
 import com.shynieke.statues.registry.StatuePatterns;
@@ -22,11 +23,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.GameProfileCache;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import org.slf4j.Logger;
@@ -35,9 +35,8 @@ import org.slf4j.Logger;
 public class Statues {
 	public static final Logger LOGGER = LogUtils.getLogger();
 
-	public Statues(IEventBus eventBus) {
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StatuesConfig.commonSpec);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, StatuesConfig.clientSpec);
+	public Statues(IEventBus eventBus, Dist dist, ModContainer container) {
+		container.registerConfig(ModConfig.Type.COMMON, StatuesConfig.commonSpec);
 		eventBus.register(StatuesConfig.class);
 
 		eventBus.addListener(this::commonSetup);
@@ -46,6 +45,7 @@ public class Statues {
 		StatueSerializers.ENTITY_DATA_SERIALIZER.register(eventBus);
 		StatueRegistry.ENTITIES.register(eventBus);
 		StatueRegistry.BLOCKS.register(eventBus);
+		StatueDataComponents.DATA_COMPONENT_TYPES.register(eventBus);
 		StatueRegistry.ITEMS.register(eventBus);
 		StatueRegistry.CREATIVE_MODE_TABS.register(eventBus);
 		StatueRegistry.MENU_TYPES.register(eventBus);
@@ -67,7 +67,8 @@ public class Statues {
 		NeoForge.EVENT_BUS.register(new DropHandler());
 		NeoForge.EVENT_BUS.register(new SpecialHandler()); //Used for the Etho Statue
 
-		if (FMLEnvironment.dist == Dist.CLIENT) {
+		if (dist.isClient()) {
+			container.registerConfig(ModConfig.Type.CLIENT, StatuesConfig.clientSpec);
 			eventBus.addListener(ClientHandler::doClientStuff);
 			eventBus.addListener(ClientHandler::onRegisterMenu);
 			eventBus.addListener(ClientHandler::registerEntityRenders);

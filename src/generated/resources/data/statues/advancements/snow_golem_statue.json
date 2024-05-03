@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:snow_golem_statue"
-            ]
+            "items": "statues:snow_golem_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.snow_golem_statue.desc"
     },
     "icon": {
-      "item": "statues:snow_golem_statue"
+      "count": 1,
+      "id": "statues:snow_golem_statue"
     },
     "title": {
       "translate": "advancement.statues.snow_golem_statue.title"

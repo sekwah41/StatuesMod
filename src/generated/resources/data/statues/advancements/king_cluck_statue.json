@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:king_cluck_statue"
-            ]
+            "items": "statues:king_cluck_statue"
           }
         ]
       },
@@ -21,7 +19,8 @@
     "frame": "goal",
     "hidden": true,
     "icon": {
-      "item": "statues:king_cluck_statue"
+      "count": 1,
+      "id": "statues:king_cluck_statue"
     },
     "title": {
       "translate": "advancement.statues.king_cluck_statue.title"

@@ -4,9 +4,11 @@
     "item": "statues:cod_statue"
   },
   "result": {
-    "item": "minecraft:cod"
+    "count": 1,
+    "id": "minecraft:cod"
   },
   "result2": {
-    "item": "minecraft:bone_meal"
+    "count": 1,
+    "id": "minecraft:bone_meal"
   }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:chicken_jockey_statue"
-            ]
+            "items": "statues:chicken_jockey_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.chicken_jockey_statue.desc"
     },
     "icon": {
-      "item": "statues:chicken_jockey_statue"
+      "count": 1,
+      "id": "statues:chicken_jockey_statue"
     },
     "title": {
       "translate": "advancement.statues.chicken_jockey_statue.title"

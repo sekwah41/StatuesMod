@@ -5,6 +5,7 @@
     "item": "statues:sheep_shaven_statue"
   },
   "result3": {
-    "item": "minecraft:mutton"
+    "count": 1,
+    "id": "minecraft:mutton"
   }
 }

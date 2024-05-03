@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:pufferfish_statue"
-            ]
+            "items": "statues:pufferfish_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.pufferfish_statue.desc"
     },
     "icon": {
-      "item": "statues:pufferfish_statue"
+      "count": 1,
+      "id": "statues:pufferfish_statue"
     },
     "title": {
       "translate": "advancement.statues.pufferfish_statue.title"

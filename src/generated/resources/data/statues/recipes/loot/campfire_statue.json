@@ -4,6 +4,7 @@
     "item": "statues:campfire_statue"
   },
   "result": {
-    "item": "statues:marshmallow"
+    "count": 1,
+    "id": "statues:marshmallow"
   }
 }

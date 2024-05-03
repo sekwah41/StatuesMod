@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -43,8 +42,8 @@ public class SombreroBlock extends AbstractBaseBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult result) {
-		if (!level.isClientSide && handIn == InteractionHand.MAIN_HAND) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player playerIn, BlockHitResult result) {
+		if (!level.isClientSide) {
 			if (canPlaySound(level, pos, state)) {
 				level.playSound(null, pos, SoundEvents.ANVIL_LAND, SoundSource.NEUTRAL, 1F, getPitch());
 			}

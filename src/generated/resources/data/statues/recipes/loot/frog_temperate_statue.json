@@ -4,9 +4,11 @@
     "item": "statues:frog_temperate_statue"
   },
   "result": {
-    "item": "minecraft:slime_ball"
+    "count": 1,
+    "id": "minecraft:slime_ball"
   },
   "result3": {
-    "item": "minecraft:ochre_froglight"
+    "count": 1,
+    "id": "minecraft:ochre_froglight"
   }
 }

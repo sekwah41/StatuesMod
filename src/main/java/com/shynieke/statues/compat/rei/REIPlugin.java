@@ -8,11 +8,13 @@ import com.shynieke.statues.compat.rei.category.UpgradeCategory;
 import com.shynieke.statues.compat.rei.display.LootDisplay;
 import com.shynieke.statues.compat.rei.display.UpgradeDisplay;
 import com.shynieke.statues.config.StatuesConfig;
+import com.shynieke.statues.datacomponent.StatueStats;
 import com.shynieke.statues.items.StatueBlockItem;
 import com.shynieke.statues.recipe.LootRecipe;
 import com.shynieke.statues.recipe.StatuesRecipes;
 import com.shynieke.statues.recipe.UpgradeRecipe;
 import com.shynieke.statues.recipe.UpgradeType;
+import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.registry.StatueRegistry;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
@@ -26,7 +28,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -181,19 +182,18 @@ public class REIPlugin implements REIClientPlugin {
 
 
 	private void fillInTag(ItemStack stack, UpgradeRecipe recipe) {
-		CompoundTag entityTag = new CompoundTag();
 		int tier = recipe.getTier();
-		entityTag.putInt(Reference.LEVEL, tier == -1 ? recipe.getUpgradeType() == UpgradeType.UPGRADE ? 0 : 1 : tier + 1);
-		entityTag.putBoolean(Reference.UPGRADED, true);
-		entityTag.putInt(Reference.UPGRADE_SLOTS, 20);
-		stack.addTagElement("BlockEntityTag", entityTag);
+		stack.set(StatueDataComponents.UPGRADED.get(), true);
+
+		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS.get(), StatueStats.EMPTY);
+		stats.setLevel(tier == -1 ? 0 : tier + 1);
+		stats.setUpgradeSlots(20);
+		stack.set(StatueDataComponents.STATS.get(), stats);
 	}
 
 	private void setUpgradeSlots(ItemStack stack, int count) {
-		CompoundTag blockData = stack.getTagElement("BlockEntityTag");
-		if (blockData == null)
-			blockData = new CompoundTag();
-		blockData.putInt(Reference.UPGRADE_SLOTS, count);
-		stack.addTagElement("BlockEntityTag", blockData);
+		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS.get(), StatueStats.EMPTY);
+		stats.setUpgradeSlots(count);
+		stack.set(StatueDataComponents.STATS.get(), stats);
 	}
 }

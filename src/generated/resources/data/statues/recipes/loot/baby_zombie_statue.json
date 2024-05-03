@@ -4,9 +4,11 @@
     "item": "statues:baby_zombie_statue"
   },
   "result": {
-    "item": "minecraft:rotten_flesh"
+    "count": 1,
+    "id": "minecraft:rotten_flesh"
   },
   "result2": {
-    "item": "minecraft:iron_nugget"
+    "count": 1,
+    "id": "minecraft:iron_nugget"
   }
 }

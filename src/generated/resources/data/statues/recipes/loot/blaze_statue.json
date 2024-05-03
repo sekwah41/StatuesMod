@@ -4,9 +4,11 @@
     "item": "statues:blaze_statue"
   },
   "result": {
-    "item": "minecraft:blaze_powder"
+    "count": 1,
+    "id": "minecraft:blaze_powder"
   },
   "result2": {
-    "item": "minecraft:blaze_rod"
+    "count": 1,
+    "id": "minecraft:blaze_rod"
   }
 }

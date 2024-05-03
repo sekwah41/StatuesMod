@@ -1,9 +1,10 @@
 package com.shynieke.statues.items;
 
 import com.shynieke.statues.blocks.statues.PlayerStatueBlock;
+import com.shynieke.statues.registry.StatueDataComponents;
+import com.shynieke.statues.datacomponent.PlayerCompassData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +15,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class PlayerCompassItem extends Item {
@@ -35,10 +35,12 @@ public class PlayerCompassItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level reader, List<Component> tooltip, TooltipFlag flag) {
-		CompoundTag tag = stack.hasTag() ? stack.getTag() : new CompoundTag();
-		if (tag != null && !tag.getString("playerTracking").isEmpty()) {
-			tooltip.add(Component.translatable("statues.last.known.location", tag.getString("playerTracking")).withStyle(ChatFormatting.GOLD));
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		if (stack.has(StatueDataComponents.PLAYER_COMPASS_DATA.get())) {
+			PlayerCompassData data = stack.get(StatueDataComponents.PLAYER_COMPASS_DATA.get());
+			if (data != null) {
+				tooltip.add(Component.translatable("statues.last.known.location", data.name()).withStyle(ChatFormatting.GOLD));
+			}
 		}
 	}
 }

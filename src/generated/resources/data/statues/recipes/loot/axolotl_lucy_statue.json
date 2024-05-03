@@ -4,6 +4,7 @@
     "item": "statues:axolotl_lucy_statue"
   },
   "result": {
-    "item": "minecraft:tropical_fish"
+    "count": 1,
+    "id": "minecraft:tropical_fish"
   }
 }

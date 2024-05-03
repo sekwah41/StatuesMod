@@ -5,7 +5,7 @@ import com.shynieke.statues.registry.StatueRegistry;
 import com.shynieke.statues.registry.StatueTags;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
@@ -22,7 +22,7 @@ public class StatueBiomeModifiers {
 	protected static final ResourceKey<BiomeModifier> ADD_FEWER_SPAWN_MODIFIER = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS,
 			new ResourceLocation(Reference.MOD_ID, "add_fewer_statue_bat_spawn"));
 
-	public static void bootstrap(BootstapContext<BiomeModifier> context) {
+	public static void bootstrap(BootstrapContext<BiomeModifier> context) {
 		HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
 
 		context.register(ADD_SPAWN_MODIFIER, BiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(

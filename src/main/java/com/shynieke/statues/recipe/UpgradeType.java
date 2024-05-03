@@ -1,14 +1,13 @@
 package com.shynieke.statues.recipe;
 
-import com.shynieke.statues.Reference;
+import com.shynieke.statues.datacomponent.StatueStats;
+import com.shynieke.statues.datacomponent.StatueUpgrades;
 import com.shynieke.statues.items.StatueBlockItem;
-import com.shynieke.statues.util.UpgradeHelper;
-import net.minecraft.nbt.CompoundTag;
+import com.shynieke.statues.registry.StatueDataComponents;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Locale;
-import java.util.Map;
 
 public enum UpgradeType implements StringRepresentable {
 	CRAFTING("crafting", false, false, 1), //Unused but packs can add crafting recipes using the S.T.A.T.U.E
@@ -54,14 +53,11 @@ public enum UpgradeType implements StringRepresentable {
 			//Replace center stack
 			return true;
 		} else if (this == UPGRADE) {
-			if (stack.getTagElement("BlockEntityTag") == null) {
-				CompoundTag entityTag = new CompoundTag();
-				entityTag.putInt(Reference.LEVEL, 0);
-				entityTag.putInt(Reference.KILL_COUNT, 0);
-				entityTag.putInt(Reference.UPGRADE_SLOTS, 0);
-				entityTag.putBoolean(Reference.UPGRADED, true);
+			if (!stack.has(StatueDataComponents.UPGRADED)) {
+				StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+				stack.set(StatueDataComponents.STATS, stats);
+				stack.set(StatueDataComponents.UPGRADED, true);
 
-				stack.addTagElement("BlockEntityTag", entityTag);
 				return true;
 			} else {
 				//Already upgraded
@@ -70,89 +66,92 @@ public enum UpgradeType implements StringRepresentable {
 		} else {
 			if (stack.getItem() instanceof StatueBlockItem) {
 				if (requiresUpgrade()) {
-					CompoundTag compoundtag = stack.getTagElement("BlockEntityTag");
-					if (compoundtag == null && (stack.getTag() == null || !stack.getTag().getBoolean(Reference.UPGRADED))) {
+					if (!stack.has(StatueDataComponents.UPGRADED)) {
 						//Not upgraded
 						return false;
 					}
 
-					if (compoundtag != null) {
-						int upgradeSlots = compoundtag.getInt(Reference.UPGRADE_SLOTS);
+					if (stack.has(StatueDataComponents.UPGRADED)) {
+						StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+						int upgradeSlots = stats.upgradeSlots();
 						if (isSubsequentUsesSlot() && !(upgradeSlots > 0)) {
 							//No upgrade slots
 							return false;
 						}
 						String ID = this.name().toLowerCase(Locale.ROOT);
 						String glowingID = GLOWING.name().toLowerCase(Locale.ROOT);
-						Map<String, Short> upgradeMap = UpgradeHelper.loadUpgradeMap(compoundtag);
-
-						short currentLevel = upgradeMap.getOrDefault(ID, (short) 0);
+						StatueUpgrades statueUpgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.EMPTY);
+						short currentLevel = statueUpgrades.upgradeMap().getOrDefault(ID, (short) 0);
 						if ((currentLevel + 1) <= getCap()) {
 							if (level != -1) {
 								if (currentLevel == level) {
 									if (this == GLOWING) {
-										UpgradeHelper.upgrade(upgradeMap, glowingID);
+										statueUpgrades.upgrade(glowingID);
 									} else {
-										UpgradeHelper.upgrade(upgradeMap, ID);
+										statueUpgrades.upgrade(ID);
 									}
-									if (isSubsequentUsesSlot())
-										compoundtag.putInt(Reference.UPGRADE_SLOTS, upgradeSlots - 1);
+									if (isSubsequentUsesSlot()) {
+										upgradeSlots -= 1;
+										stats.setUpgradeSlots(upgradeSlots);
+										stack.set(StatueDataComponents.STATS, stats);
+									}
 								} else {
 									//Level doesn't match
 									return false;
 								}
 							} else {
 								if (this == GLOWING) {
-									UpgradeHelper.upgrade(upgradeMap, glowingID);
+									statueUpgrades.upgrade(glowingID);
 								} else {
-									UpgradeHelper.upgrade(upgradeMap, ID);
+									statueUpgrades.upgrade(ID);
 								}
-								if (isSubsequentUsesSlot())
-									compoundtag.putInt(Reference.UPGRADE_SLOTS, upgradeSlots - 1);
+								if (isSubsequentUsesSlot()) {
+									upgradeSlots -= 1;
+									stats.setUpgradeSlots(upgradeSlots);
+									stack.set(StatueDataComponents.STATS, stats);
+								}
 							}
 						} else {
 							//Next update would be over the cap
 							return false;
 						}
-						UpgradeHelper.saveUpgradeMap(compoundtag, upgradeMap);
-						stack.addTagElement("BlockEntityTag", compoundtag);
+						stack.set(StatueDataComponents.UPGRADES, statueUpgrades);
 						return true;
 					}
 				} else {
 					if (this == UNGLOWING) {
-						CompoundTag compoundtag = stack.getTagElement("BlockEntityTag");
-						if (compoundtag == null && stack.getTag() == null) {
+						if (!stack.has(StatueDataComponents.UPGRADED)) {
 							//Not upgraded
 							return false;
 						}
 
-						if (compoundtag != null) {
-							int upgradeSlots = compoundtag.getInt(Reference.UPGRADE_SLOTS);
+						if (stack.has(StatueDataComponents.UPGRADED)) {
+							StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+							int upgradeSlots = stats.upgradeSlots();
 							if (isSubsequentUsesSlot() && !(upgradeSlots > 0)) {
 								//No upgrade slots
 								return false;
 							}
 
 							String glowingID = GLOWING.name().toLowerCase(Locale.ROOT);
-							Map<String, Short> upgradeMap = UpgradeHelper.loadUpgradeMap(compoundtag);
-							short glowLevel = upgradeMap.getOrDefault(glowingID, (short) 0);
+							StatueUpgrades statueUpgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.EMPTY);
+							short glowLevel = statueUpgrades.upgradeMap().getOrDefault(glowingID, (short) 0);
 
 							if (glowLevel > 0) {
-								UpgradeHelper.downgrade(upgradeMap, glowingID);
+								statueUpgrades.downgrade(glowingID);
 
-								if (upgradeMap.getOrDefault(glowingID, (short) 0) == 0)
-									upgradeMap.remove(glowingID);
+								if (statueUpgrades.upgradeMap().getOrDefault(glowingID, (short) 0) == 0)
+									statueUpgrades.upgradeMap().remove(glowingID);
 
-								UpgradeHelper.saveUpgradeMap(compoundtag, upgradeMap);
+								stack.set(StatueDataComponents.UPGRADES, statueUpgrades);
 							} else {
 								//Can't downgrade a stack that isn't glowing
 								return false;
 							}
 						}
 					} else {
-						CompoundTag compoundtag = stack.getOrCreateTag();
-						compoundtag.putBoolean(Reference.UPGRADED, true);
-						compoundtag.putInt(Reference.UPGRADED, 1);
+						stack.set(StatueDataComponents.UPGRADED, true);
+//						stack.set(StatueDataComponents.UPGRADE_SLOTS, 1); What did this even do?
 					}
 
 					return true;

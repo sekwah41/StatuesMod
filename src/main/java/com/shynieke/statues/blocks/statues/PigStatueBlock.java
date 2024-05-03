@@ -31,7 +31,7 @@ public class PigStatueBlock extends AbstractStatueBase {
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		if (this.isDecorative(state) && placer != null) {
-			if (level.getBlockState(pos.below()).is(Tags.Blocks.SAND)) {
+			if (level.getBlockState(pos.below()).is(Tags.Blocks.SANDS)) {
 				BlockPos downPos = pos.below();
 				level.addParticle(ParticleTypes.EXPLOSION, downPos.getX(), downPos.getY(), downPos.getZ(), 1.0D, 0.0D, 0.0D);
 				level.setBlockAndUpdate(pos.below(), StatueRegistry.WASTELAND_STATUE.get().defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()));

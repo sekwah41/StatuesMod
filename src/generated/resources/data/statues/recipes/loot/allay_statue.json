@@ -4,12 +4,15 @@
     "item": "statues:allay_statue"
   },
   "result": {
-    "item": "minecraft:light_blue_dye"
+    "count": 1,
+    "id": "minecraft:light_blue_dye"
   },
   "result2": {
-    "item": "minecraft:light_blue_dye"
+    "count": 1,
+    "id": "minecraft:light_blue_dye"
   },
   "result3": {
-    "item": "minecraft:light_blue_dye"
+    "count": 1,
+    "id": "minecraft:light_blue_dye"
   }
 }

@@ -21,6 +21,7 @@
     }
   ],
   "result": {
-    "item": "minecraft:rabbit_foot"
+    "count": 1,
+    "id": "minecraft:rabbit_foot"
   }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:spider_statue"
-            ]
+            "items": "statues:spider_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.spider_statue.desc"
     },
     "icon": {
-      "item": "statues:spider_statue"
+      "count": 1,
+      "id": "statues:spider_statue"
     },
     "title": {
       "translate": "advancement.statues.spider_statue.title"

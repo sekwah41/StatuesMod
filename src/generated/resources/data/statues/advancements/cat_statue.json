@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_black_statue"
-            ]
+            "items": "statues:cat_black_statue"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_british_shorthair_statue"
-            ]
+            "items": "statues:cat_british_shorthair_statue"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_calico_statue"
-            ]
+            "items": "statues:cat_calico_statue"
           }
         ]
       },
@@ -41,9 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_jellie_statue"
-            ]
+            "items": "statues:cat_jellie_statue"
           }
         ]
       },
@@ -53,9 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_persian_statue"
-            ]
+            "items": "statues:cat_persian_statue"
           }
         ]
       },
@@ -65,9 +55,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_ragdoll_statue"
-            ]
+            "items": "statues:cat_ragdoll_statue"
           }
         ]
       },
@@ -77,9 +65,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_red_statue"
-            ]
+            "items": "statues:cat_red_statue"
           }
         ]
       },
@@ -89,9 +75,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_siamese_statue"
-            ]
+            "items": "statues:cat_siamese_statue"
           }
         ]
       },
@@ -101,9 +85,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_tabby_statue"
-            ]
+            "items": "statues:cat_tabby_statue"
           }
         ]
       },
@@ -113,9 +95,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_tuxedo_statue"
-            ]
+            "items": "statues:cat_tuxedo_statue"
           }
         ]
       },
@@ -125,9 +105,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:cat_white_statue"
-            ]
+            "items": "statues:cat_white_statue"
           }
         ]
       },
@@ -139,7 +117,8 @@
       "translate": "advancement.statues.cat_statue.desc"
     },
     "icon": {
-      "item": "statues:cat_jellie_statue"
+      "count": 1,
+      "id": "statues:cat_jellie_statue"
     },
     "title": {
       "translate": "advancement.statues.cat_statue.title"

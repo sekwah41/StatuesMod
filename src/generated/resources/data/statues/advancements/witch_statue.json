@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:witch_statue"
-            ]
+            "items": "statues:witch_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.witch_statue.desc"
     },
     "icon": {
-      "item": "statues:witch_statue"
+      "count": 1,
+      "id": "statues:witch_statue"
     },
     "title": {
       "translate": "advancement.statues.witch_statue.title"

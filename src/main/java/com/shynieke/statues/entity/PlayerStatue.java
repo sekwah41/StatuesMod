@@ -1,7 +1,7 @@
 package com.shynieke.statues.entity;
 
 import com.mojang.authlib.GameProfile;
-import com.shynieke.statues.blockentities.PlayerBlockEntity;
+import com.shynieke.statues.Statues;
 import com.shynieke.statues.client.ClientHandler;
 import com.shynieke.statues.client.screen.PlayerStatueData;
 import com.shynieke.statues.network.message.PlayerStatueScreenData;
@@ -14,7 +14,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -38,13 +38,16 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -63,7 +66,7 @@ public class PlayerStatue extends LivingEntity {
 	private static final Rotations DEFAULT_RIGHTLEG_ROTATION = new Rotations(1.0F, 0.0F, 1.0F);
 
 	private static final String DEFAULT_MODEL = PlayerStatueData.MODEL_TYPE.AUTO.name();
-	private static final EntityDataAccessor<Optional<GameProfile>> GAMEPROFILE = SynchedEntityData.defineId(PlayerStatue.class, StatueSerializers.OPTIONAL_GAME_PROFILE.get());
+	private static final EntityDataAccessor<Optional<ResolvableProfile>> RESOLVABLE_PROFILE = SynchedEntityData.defineId(PlayerStatue.class, StatueSerializers.OPTIONAL_RESOLVABLE_PROFILE.get());
 	public static final EntityDataAccessor<Byte> STATUS = SynchedEntityData.defineId(PlayerStatue.class, EntityDataSerializers.BYTE);
 	public static final EntityDataAccessor<Float> Y_OFFSET = SynchedEntityData.defineId(PlayerStatue.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Rotations> HEAD_ROTATION = SynchedEntityData.defineId(PlayerStatue.class, EntityDataSerializers.ROTATIONS);
@@ -103,9 +106,8 @@ public class PlayerStatue extends LivingEntity {
 		super.setYRot(yRot);
 	}
 
-	@Override
-	public float getStepHeight() {
-		return 0.0F;
+	public static AttributeSupplier.Builder createAttributes() {
+		return createLivingAttributes().add(Attributes.STEP_HEIGHT, 0.0);
 	}
 
 	public PlayerStatue(Level level, double posX, double posY, double posZ) {
@@ -113,6 +115,7 @@ public class PlayerStatue extends LivingEntity {
 		this.setPos(posX, posY, posZ);
 	}
 
+	@Override
 	public void refreshDimensions() {
 		double d0 = this.getX();
 		double d1 = this.getY();
@@ -133,31 +136,33 @@ public class PlayerStatue extends LivingEntity {
 	/**
 	 * Returns whether the entity is in a server level
 	 */
+	@Override
 	public boolean isEffectiveAi() {
 		return super.isEffectiveAi() && this.hasPhysics();
 	}
 
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(GAMEPROFILE, Optional.empty());
-		this.entityData.define(STATUS, (byte) 0);
-		this.entityData.define(Y_OFFSET, 0F);
-		this.entityData.define(HEAD_ROTATION, DEFAULT_HEAD_ROTATION);
-		this.entityData.define(BODY_ROTATION, DEFAULT_BODY_ROTATION);
-		this.entityData.define(LEFT_ARM_ROTATION, DEFAULT_LEFTARM_ROTATION);
-		this.entityData.define(RIGHT_ARM_ROTATION, DEFAULT_RIGHTARM_ROTATION);
-		this.entityData.define(LEFT_LEG_ROTATION, DEFAULT_LEFTLEG_ROTATION);
-		this.entityData.define(RIGHT_LEG_ROTATION, DEFAULT_RIGHTLEG_ROTATION);
-		this.entityData.define(LOCKED_BY_UUID, Optional.empty());
-		this.entityData.define(MODEL_TYPE, DEFAULT_MODEL);
+	@Override
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(RESOLVABLE_PROFILE, Optional.empty());
+		builder.define(STATUS, (byte) 0);
+		builder.define(Y_OFFSET, 0F);
+		builder.define(HEAD_ROTATION, DEFAULT_HEAD_ROTATION);
+		builder.define(BODY_ROTATION, DEFAULT_BODY_ROTATION);
+		builder.define(LEFT_ARM_ROTATION, DEFAULT_LEFTARM_ROTATION);
+		builder.define(RIGHT_ARM_ROTATION, DEFAULT_RIGHTARM_ROTATION);
+		builder.define(LEFT_LEG_ROTATION, DEFAULT_LEFTLEG_ROTATION);
+		builder.define(RIGHT_LEG_ROTATION, DEFAULT_RIGHTLEG_ROTATION);
+		builder.define(LOCKED_BY_UUID, Optional.empty());
+		builder.define(MODEL_TYPE, DEFAULT_MODEL);
 	}
 
-	public Optional<GameProfile> getGameProfile() {
-		return entityData.get(GAMEPROFILE);
+	public Optional<ResolvableProfile> getGameProfile() {
+		return entityData.get(RESOLVABLE_PROFILE);
 	}
 
-	public void setGameProfile(GameProfile profile) {
-		entityData.set(GAMEPROFILE, Optional.of(profile));
+	public void setGameProfile(ResolvableProfile profile) {
+		entityData.set(RESOLVABLE_PROFILE, Optional.of(profile));
 	}
 
 	@Nullable
@@ -203,21 +208,29 @@ public class PlayerStatue extends LivingEntity {
 		return entityData.get(Y_OFFSET);
 	}
 
+	@Override
 	public Iterable<ItemStack> getHandSlots() {
 		return this.handItems;
 	}
 
+	@Override
 	public Iterable<ItemStack> getArmorSlots() {
 		return this.armorItems;
 	}
 
+	@Override
 	public ItemStack getItemBySlot(EquipmentSlot slotIn) {
-		return switch (slotIn.getType()) {
-			case HAND -> this.handItems.get(slotIn.getIndex());
-			case ARMOR -> this.armorItems.get(slotIn.getIndex());
-		};
+		switch (slotIn.getType()) {
+			case HAND:
+				return this.handItems.get(slotIn.getIndex());
+			case ARMOR:
+				return this.armorItems.get(slotIn.getIndex());
+			default:
+				return ItemStack.EMPTY;
+		}
 	}
 
+	@Override
 	public void setItemSlot(EquipmentSlot slotIn, ItemStack stack) {
 		this.verifyEquippedItem(stack);
 		switch (slotIn.getType()) {
@@ -227,17 +240,19 @@ public class PlayerStatue extends LivingEntity {
 
 	}
 
+	@Override
 	public boolean canTakeItem(ItemStack itemstackIn) {
-		EquipmentSlot equipmentslottype = getEquipmentSlotForItem(itemstackIn);
-		return this.getItemBySlot(equipmentslottype).isEmpty() && !this.isDisabled(equipmentslottype);
+		EquipmentSlot equipmentSlot = getEquipmentSlotForItem(itemstackIn);
+		return this.getItemBySlot(equipmentSlot).isEmpty() && !this.isDisabled(equipmentSlot);
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putBoolean("gameProfileExists", entityData.get(GAMEPROFILE).isPresent());
+		compound.putBoolean("profileExists", entityData.get(RESOLVABLE_PROFILE).isPresent());
 		if (getGameProfile().isPresent()) {
-			compound.put("gameProfile", NbtUtils.writeGameProfile(new CompoundTag(), entityData.get(GAMEPROFILE).get()));
+			compound.put("profile", ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(RESOLVABLE_PROFILE).get()).getOrThrow());
+
 		}
 
 		compound.putFloat("yOffset", getYOffsetData());
@@ -248,7 +263,7 @@ public class PlayerStatue extends LivingEntity {
 		for (ItemStack itemstack : this.armorItems) {
 			CompoundTag compoundnbt = new CompoundTag();
 			if (!itemstack.isEmpty()) {
-				itemstack.save(compoundnbt);
+				itemstack.save(level().registryAccess(), compoundnbt);
 			}
 
 			listnbt.add(compoundnbt);
@@ -260,7 +275,7 @@ public class PlayerStatue extends LivingEntity {
 		for (ItemStack itemstack1 : this.handItems) {
 			CompoundTag compoundnbt1 = new CompoundTag();
 			if (!itemstack1.isEmpty()) {
-				itemstack1.save(compoundnbt1);
+				itemstack1.save(level().registryAccess(), compoundnbt1);
 			}
 
 			listnbt1.add(compoundnbt1);
@@ -286,8 +301,14 @@ public class PlayerStatue extends LivingEntity {
 	@Override
 	public void load(CompoundTag compound) {
 		super.load(compound);
-		entityData.set(GAMEPROFILE, !compound.getBoolean("gameProfileExists") ? Optional.empty() :
-				Optional.ofNullable(NbtUtils.readGameProfile(compound.getCompound("gameProfile"))));
+		boolean profileExists = compound.getBoolean("profileExists");
+		if (profileExists) {
+			entityData.set(RESOLVABLE_PROFILE, ResolvableProfile.CODEC
+					.parse(NbtOps.INSTANCE, compound.get("profile"))
+					.resultOrPartial(p_332637_ -> Statues.LOGGER.error("Failed to load profile from player statue: {}", p_332637_)));
+		} else {
+			entityData.set(RESOLVABLE_PROFILE, Optional.empty());
+		}
 	}
 
 	@Override
@@ -300,7 +321,7 @@ public class PlayerStatue extends LivingEntity {
 			ListTag listnbt = compound.getList("ArmorItems", 10);
 
 			for (int i = 0; i < this.armorItems.size(); ++i) {
-				this.armorItems.set(i, ItemStack.of(listnbt.getCompound(i)));
+				this.armorItems.set(i, ItemStack.parseOptional(level().registryAccess(), listnbt.getCompound(i)));
 			}
 		}
 
@@ -322,7 +343,7 @@ public class PlayerStatue extends LivingEntity {
 			ListTag listnbt1 = compound.getList("HandItems", 10);
 
 			for (int j = 0; j < this.handItems.size(); ++j) {
-				this.handItems.set(j, ItemStack.of(listnbt1.getCompound(j)));
+				this.handItems.set(j, ItemStack.parseOptional(level().registryAccess(), listnbt1.getCompound(j)));
 			}
 		}
 
@@ -395,9 +416,9 @@ public class PlayerStatue extends LivingEntity {
 				super.setCustomName(name);
 
 				String username = name.getString().toLowerCase(Locale.ROOT);
-				PlayerBlockEntity.fetchGameProfile(username)
+				SkullBlockEntity.fetchGameProfile(username)
 						.thenAccept(
-								profile -> this.setGameProfile(profile.orElse(new GameProfile(Util.NIL_UUID, username)))
+								profile -> this.setGameProfile(new ResolvableProfile(profile.orElse(new GameProfile(Util.NIL_UUID, username))))
 						);
 			}
 		}
@@ -529,7 +550,7 @@ public class PlayerStatue extends LivingEntity {
 					if (this.isOnFire()) {
 						this.damageArmorStand(source, 0.15F);
 					} else {
-						this.setSecondsOnFire(5);
+						this.setRemainingFireTicks(5 * 20);
 					}
 
 					return false;
@@ -619,40 +640,40 @@ public class PlayerStatue extends LivingEntity {
 
 	private void breakPlayerStatue(DamageSource source) {
 		ItemStack stack = new ItemStack(StatueRegistry.PLAYER_STATUE.get());
-		if (getGameProfile().isPresent()) {
-			GameProfile profile = getGameProfile().get();
-			if (profile != null) {
-				CompoundTag stackTag = stack.getTag() != null ? stack.getTag() : new CompoundTag();
-				CompoundTag nbttagcompound = new CompoundTag();
-				NbtUtils.writeGameProfile(nbttagcompound, profile);
-				stackTag.put("PlayerProfile", nbttagcompound);
-				stack.setTag(stackTag);
-				stack.setHoverName(Component.literal(profile.getName()));
-			}
-		}
+//		if (getGameProfile().isPresent()) { TODO: Re-implement?
+//			ResolvableProfile resolvableProfile = getGameProfile().get();
+//			if (resolvableProfile != null) {
+//				CompoundTag stackTag = stack.getTag() != null ? stack.getTag() : new CompoundTag();
+//				CompoundTag nbttagcompound = new CompoundTag();
+//				NbtUtils.writeGameProfile(nbttagcompound, resolvableProfile);
+//				stackTag.put("PlayerProfile", nbttagcompound);
+//				stack.setTag(stackTag);
+//				stack.setHoverName(Component.literal(resolvableProfile.getName()));
+//			}
+//		}
 
 		Block.popResource(this.level(), this.blockPosition(), stack);
 		Block.popResource(this.level(), this.blockPosition(), new ItemStack(StatueRegistry.STATUE_CORE.get()));
 		this.brokenByAnything(source);
 	}
 
-	@Override
-	public ItemStack getPickedResult(HitResult target) {
-		ItemStack stack = new ItemStack(StatueRegistry.PLAYER_STATUE.get());
-		if (getGameProfile().isPresent()) {
-			GameProfile profile = getGameProfile().get();
-			if (profile != null) {
-				CompoundTag stackTag = stack.getTag() != null ? stack.getTag() : new CompoundTag();
-				CompoundTag nbttagcompound = new CompoundTag();
-				NbtUtils.writeGameProfile(nbttagcompound, profile);
-				stackTag.put("PlayerProfile", nbttagcompound);
-				stack.setTag(stackTag);
-				stack.setHoverName(Component.literal(profile.getName()));
-			}
-		}
-
-		return stack;
-	}
+//	@Override TODO: Re-implement?
+//	public ItemStack getPickedResult(HitResult target) {
+//		ItemStack stack = new ItemStack(StatueRegistry.PLAYER_STATUE.get());
+//		if (getGameProfile().isPresent()) {
+//			GameProfile profile = getGameProfile().get();
+//			if (profile != null) {
+//				CompoundTag stackTag = stack.getTag() != null ? stack.getTag() : new CompoundTag();
+//				CompoundTag nbttagcompound = new CompoundTag();
+//				NbtUtils.writeGameProfile(nbttagcompound, profile);
+//				stackTag.put("PlayerProfile", nbttagcompound);
+//				stack.setTag(stackTag);
+//				stack.setHoverName(Component.literal(profile.getName()));
+//			}
+//		}
+//
+//		return stack;
+//	}
 
 	private void brokenByAnything(DamageSource source) {
 		this.playBrokenSound();
@@ -687,17 +708,16 @@ public class PlayerStatue extends LivingEntity {
 	}
 
 	protected float getStandingEdyeHeight(Pose poseIn, EntityDimensions sizeIn) {
-		return sizeIn.height * (this.isBaby() ? 0.5F : 0.9F);
+		return sizeIn.height() * (this.isBaby() ? 0.5F : 0.9F);
 	}
 
 	/**
 	 * Returns the Y Offset of this entity.
 	 */
-	@Override
-	protected float ridingOffset(Entity entity) {
-		return 0.1F + getYOffsetData(); //TODO: what does this do?
-	}
-
+//	@Override
+//	protected float ridingOffset(Entity entity) {
+//		return 0.1F + getYOffsetData(); //TODO: what does this do?
+//	}
 	public void travel(Vec3 travelVector) {
 		if (this.hasPhysics()) {
 			super.travel(travelVector);
@@ -732,7 +752,8 @@ public class PlayerStatue extends LivingEntity {
 		super.tick();
 
 		if (level().isClientSide && getGameProfile().isPresent()) {
-			if (ClientHandler.TRANSLATORS.contains(getGameProfile().get().getId())) {
+			ResolvableProfile resolvableProfile = getGameProfile().get();
+			if (resolvableProfile.id().isPresent() && ClientHandler.TRANSLATORS.contains(resolvableProfile.id().get())) {
 				level().addParticle(ParticleTypes.ENCHANT,
 						(double) getX(), (double) getEyeY() + 1, (double) getZ(),
 						(double) ((float) (level().random.nextFloat() - 0.5) * 3 + random.nextFloat()) - 0.5D,

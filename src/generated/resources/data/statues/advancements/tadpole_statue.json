@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:tadpole_statue"
-            ]
+            "items": "statues:tadpole_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.tadpole_statue.desc"
     },
     "icon": {
-      "item": "statues:tadpole_statue"
+      "count": 1,
+      "id": "statues:tadpole_statue"
     },
     "title": {
       "translate": "advancement.statues.tadpole_statue.title"

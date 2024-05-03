@@ -4,9 +4,11 @@
     "item": "statues:king_cluck_statue"
   },
   "result": {
-    "item": "statues:royal_nugget"
+    "count": 1,
+    "id": "statues:royal_nugget"
   },
   "result3": {
-    "item": "minecraft:gold_nugget"
+    "count": 1,
+    "id": "minecraft:gold_nugget"
   }
 }

@@ -2,13 +2,13 @@
   "type": "statues:upgrade",
   "catalysts": [
     {
-      "tag": "forge:ender_pearls"
+      "tag": "c:ender_pearls"
     },
     {
-      "tag": "forge:gunpowder"
+      "tag": "c:gunpowders"
     },
     {
-      "tag": "forge:bones"
+      "tag": "c:bones"
     },
     {
       "item": "minecraft:rotten_flesh"

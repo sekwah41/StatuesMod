@@ -4,6 +4,7 @@
     "item": "statues:slime_statue"
   },
   "result2": {
-    "item": "minecraft:slime_ball"
+    "count": 1,
+    "id": "minecraft:slime_ball"
   }
 }

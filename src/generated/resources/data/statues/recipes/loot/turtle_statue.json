@@ -4,12 +4,15 @@
     "item": "statues:turtle_statue"
   },
   "result": {
-    "item": "minecraft:seagrass"
+    "count": 1,
+    "id": "minecraft:seagrass"
   },
   "result2": {
-    "item": "minecraft:bowl"
+    "count": 1,
+    "id": "minecraft:bowl"
   },
   "result3": {
-    "item": "minecraft:scute"
+    "count": 1,
+    "id": "minecraft:turtle_scute"
   }
 }

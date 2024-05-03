@@ -4,12 +4,15 @@
     "item": "statues:witch_statue"
   },
   "result": {
-    "item": "minecraft:glowstone_dust"
+    "count": 1,
+    "id": "minecraft:glowstone_dust"
   },
   "result2": {
-    "item": "minecraft:redstone"
+    "count": 1,
+    "id": "minecraft:redstone"
   },
   "result3": {
-    "item": "minecraft:glass_bottle"
+    "count": 1,
+    "id": "minecraft:glass_bottle"
   }
 }

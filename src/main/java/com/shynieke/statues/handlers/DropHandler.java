@@ -5,6 +5,7 @@ import com.shynieke.statues.blocks.statues.SheepStatueBlock;
 import com.shynieke.statues.config.StatuesConfig;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -83,12 +84,12 @@ public class DropHandler {
 			String trans = "Trans Bee";
 			if (bee.getDisplayName().getString().equalsIgnoreCase(trans)) {
 				itemStackToDrop = new ItemStack(StatueRegistry.BEE_STATUE.get());
-				itemStackToDrop.setHoverName(Component.literal(trans));
+				itemStackToDrop.set(DataComponents.CUSTOM_NAME, Component.literal(trans));
 			}
 			String tropi = "Tropibee";
 			if (bee.getDisplayName().getString().equalsIgnoreCase(trans)) {
 				itemStackToDrop = new ItemStack(StatueRegistry.BEE_STATUE.get());
-				itemStackToDrop.setHoverName(Component.literal(tropi));
+				itemStackToDrop.set(DataComponents.CUSTOM_NAME, Component.literal(tropi));
 			}
 			dropLootStatues(entity, itemStackToDrop, source, event);
 		} else if (entity instanceof Rabbit rabbit) {
@@ -116,7 +117,7 @@ public class DropHandler {
 			dropLootStatues(entity, itemStackToDrop, source, event);
 		} else if (entity instanceof Cat cat) {
 			ItemStack itemStackToDrop = ItemStack.EMPTY;
-			CatVariant variant = cat.getVariant();
+			CatVariant variant = cat.getVariant().value();
 			ResourceKey<CatVariant> catKey = BuiltInRegistries.CAT_VARIANT.getResourceKey(variant).orElse(null);
 			if (catKey == CatVariant.TABBY) {
 				itemStackToDrop = new ItemStack(StatueRegistry.CAT_TABBY_STATUE.get());
@@ -209,7 +210,8 @@ public class DropHandler {
 		}
 
 		if (StatuesConfig.COMMON.playerDropsStatue.get() && entity instanceof Player player) {
-			ItemStack playerStatueStack = new ItemStack(StatueRegistry.PLAYER_STATUE.get()).setHoverName(player.getName());
+			ItemStack playerStatueStack = new ItemStack(StatueRegistry.PLAYER_STATUE.get());
+			playerStatueStack.set(DataComponents.CUSTOM_NAME, Component.literal(player.getName().getString()));
 			double random_drop = Math.random();
 			double playerDropChance = StatuesConfig.COMMON.playerStatueDropChance.get();
 			BlockPos entityPos = entity.blockPosition();

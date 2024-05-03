@@ -430,7 +430,7 @@ public class PlayerPoseScreen extends Screen {
 		this.playerStatueEntity.load(CompoundTag);
 		this.playerStatueEntity.clientLock = 5;
 
-		PacketDistributor.SERVER.noArg().send(new PlayerStatueSyncData(playerStatueEntity.getUUID(), compound));
+		PacketDistributor.sendToServer(new PlayerStatueSyncData(playerStatueEntity.getUUID(), compound));
 	}
 
 	@Override

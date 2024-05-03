@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:ravager_statue"
-            ]
+            "items": "statues:ravager_statue"
           }
         ]
       },
@@ -20,7 +18,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "statues:ravager_statue"
+      "count": 1,
+      "id": "statues:ravager_statue"
     },
     "title": {
       "translate": "advancement.statues.ravager_statue.title"

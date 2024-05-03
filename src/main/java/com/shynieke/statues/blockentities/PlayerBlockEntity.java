@@ -1,28 +1,30 @@
 package com.shynieke.statues.blockentities;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
-import com.mojang.authlib.yggdrasil.ProfileResult;
+import com.shynieke.statues.Statues;
 import com.shynieke.statues.blocks.statues.PlayerStatueBlock;
 import com.shynieke.statues.registry.StatueBlockEntities;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.Services;
 import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
 import org.jetbrains.annotations.Nullable;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+
 import java.util.concurrent.Executor;
 
 public class PlayerBlockEntity extends BlockEntity implements Nameable {
@@ -39,7 +41,8 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 		}
 	};
 
-	private GameProfile playerProfile;
+	@Nullable
+	private ResolvableProfile playerProfile;
 	private boolean comparatorApplied;
 	private boolean onlineChecking;
 	private int checkerCooldown;
@@ -68,11 +71,14 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(compound, lookupProvider);
 
-		if (compound.contains("PlayerProfile", 10)) {
-			this.setPlayerProfile(NbtUtils.readGameProfile(compound.getCompound("PlayerProfile")));
+		if (compound.contains("profile")) {
+			ResolvableProfile.CODEC
+					.parse(NbtOps.INSTANCE, compound.get("profile"))
+					.resultOrPartial(p_332637_ -> Statues.LOGGER.error("Failed to load profile from player statue: {}", p_332637_))
+					.ifPresent(this::setPlayerProfile);
 		}
 
 		comparatorApplied = compound.getBoolean("comparatorApplied");
@@ -81,12 +87,10 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(compound, lookupProvider);
 		if (this.playerProfile != null) {
-			CompoundTag tag = new CompoundTag();
-			NbtUtils.writeGameProfile(tag, this.playerProfile);
-			compound.put("PlayerProfile", tag);
+			compound.put("profile", ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, this.playerProfile).getOrThrow());
 		}
 		compound.putBoolean("comparatorApplied", comparatorApplied);
 		compound.putBoolean("OnlineChecking", onlineChecking);
@@ -94,27 +98,27 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
 		CompoundTag compoundNBT = pkt.getTag();
-		handleUpdateTag(compoundNBT);
+		handleUpdateTag(compoundNBT, lookupProvider);
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		super.handleUpdateTag(tag);
+	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.handleUpdateTag(tag, lookupProvider);
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
+	public CompoundTag getUpdateTag(HolderLookup.Provider lookupProvider) {
 		CompoundTag nbt = new CompoundTag();
-		this.saveAdditional(nbt);
+		this.saveAdditional(nbt, lookupProvider);
 		return nbt;
 	}
 
 	@Override
 	public CompoundTag getPersistentData() {
 		CompoundTag nbt = new CompoundTag();
-		this.saveAdditional(nbt);
+		this.saveAdditional(nbt, VanillaRegistries.createLookup());
 		return nbt;
 	}
 
@@ -126,23 +130,26 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 
 	@Override
 	public boolean hasCustomName() {
-		return this.playerProfile != null && !this.playerProfile.getName().isEmpty();
+		return this.playerProfile != null && !this.playerProfile.name().isEmpty();
 	}
 
 	@Nullable
-	public GameProfile getPlayerProfile() {
+	public ResolvableProfile getPlayerProfile() {
 		return this.playerProfile;
 	}
 
-	public void setPlayerProfile(@Nullable GameProfile profile) {
-		this.playerProfile = profile;
+	public void setPlayerProfile(@Nullable ResolvableProfile profile) {
+		synchronized (this) {
+			this.playerProfile = profile;
+		}
+
 		this.updateOwnerProfile();
 	}
 
 	private void updateOwnerProfile() {
-		if (this.playerProfile != null && !Util.isBlank(this.playerProfile.getName()) && !hasTextures(this.playerProfile)) {
-			fetchGameProfile(this.playerProfile.getName()).thenAcceptAsync(profile -> {
-				this.playerProfile = profile.orElse(this.playerProfile);
+		if (this.playerProfile != null && !this.playerProfile.isResolved()) {
+			this.playerProfile.resolve().thenAcceptAsync(profile -> {
+				this.playerProfile = profile;
 				this.setChanged();
 			}, CHECKED_MAIN_THREAD_EXECUTOR);
 		} else {
@@ -153,7 +160,7 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 	public void updateOnline() {
 		BlockState state = getBlockState();
 		boolean isStateOnline = state.getValue(PlayerStatueBlock.ONLINE);
-		boolean checkAnswer = level.getPlayerByUUID(this.playerProfile.getId()) != null;
+		boolean checkAnswer = level.getPlayerByUUID(this.playerProfile.id().orElse(Util.NIL_UUID)) != null;
 		if (isStateOnline != checkAnswer) {
 			BlockState newState = state.setValue(PlayerStatueBlock.ONLINE, checkAnswer);
 			level.setBlockAndUpdate(getBlockPos(), newState);
@@ -188,7 +195,9 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 
 	@Override
 	public Component getName() {
-		return this.hasCustomName() ? Component.literal(this.playerProfile != null ? playerProfile.getName() : "") : Component.translatable("entity.statues.player_statue");
+		return this.hasCustomName() ? Component.literal(this.playerProfile != null ?
+				playerProfile.name().orElse("") : "") :
+				Component.translatable("entity.statues.player_statue");
 	}
 
 	@Nullable
@@ -218,68 +227,21 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 		}
 	}
 
-	@Nullable
-	public static GameProfile getOrResolveGameProfile(CompoundTag tag) {
-		if (tag.contains("SkullOwner", 10)) {
-			return NbtUtils.readGameProfile(tag.getCompound("SkullOwner"));
-		} else {
-			if (tag.contains("SkullOwner", 8)) {
-				String s = tag.getString("SkullOwner");
-				if (!Util.isBlank(s)) {
-					tag.remove("SkullOwner");
-					resolveGameProfile(tag, s);
-				}
-			}
-
-			return null;
-		}
+	@Override
+	protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+		super.applyImplicitComponents(input);
+		this.setPlayerProfile(input.get(DataComponents.PROFILE));
 	}
 
-	public static void resolveGameProfile(CompoundTag tag) {
-		String s = tag.getString("SkullOwner");
-		if (!Util.isBlank(s)) {
-			resolveGameProfile(tag, s);
-		}
+	@Override
+	protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+		super.collectImplicitComponents(builder);
+		builder.set(DataComponents.PROFILE, this.playerProfile);
 	}
 
-	public static void resolveGameProfile(CompoundTag compoundTag, String username) {
-		fetchGameProfile(username)
-				.thenAccept(
-						profile -> compoundTag.put("SkullOwner",
-								NbtUtils.writeGameProfile(new CompoundTag(), profile.orElse(new GameProfile(Util.NIL_UUID, username))))
-				);
-	}
-
-	public static CompletableFuture<Optional<GameProfile>> fetchGameProfile(String username) {
-		GameProfileCache gameprofilecache = profileCache;
-		return gameprofilecache == null
-				? CompletableFuture.completedFuture(Optional.empty())
-				: gameprofilecache.getAsync(username)
-				.thenCompose(profile -> profile.isPresent() ? fillProfileTextures(profile.get()) : CompletableFuture.completedFuture(Optional.empty()))
-				.thenApplyAsync((profile -> {
-					GameProfileCache cache = profileCache;
-					if (cache != null) {
-						profile.ifPresent(cache::add);
-						return profile;
-					} else {
-						return Optional.empty();
-					}
-				}), CHECKED_MAIN_THREAD_EXECUTOR);
-	}
-
-	private static CompletableFuture<Optional<GameProfile>> fillProfileTextures(GameProfile profile) {
-		return hasTextures(profile) ? CompletableFuture.completedFuture(Optional.of(profile)) : CompletableFuture.supplyAsync(() -> {
-			MinecraftSessionService minecraftsessionservice = sessionService;
-			if (minecraftsessionservice != null) {
-				ProfileResult profileresult = minecraftsessionservice.fetchProfile(profile.getId(), true);
-				return profileresult == null ? Optional.of(profile) : Optional.of(profileresult.profile());
-			} else {
-				return Optional.empty();
-			}
-		}, Util.backgroundExecutor());
-	}
-
-	private static boolean hasTextures(GameProfile profile) {
-		return profile.getProperties().containsKey("textures");
+	@Override
+	public void removeComponentsFromTag(CompoundTag tag) {
+		super.removeComponentsFromTag(tag);
+		tag.remove("tag");
 	}
 }

@@ -3,13 +3,17 @@ package com.shynieke.statues.network.message;
 import com.shynieke.statues.Reference;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.UUID;
 
 public record PlayerStatueSyncData(UUID playerUUID, CompoundTag tag) implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(Reference.MOD_ID, "statue_sync");
+	public static final StreamCodec<FriendlyByteBuf, PlayerStatueSyncData> CODEC = CustomPacketPayload.codec(
+			PlayerStatueSyncData::write,
+			PlayerStatueSyncData::new);
+	public static final Type<PlayerStatueSyncData> ID = CustomPacketPayload.createType(new ResourceLocation(Reference.MOD_ID, "statue_sync").toString());
 
 	public PlayerStatueSyncData(final FriendlyByteBuf buf) {
 		this(buf.readUUID(), buf.readNbt());
@@ -21,7 +25,7 @@ public record PlayerStatueSyncData(UUID playerUUID, CompoundTag tag) implements 
 	}
 
 	@Override
-	public ResourceLocation id() {
+	public Type<? extends CustomPacketPayload> type() {
 		return ID;
 	}
 }

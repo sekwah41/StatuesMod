@@ -2,18 +2,33 @@
   "type": "statues:upgrade",
   "catalysts": [
     {
-      "tag": "forge:storage_blocks/lapis"
+      "tag": "c:storage_blocks/lapis"
     },
     {
-      "tag": "forge:storage_blocks/lapis"
+      "tag": "c:storage_blocks/lapis"
     },
     {
-      "tag": "forge:storage_blocks/lapis"
+      "tag": "c:storage_blocks/lapis"
     },
     {
-      "type": "neoforge:nbt",
-      "item": "minecraft:enchanted_book",
-      "tag": "{}"
+      "type": "neoforge:components",
+      "components": {
+        "minecraft:attribute_modifiers": {
+          "modifiers": []
+        },
+        "minecraft:enchantment_glint_override": true,
+        "minecraft:enchantments": {
+          "levels": {}
+        },
+        "minecraft:lore": [],
+        "minecraft:max_stack_size": 1,
+        "minecraft:rarity": "uncommon",
+        "minecraft:repair_cost": 0,
+        "minecraft:stored_enchantments": {
+          "levels": {}
+        }
+      },
+      "items": "minecraft:enchanted_book"
     }
   ],
   "center": {

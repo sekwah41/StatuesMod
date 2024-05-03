@@ -4,9 +4,11 @@
     "item": "statues:cow_statue"
   },
   "result": {
-    "item": "minecraft:beef"
+    "count": 1,
+    "id": "minecraft:beef"
   },
   "result3": {
-    "item": "minecraft:leather"
+    "count": 1,
+    "id": "minecraft:leather"
   }
 }

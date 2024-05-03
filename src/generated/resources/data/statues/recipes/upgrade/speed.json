@@ -2,7 +2,7 @@
   "type": "statues:upgrade",
   "catalysts": [
     {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     {
       "item": "minecraft:sugar"

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:rabbit_br_statue"
-            ]
+            "items": "statues:rabbit_br_statue"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:rabbit_bs_statue"
-            ]
+            "items": "statues:rabbit_bs_statue"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:rabbit_bw_statue"
-            ]
+            "items": "statues:rabbit_bw_statue"
           }
         ]
       },
@@ -41,9 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:rabbit_go_statue"
-            ]
+            "items": "statues:rabbit_go_statue"
           }
         ]
       },
@@ -53,9 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:rabbit_wh_statue"
-            ]
+            "items": "statues:rabbit_wh_statue"
           }
         ]
       },
@@ -65,9 +55,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:rabbit_ws_statue"
-            ]
+            "items": "statues:rabbit_ws_statue"
           }
         ]
       },
@@ -79,7 +67,8 @@
       "translate": "advancement.statues.rabbit_statue.desc"
     },
     "icon": {
-      "item": "statues:rabbit_br_statue"
+      "count": 1,
+      "id": "statues:rabbit_br_statue"
     },
     "title": {
       "translate": "advancement.statues.rabbit_statue.title"

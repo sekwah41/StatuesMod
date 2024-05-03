@@ -1,14 +1,22 @@
 package com.shynieke.statues.blockentities;
 
 import com.shynieke.statues.Reference;
+import com.shynieke.statues.Statues;
 import com.shynieke.statues.blocks.AbstractStatueBase;
 import com.shynieke.statues.config.StatuesConfig;
+import com.shynieke.statues.datacomponent.StatueStats;
+import com.shynieke.statues.datacomponent.StatueUpgrades;
+import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.storage.StatueSavedData;
-import com.shynieke.statues.util.UpgradeHelper;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -16,11 +24,13 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.FireworkExplosion;
+import net.minecraft.world.item.component.Fireworks;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -31,11 +41,15 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractStatueBlockEntity extends BlockEntity {
-	private final Map<String, Short> upgradeMap = new HashMap<>();
+	private final StatueUpgrades upgrades = StatueUpgrades.EMPTY;
+
+	@Nullable
+	private StatueStats stats;
 
 	public int cooldown;
 	public int interactCooldown;
@@ -54,33 +68,57 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.loadAdditional(compound, provider);
 		cooldown = compound.getInt("StatueCooldown");
 		interactCooldown = compound.getInt("InteractionCooldown");
 		statueAble = compound.getBoolean("StatueAble");
 		statueInteractable = compound.getBoolean("StatueInteractable");
-		this.loadFromNbt(compound);
+		this.loadFromNbt(compound, provider);
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.saveAdditional(compound, provider);
 		compound.putInt("StatueCooldown", cooldown);
 		compound.putInt("InteractionCooldown", interactCooldown);
 		compound.putBoolean("StatueAble", statueAble);
 		compound.putBoolean("StatueInteractable", statueInteractable);
-		this.saveToNbt(compound);
+		this.saveToNbt(compound, provider);
 	}
 
 	@Override
-	public void saveToItem(ItemStack stack) {
-		CompoundTag compound = this.saveWithoutMetadata();
+	public void saveToItem(ItemStack stack, HolderLookup.Provider provider) {
+		CompoundTag compound = this.saveWithoutMetadata(provider);
 		compound.remove("StatueCooldown");
 		compound.remove("InteractionCooldown");
 		compound.remove("StatueAble");
 		compound.remove("StatueInteractable");
 		BlockItem.setBlockEntityData(stack, this.getType(), compound);
+	}
+
+	@Override
+	protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+		super.applyImplicitComponents(input);
+		Map<String, Short> upgradeMap = input.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.EMPTY).upgradeMap();
+		if (!upgradeMap.isEmpty())
+			this.upgrades.upgradeMap().putAll(upgradeMap);
+
+		this.stats = input.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+	}
+
+	@Override
+	protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+		super.collectImplicitComponents(builder);
+		builder.set(StatueDataComponents.UPGRADES, this.upgrades);
+		builder.set(StatueDataComponents.STATS, this.stats);
+	}
+
+	@Override
+	public void removeComponentsFromTag(CompoundTag tag) {
+		super.removeComponentsFromTag(tag);
+		tag.remove("tag");
+		tag.remove("stats");
 	}
 
 	@Override
@@ -100,24 +138,24 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		load(pkt.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider provider) {
+		loadAdditional(pkt.getTag(), provider);
 
 		BlockState state = level.getBlockState(getBlockPos());
 		level.sendBlockUpdated(getBlockPos(), state, state, 3);
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
+	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
 		CompoundTag nbt = new CompoundTag();
-		this.saveAdditional(nbt);
+		this.saveAdditional(nbt, provider);
 		return nbt;
 	}
 
 	@Override
 	public CompoundTag getPersistentData() {
 		CompoundTag nbt = new CompoundTag();
-		this.saveAdditional(nbt);
+		this.saveAdditional(nbt, level != null ? level.registryAccess() : VanillaRegistries.createLookup());
 		return nbt;
 	}
 
@@ -161,29 +199,45 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		this.setChanged();
 	}
 
-	public void loadFromNbt(CompoundTag compound) {
+	public void loadFromNbt(CompoundTag compound, HolderLookup.Provider provider) {
 		statueUpgraded = compound.getBoolean(Reference.UPGRADED);
 		mobKilled = compound.getInt(Reference.KILL_COUNT);
 		statueLevel = compound.getInt(Reference.LEVEL);
 		upgradeSlots = compound.getInt(Reference.UPGRADE_SLOTS);
 
-		upgradeMap.clear();
-		upgradeMap.putAll(UpgradeHelper.loadUpgradeMap(compound));
+		StatueUpgrades.CODEC
+				.parse(NbtOps.INSTANCE, compound.get("upgrades"))
+				.resultOrPartial(error -> Statues.LOGGER.error("Failed to load upgrades from statue: {}", error))
+				.ifPresent(upgrades -> {
+					this.upgrades.upgradeMap().clear();
+					this.upgrades.upgradeMap().putAll(upgrades.upgradeMap());
+				});
+
+		if (compound.contains("stats")) {
+			StatueStats.CODEC
+					.parse(NbtOps.INSTANCE, compound.get("stats"))
+					.resultOrPartial(error -> Statues.LOGGER.error("Failed to load stats from statue: {}", error))
+					.ifPresent(this::setStats);
+		}
 	}
 
-	public CompoundTag saveToNbt(CompoundTag compound) {
-		saveUpgrades(compound);
+	public void setStats(StatueStats stats) {
+		this.stats = stats;
+	}
+
+	public CompoundTag saveToNbt(CompoundTag compound, HolderLookup.Provider provider) {
+		saveUpgrades(compound, provider);
+		compound.put("upgrades", StatueUpgrades.CODEC.encodeStart(NbtOps.INSTANCE, this.upgrades).getOrThrow());
+		compound.put("stats", StatueStats.CODEC.encodeStart(NbtOps.INSTANCE, this.stats).getOrThrow());
 
 		return compound;
 	}
 
-	public CompoundTag saveUpgrades(CompoundTag tag) {
+	public CompoundTag saveUpgrades(CompoundTag tag, HolderLookup.Provider provider) {
 		tag.putBoolean(Reference.UPGRADED, statueUpgraded);
 		tag.putInt(Reference.KILL_COUNT, mobKilled);
 		tag.putInt(Reference.LEVEL, statueLevel);
 		tag.putInt(Reference.UPGRADE_SLOTS, upgradeSlots);
-
-		UpgradeHelper.saveUpgradeMap(tag, upgradeMap);
 
 		return tag;
 	}
@@ -194,20 +248,20 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		level.sendBlockUpdated(worldPosition, state, state, 2);
 	}
 
-	public Map<String, Short> getUpgradeMap() {
-		return upgradeMap;
+	public Map<String, Short> getUpgrades() {
+		return upgrades.upgradeMap();
 	}
 
 	public boolean isDecorative() {
-		return !this.upgradeMap.isEmpty();
+		return !getUpgrades().isEmpty();
 	}
 
 	public boolean hasUpgrade(String id) {
-		return this.upgradeMap.containsKey(id);
+		return getUpgrades().containsKey(id);
 	}
 
 	public int getUpgradeLevel(String id) {
-		return this.upgradeMap.getOrDefault(id, (short) -1);
+		return getUpgrades().getOrDefault(id, (short) -1);
 	}
 
 	public boolean makesSounds() {
@@ -246,8 +300,8 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		return hasUpgrade("speed") ? getUpgradeLevel("speed") + 1 : 0;
 	}
 
-	public InteractionResult interact(Level level, BlockPos pos, BlockState state, Player player, InteractionHand handIn, BlockHitResult result) {
-		return InteractionResult.PASS;
+	public ItemInteractionResult interact(Level level, BlockPos pos, BlockState state, Player player, InteractionHand handIn, BlockHitResult result) {
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	public AbstractStatueBase getStatue() {
@@ -268,29 +322,20 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 
 	public ItemStack getFirework(RandomSource rand) {
 		ItemStack firework = new ItemStack(Items.FIREWORK_ROCKET);
-		firework.getOrCreateTag();
-		CompoundTag nbt = new CompoundTag();
-		nbt.putBoolean("Flicker", true);
-		nbt.putBoolean("Trail", true);
 
+		List<FireworkExplosion> explosions = new ArrayList<>();
 		int[] colors = new int[rand.nextInt(8) + 1];
 		for (int i = 0; i < colors.length; i++) {
 			colors[i] = DYE_COLORS[rand.nextInt(16)];
 		}
-		nbt.putIntArray("Colors", colors);
+		IntList colorList = IntList.of(colors);
 		byte type = (byte) (rand.nextInt(3) + 1);
 		type = type == 3 ? 4 : type;
-		nbt.putByte("Type", type);
+		FireworkExplosion explosion = new FireworkExplosion(FireworkExplosion.Shape.byId(type), colorList, IntList.of(), true, true);
+		explosions.add(explosion);
 
-		ListTag explosions = new ListTag();
-		explosions.add(nbt);
-
-		CompoundTag fireworkTag = new CompoundTag();
-		fireworkTag.put("Explosions", explosions);
-		fireworkTag.putByte("Flight", (byte) 1);
-		CompoundTag stackTag = firework.getOrCreateTag();
-		stackTag.put("Fireworks", fireworkTag);
-		firework.setTag(stackTag);
+		Fireworks fireworks = new Fireworks(1, explosions);
+		firework.set(DataComponents.FIREWORKS, fireworks);
 
 		return firework;
 	}

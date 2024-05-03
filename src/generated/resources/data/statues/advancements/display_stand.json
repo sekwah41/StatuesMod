@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:display_stand"
-            ]
+            "items": "statues:display_stand"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.display_stand.desc"
     },
     "icon": {
-      "item": "statues:display_stand"
+      "count": 1,
+      "id": "statues:display_stand"
     },
     "title": {
       "translate": "advancement.statues.display_stand.title"

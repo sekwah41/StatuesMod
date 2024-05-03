@@ -31,13 +31,13 @@ public class StatueBatRenderer extends MobRenderer<StatueBatEntity, StatueBatMod
 	}
 
 	@Override
-	protected void setupRotations(StatueBatEntity batEntity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+	protected void setupRotations(StatueBatEntity batEntity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
 		if (batEntity.isResting()) {
 			poseStack.translate(0.0D, (double) -0.1F, 0.0D);
 		} else {
 			poseStack.translate(0.0D, (double) (Mth.cos(ageInTicks * 0.3F) * 0.1F), 0.0D);
 		}
 
-		super.setupRotations(batEntity, poseStack, ageInTicks, rotationYaw, partialTicks);
+		super.setupRotations(batEntity, poseStack, ageInTicks, rotationYaw, partialTicks, scale);
 	}
 }

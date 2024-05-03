@@ -4,9 +4,11 @@
     "item": "statues:chicken_statue"
   },
   "result": {
-    "item": "minecraft:feather"
+    "count": 1,
+    "id": "minecraft:feather"
   },
   "result2": {
-    "item": "minecraft:chicken"
+    "count": 1,
+    "id": "minecraft:chicken"
   }
 }

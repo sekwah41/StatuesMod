@@ -43,7 +43,7 @@ public class StatueTableBlock extends AbstractBaseBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player playerIn, BlockHitResult hit) {
 		BlockEntity blockentity = level.getBlockEntity(pos);
 		if (blockentity instanceof StatueTableBlockEntity statueTableBlockEntity) {
 			if (!level.isClientSide) {

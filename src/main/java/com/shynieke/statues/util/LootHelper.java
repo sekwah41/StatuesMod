@@ -3,6 +3,7 @@ package com.shynieke.statues.util;
 import com.shynieke.statues.recipe.LootRecipe;
 import com.shynieke.statues.recipe.StatuesRecipes;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +15,7 @@ public class LootHelper {
 
 	public static ItemStack getFloodBucket() {
 		ItemStack floodBucket = new ItemStack(Items.WATER_BUCKET);
-		floodBucket.setHoverName(Component.literal("The Flood").withStyle(ChatFormatting.BLUE));
+		floodBucket.set(DataComponents.CUSTOM_NAME, Component.literal("The Flood").withStyle(ChatFormatting.BLUE));
 
 		return floodBucket;
 	}

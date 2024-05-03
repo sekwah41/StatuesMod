@@ -3,6 +3,7 @@ package com.shynieke.statues.lootmodifiers;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.shynieke.statues.registry.StatueRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -14,8 +15,8 @@ import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
 
 public class SnifferLootModifier extends LootModifier {
-	public static final Supplier<Codec<SnifferLootModifier>> CODEC = Suppliers.memoize(() ->
-			RecordCodecBuilder.create(inst -> codecStart(inst).apply(inst, SnifferLootModifier::new)));
+	public static final Supplier<MapCodec<SnifferLootModifier>> CODEC = Suppliers.memoize(() ->
+			RecordCodecBuilder.mapCodec(inst -> codecStart(inst).apply(inst, SnifferLootModifier::new)));
 
 	public SnifferLootModifier(LootItemCondition[] conditionsIn) {
 		super(conditionsIn);
@@ -31,7 +32,7 @@ public class SnifferLootModifier extends LootModifier {
 	}
 
 	@Override
-	public Codec<? extends IGlobalLootModifier> codec() {
+	public MapCodec<? extends IGlobalLootModifier> codec() {
 		return CODEC.get();
 	}
 }

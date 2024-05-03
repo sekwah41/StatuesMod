@@ -8,6 +8,8 @@ import com.shynieke.statues.registry.StatueRegistry;
 import com.shynieke.statues.registry.StatueTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -15,18 +17,17 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.crafting.NBTIngredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class StatueRecipeProvider extends RecipeProvider {
 
-	public StatueRecipeProvider(PackOutput packOutput) {
-		super(packOutput);
+	public StatueRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(packOutput, lookupProvider);
 	}
 
 	@Override
@@ -96,7 +97,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 				.result1(Items.BAMBOO).save(consumer,
 						new ResourceLocation(Reference.MOD_ID, "loot/panda_statue"));
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.PILLAGER_STATUE.get()))
-				.result1(Items.ARROW).result2(Items.CROSSBOW, 0.25F).result3(Raid.getLeaderBannerInstance(), 0.05F).save(consumer);
+				.result1(Items.ARROW).result2(Items.CROSSBOW, 0.25F).result3(Items.EMERALD, 0.05F).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.RABBIT_BR_STATUE.get(), StatueRegistry.RABBIT_BS_STATUE.get(),
 						StatueRegistry.RABBIT_BW_STATUE.get(), StatueRegistry.RABBIT_GO_STATUE.get(),
 						StatueRegistry.RABBIT_WH_STATUE.get(), StatueRegistry.RABBIT_WS_STATUE.get()
@@ -178,7 +179,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.CAMPFIRE_STATUE.get()))
 				.result1(StatueRegistry.MARSHMALLOW.get()).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.TURTLE_STATUE.get()))
-				.result1(Items.SEAGRASS).result2(Items.BOWL).result3(Items.SCUTE).save(consumer);
+				.result1(Items.SEAGRASS).result2(Items.BOWL).result3(Items.TURTLE_SCUTE).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.MOOSHROOM_STATUE.get()))
 				.result1(Items.BEEF).result2(Items.RED_MUSHROOM).result3(Items.RED_MUSHROOM_BLOCK).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.BROWN_MOOSHROOM_STATUE.get()))
@@ -214,7 +215,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 						Ingredient.of(Tags.Items.EGGS), Ingredient.of(Tags.Items.ENDER_PEARLS), Ingredient.of(ItemTags.SOUL_FIRE_BASE_BLOCKS)))
 				.upgradeType(UpgradeType.SPAWNER).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/spawner"));
 
-		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Tags.Items.HEADS),
+		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(ItemTags.SKULLS),
 						Ingredient.of(Items.MYCELIUM), Ingredient.of(Items.LANTERN)))
 				.upgradeType(UpgradeType.DESPAWNER).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/despawner"));
 
@@ -223,14 +224,14 @@ public class StatueRecipeProvider extends RecipeProvider {
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Tags.Items.STORAGE_BLOCKS_LAPIS),
 						Ingredient.of(Tags.Items.STORAGE_BLOCKS_LAPIS), Ingredient.of(Tags.Items.STORAGE_BLOCKS_LAPIS),
-						NBTIngredient.of(false, new CompoundTag(), Items.ENCHANTED_BOOK))).tier(1)
+						DataComponentIngredient.of(false, new ItemStack(Items.ENCHANTED_BOOK)))).tier(1) //TODO: Test upgrade
 				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/mob_killer_2"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.EXPERIENCE_BOTTLE))).tier(2)
 				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/mob_killer_3"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Tags.Items.ENDER_PEARLS),
-						Ingredient.of(Tags.Items.GUNPOWDER), Ingredient.of(Tags.Items.BONES), Ingredient.of(Items.ROTTEN_FLESH)))
+						Ingredient.of(Tags.Items.GUNPOWDERS), Ingredient.of(Tags.Items.BONES), Ingredient.of(Items.ROTTEN_FLESH)))
 				.upgradeType(UpgradeType.LOOTING).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/looting"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.HOPPER), Ingredient.of(Items.OBSERVER)))
@@ -253,12 +254,12 @@ public class StatueRecipeProvider extends RecipeProvider {
 				.pattern("DDD")
 				.define('P', Items.PISTON)
 				.define('C', Tags.Items.CHESTS_WOODEN)
-				.define('D', Tags.Items.COBBLESTONE_DEEPSLATE)
+				.define('D', Tags.Items.COBBLESTONES_DEEPSLATE)
 				.unlockedBy("has_wooden_chest", has(Tags.Items.CHESTS_WOODEN)).save(consumer);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, StatueRegistry.INFO_STATUE.get())
 				.pattern(" R ").pattern("BCB").pattern("CCC")
-				.define('C', Tags.Items.COBBLESTONE)
+				.define('C', Tags.Items.COBBLESTONES)
 				.define('B', Items.BOOK)
 				.define('R', Tags.Items.DYES_RED)
 				.unlockedBy("has_book", has(Items.BOOK)).save(consumer);
@@ -272,23 +273,24 @@ public class StatueRecipeProvider extends RecipeProvider {
 
 
 	private static ItemStack getIOU() {
-		ItemStack paperStack = new ItemStack(Items.PAPER).setHoverName(Component.literal("I.O.U").withStyle(ChatFormatting.LIGHT_PURPLE));
+		ItemStack paperStack = new ItemStack(Items.PAPER);
+		paperStack.set(DataComponents.CUSTOM_NAME, Component.literal("I.O.U").withStyle(ChatFormatting.LIGHT_PURPLE));
 		return paperStack;
 	}
 
 	private static ItemStack getWastelandBlock() {
-		ItemStack wasteland = new ItemStack(Blocks.SAND).setHoverName(Component.literal("Wasteland Block").withStyle(ChatFormatting.LIGHT_PURPLE));
+		ItemStack wasteland = new ItemStack(Blocks.SAND);
+		wasteland.set(DataComponents.CUSTOM_NAME, Component.literal("Wasteland Block").withStyle(ChatFormatting.LIGHT_PURPLE));
+
 		wasteland.enchant(Enchantments.VANISHING_CURSE, 1);
-		CompoundTag nbt = wasteland.hasTag() ? wasteland.getTag() : new CompoundTag();
-		if (nbt != null) {
-			nbt.putInt("HideFlags", 1);
-			wasteland.setTag(nbt);
-		}
+		ItemEnchantments enchantments = wasteland.getEnchantments();
+		enchantments.withTooltip(false);
+		wasteland.set(DataComponents.ENCHANTMENTS, enchantments);
 		return wasteland;
 	}
 
 	@Override
-	protected CompletableFuture<?> buildAdvancement(CachedOutput cachedOutput, AdvancementHolder advancementHolder) {
+	protected CompletableFuture<?> buildAdvancement(CachedOutput p_253674_, HolderLookup.Provider p_323646_, AdvancementHolder p_301116_) {
 		return null;
 	}
 }

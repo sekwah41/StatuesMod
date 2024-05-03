@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:axolotl_blue_statue"
-            ]
+            "items": "statues:axolotl_blue_statue"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:axolotl_cyan_statue"
-            ]
+            "items": "statues:axolotl_cyan_statue"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:axolotl_gold_statue"
-            ]
+            "items": "statues:axolotl_gold_statue"
           }
         ]
       },
@@ -41,9 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:axolotl_lucy_statue"
-            ]
+            "items": "statues:axolotl_lucy_statue"
           }
         ]
       },
@@ -53,9 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:axolotl_wild_statue"
-            ]
+            "items": "statues:axolotl_wild_statue"
           }
         ]
       },
@@ -67,7 +57,8 @@
       "translate": "advancement.statues.axolotl_statue.desc"
     },
     "icon": {
-      "item": "statues:axolotl_lucy_statue"
+      "count": 1,
+      "id": "statues:axolotl_lucy_statue"
     },
     "title": {
       "translate": "advancement.statues.axolotl_statue.title"

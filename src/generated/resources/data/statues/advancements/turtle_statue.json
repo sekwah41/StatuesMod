@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:turtle_statue"
-            ]
+            "items": "statues:turtle_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.turtle_statue.desc"
     },
     "icon": {
-      "item": "statues:turtle_statue"
+      "count": 1,
+      "id": "statues:turtle_statue"
     },
     "title": {
       "translate": "advancement.statues.turtle_statue.title"

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:wasteland_statue"
-            ]
+            "items": "statues:wasteland_statue"
           }
         ]
       },
@@ -21,7 +19,8 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "statues:wasteland_statue"
+      "count": 1,
+      "id": "statues:wasteland_statue"
     },
     "title": {
       "translate": "advancement.statues.wasteland_statue.title"

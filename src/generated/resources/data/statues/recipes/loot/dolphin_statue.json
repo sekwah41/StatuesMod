@@ -4,6 +4,7 @@
     "item": "statues:dolphin_statue"
   },
   "result": {
-    "item": "minecraft:cod"
+    "count": 1,
+    "id": "minecraft:cod"
   }
 }

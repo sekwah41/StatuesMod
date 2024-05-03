@@ -39,9 +39,11 @@
     }
   ],
   "result": {
-    "item": "minecraft:tropical_fish"
+    "count": 1,
+    "id": "minecraft:tropical_fish"
   },
   "result2": {
-    "item": "minecraft:bone_meal"
+    "count": 1,
+    "id": "minecraft:bone_meal"
   }
 }

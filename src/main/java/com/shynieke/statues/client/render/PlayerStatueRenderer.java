@@ -1,12 +1,12 @@
 package com.shynieke.statues.client.render;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.shynieke.statues.client.ClientHandler;
 import com.shynieke.statues.client.model.PlayerStatueModel;
 import com.shynieke.statues.entity.PlayerStatue;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -21,6 +21,7 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.component.ResolvableProfile;
 
 public class PlayerStatueRenderer extends LivingEntityRenderer<PlayerStatue, PlayerStatueModel> {
 	private final PlayerStatueModel playerModel;
@@ -52,16 +53,19 @@ public class PlayerStatueRenderer extends LivingEntityRenderer<PlayerStatue, Pla
 				.orElse(defaultTexture);
 	}
 
-	private ResourceLocation getSkin(GameProfile gameProfile) {
+	private ResourceLocation getSkin(ResolvableProfile resolvableProfile) {
 		SkinManager skinmanager = Minecraft.getInstance().getSkinManager();
-		return skinmanager.getInsecureSkin(gameProfile).texture();
+		if (resolvableProfile != null)
+			return skinmanager.getInsecureSkin(resolvableProfile.gameProfile()).texture();
+		else
+			return defaultTexture;
 	}
 
 	@Override
 	public void render(PlayerStatue playerStatue, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn) {
 		SkinManager skinmanager = Minecraft.getInstance().getSkinManager();
 		if (playerStatue.getGameProfile().isPresent()) {
-			if (isSlim != skinmanager.getInsecureSkin(playerStatue.getGameProfile().get()).model().id().equals("slim"))
+			if (isSlim != skinmanager.getInsecureSkin(playerStatue.getGameProfile().get().gameProfile()).model().id().equals("slim"))
 				isSlim = !isSlim;
 		}
 
@@ -79,7 +83,8 @@ public class PlayerStatueRenderer extends LivingEntityRenderer<PlayerStatue, Pla
 		return playerStatue.isCustomNameVisible();
 	}
 
-	protected void setupRotations(PlayerStatue playerStatue, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+	@Override
+	protected void setupRotations(PlayerStatue playerStatue, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
 		poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - rotationYaw));
 		float f = (float) (playerStatue.level().getGameTime() - playerStatue.punchCooldown) + partialTicks;
 		if (f < 5.0F) {
@@ -92,6 +97,7 @@ public class PlayerStatueRenderer extends LivingEntityRenderer<PlayerStatue, Pla
 		}
 	}
 
+	@Override
 	protected void scale(PlayerStatue playerStatue, PoseStack poseStack, float partialTickTime) {
 		float f = 0.9375F;
 		poseStack.scale(f, f, f);
@@ -99,8 +105,8 @@ public class PlayerStatueRenderer extends LivingEntityRenderer<PlayerStatue, Pla
 
 	public static boolean isPlayerUpsideDown(PlayerStatue playerStatue) {
 		if (playerStatue.getGameProfile().isPresent()) {
-			GameProfile profile = playerStatue.getGameProfile().get();
-			String s = ChatFormatting.stripFormatting(profile.getName());
+			ResolvableProfile profile = playerStatue.getGameProfile().get();
+			String s = ChatFormatting.stripFormatting(profile.name().orElse("steve"));
 			return "Dinnerbone".equals(s) || "Grumm".equals(s);
 		}
 
@@ -109,8 +115,8 @@ public class PlayerStatueRenderer extends LivingEntityRenderer<PlayerStatue, Pla
 
 	public static boolean isSupporter(PlayerStatue playerStatue) {
 		if (playerStatue.getGameProfile().isPresent()) {
-			GameProfile profile = playerStatue.getGameProfile().get();
-			return ClientHandler.SUPPORTER.contains(profile.getId());
+			ResolvableProfile profile = playerStatue.getGameProfile().get();
+			return ClientHandler.SUPPORTER.contains(profile.id().orElse(Util.NIL_UUID));
 		}
 
 		return false;

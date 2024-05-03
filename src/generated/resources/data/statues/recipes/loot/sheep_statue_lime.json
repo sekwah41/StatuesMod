@@ -5,9 +5,11 @@
     "item": "statues:sheep_statue_lime"
   },
   "result": {
-    "item": "minecraft:lime_wool"
+    "count": 1,
+    "id": "minecraft:lime_wool"
   },
   "result3": {
-    "item": "minecraft:mutton"
+    "count": 1,
+    "id": "minecraft:mutton"
   }
 }

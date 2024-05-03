@@ -2,6 +2,7 @@ package com.shynieke.statues.storage;
 
 import com.shynieke.statues.Reference;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -51,7 +52,7 @@ public class StatueSavedData extends SavedData {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
+	public CompoundTag save(CompoundTag compound, HolderLookup.Provider lookupProvider) {
 		ListTag despawnerList = new ListTag();
 		despawnerMap.forEach((dimension, posList) -> {
 			CompoundTag tag = new CompoundTag();
@@ -69,7 +70,7 @@ public class StatueSavedData extends SavedData {
 		return compound;
 	}
 
-	public static StatueSavedData load(CompoundTag tag) {
+	public static StatueSavedData load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		if (tag.contains("DespawnerMap")) {
 			ListTag despawnerList = tag.getList("DespawnerMap", Tag.TAG_COMPOUND);
 			despawnerList.forEach(t -> {

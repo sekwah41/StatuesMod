@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:frog_cold_statue"
-            ]
+            "items": "statues:frog_cold_statue"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:frog_temperate_statue"
-            ]
+            "items": "statues:frog_temperate_statue"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:frog_warm_statue"
-            ]
+            "items": "statues:frog_warm_statue"
           }
         ]
       },
@@ -44,7 +38,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "statues:frog_cold_statue"
+      "count": 1,
+      "id": "statues:frog_cold_statue"
     },
     "title": {
       "translate": "advancement.statues.frog_all_statue.title"

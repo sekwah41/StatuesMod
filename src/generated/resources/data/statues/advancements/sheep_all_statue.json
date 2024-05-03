@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_shaven_statue"
-            ]
+            "items": "statues:sheep_shaven_statue"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_black"
-            ]
+            "items": "statues:sheep_statue_black"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_blue"
-            ]
+            "items": "statues:sheep_statue_blue"
           }
         ]
       },
@@ -41,9 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_brown"
-            ]
+            "items": "statues:sheep_statue_brown"
           }
         ]
       },
@@ -53,9 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_cyan"
-            ]
+            "items": "statues:sheep_statue_cyan"
           }
         ]
       },
@@ -65,9 +55,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_gray"
-            ]
+            "items": "statues:sheep_statue_gray"
           }
         ]
       },
@@ -77,9 +65,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_green"
-            ]
+            "items": "statues:sheep_statue_green"
           }
         ]
       },
@@ -89,9 +75,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_light_blue"
-            ]
+            "items": "statues:sheep_statue_light_blue"
           }
         ]
       },
@@ -101,9 +85,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_light_gray"
-            ]
+            "items": "statues:sheep_statue_light_gray"
           }
         ]
       },
@@ -113,9 +95,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_lime"
-            ]
+            "items": "statues:sheep_statue_lime"
           }
         ]
       },
@@ -125,9 +105,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_magenta"
-            ]
+            "items": "statues:sheep_statue_magenta"
           }
         ]
       },
@@ -137,9 +115,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_orange"
-            ]
+            "items": "statues:sheep_statue_orange"
           }
         ]
       },
@@ -149,9 +125,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_pink"
-            ]
+            "items": "statues:sheep_statue_pink"
           }
         ]
       },
@@ -161,9 +135,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_purple"
-            ]
+            "items": "statues:sheep_statue_purple"
           }
         ]
       },
@@ -173,9 +145,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_red"
-            ]
+            "items": "statues:sheep_statue_red"
           }
         ]
       },
@@ -185,9 +155,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_white"
-            ]
+            "items": "statues:sheep_statue_white"
           }
         ]
       },
@@ -197,9 +165,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:sheep_statue_yellow"
-            ]
+            "items": "statues:sheep_statue_yellow"
           }
         ]
       },
@@ -212,7 +178,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "statues:sheep_statue_white"
+      "count": 1,
+      "id": "statues:sheep_statue_white"
     },
     "title": {
       "translate": "advancement.statues.sheep_all_statue.title"

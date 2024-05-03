@@ -4,10 +4,19 @@
     "item": "statues:wasteland_statue"
   },
   "result": {
-    "item": "statues:tea"
+    "count": 1,
+    "id": "statues:tea"
   },
   "result2": {
-    "item": "minecraft:sand",
-    "nbt": "{Enchantments:[{id:\"minecraft:vanishing_curse\",lvl:1s}],HideFlags:1,display:{Name:'{\"text\":\"Wasteland Block\",\"color\":\"light_purple\"}'}}"
+    "components": {
+      "minecraft:custom_name": "{\"color\":\"light_purple\",\"text\":\"Wasteland Block\"}",
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:vanishing_curse": 1
+        }
+      }
+    },
+    "count": 1,
+    "id": "minecraft:sand"
   }
 }

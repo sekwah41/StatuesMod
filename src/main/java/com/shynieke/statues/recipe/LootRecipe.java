@@ -1,11 +1,13 @@
 package com.shynieke.statues.recipe;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.ExtraCodecs;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -13,7 +15,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class LootRecipe implements Recipe<Container> {
 	protected final String group;
@@ -23,7 +24,7 @@ public class LootRecipe implements Recipe<Container> {
 	protected final boolean showNotification;
 
 	public LootRecipe(String group, Ingredient ingredient, ItemStack stack, float resultChance,
-					  ItemStack stack2, float result2Chance, ItemStack stack3, float result3Chance, boolean showNotification) {
+	                  ItemStack stack2, float result2Chance, ItemStack stack3, float result3Chance, boolean showNotification) {
 		this.group = group;
 		this.ingredient = ingredient;
 		this.result = stack;
@@ -52,8 +53,8 @@ public class LootRecipe implements Recipe<Container> {
 	}
 
 	@Override
-	public ItemStack assemble(Container container, RegistryAccess access) {
-		return this.getResultItem(access).copy();
+	public ItemStack assemble(Container container, HolderLookup.Provider lookupProvider) {
+		return this.getResultItem(lookupProvider).copy();
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class LootRecipe implements Recipe<Container> {
 	 * @return the first result item
 	 */
 	@Override
-	public ItemStack getResultItem(RegistryAccess access) {
+	public ItemStack getResultItem(HolderLookup.Provider lookupProvider) {
 		return this.result;
 	}
 
@@ -84,7 +85,7 @@ public class LootRecipe implements Recipe<Container> {
 	/**
 	 * @return the second result item
 	 */
-	public ItemStack getResultItem2(RegistryAccess access) {
+	public ItemStack getResultItem2(HolderLookup.Provider lookupProvider) {
 		return this.result2;
 	}
 
@@ -120,49 +121,55 @@ public class LootRecipe implements Recipe<Container> {
 	}
 
 	public static class Serializer implements RecipeSerializer<LootRecipe> {
-		private static final Codec<LootRecipe> CODEC = RecordCodecBuilder.create(
+		private static final MapCodec<LootRecipe> CODEC = RecordCodecBuilder.mapCodec(
 				instance -> instance.group(
-								ExtraCodecs.strictOptionalField(Codec.STRING, "group", "").forGetter(recipe -> recipe.group),
+								Codec.STRING.optionalFieldOf("group", "").forGetter(recipe -> recipe.group),
 								Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
-								ItemStack.ITEM_WITH_COUNT_CODEC.optionalFieldOf("result", ItemStack.EMPTY).forGetter(recipe -> recipe.result),
+								ItemStack.STRICT_CODEC.optionalFieldOf("result", ItemStack.EMPTY).forGetter(recipe -> recipe.result),
 								Codec.FLOAT.optionalFieldOf("result_chance", 1.0F).forGetter(recipe -> recipe.resultChance),
-								ItemStack.ITEM_WITH_COUNT_CODEC.optionalFieldOf("result2", ItemStack.EMPTY).forGetter(recipe -> recipe.result2),
+								ItemStack.STRICT_CODEC.optionalFieldOf("result2", ItemStack.EMPTY).forGetter(recipe -> recipe.result2),
 								Codec.FLOAT.optionalFieldOf("result_chance2", 0.5F).forGetter(recipe -> recipe.result2Chance),
-								ItemStack.ITEM_WITH_COUNT_CODEC.optionalFieldOf("result3", ItemStack.EMPTY).forGetter(recipe -> recipe.result3),
+								ItemStack.STRICT_CODEC.optionalFieldOf("result3", ItemStack.EMPTY).forGetter(recipe -> recipe.result3),
 								Codec.FLOAT.optionalFieldOf("result_chance3", 0.1F).forGetter(recipe -> recipe.result3Chance),
-								ExtraCodecs.strictOptionalField(Codec.BOOL, "show_notification", true).forGetter(recipe -> recipe.showNotification)
+								Codec.BOOL.optionalFieldOf("show_notification", true).forGetter(recipe -> recipe.showNotification)
 						)
 						.apply(instance, LootRecipe::new)
 		);
+		public static final StreamCodec<RegistryFriendlyByteBuf, LootRecipe> STREAM_CODEC = StreamCodec.of(
+				LootRecipe.Serializer::toNetwork, LootRecipe.Serializer::fromNetwork
+		);
 
 		@Override
-		public Codec<LootRecipe> codec() {
+		public MapCodec<LootRecipe> codec() {
 			return CODEC;
 		}
 
 		@Override
-		public @Nullable LootRecipe fromNetwork(FriendlyByteBuf byteBuf) {
+		public StreamCodec<RegistryFriendlyByteBuf, LootRecipe> streamCodec() {
+			return STREAM_CODEC;
+		}
+
+		private static LootRecipe fromNetwork(RegistryFriendlyByteBuf byteBuf) {
 			String s = byteBuf.readUtf(32767);
-			Ingredient ingredient = Ingredient.fromNetwork(byteBuf);
-			ItemStack result1 = byteBuf.readItem();
+			Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(byteBuf);
+			ItemStack result1 = ItemStack.STREAM_CODEC.decode(byteBuf);
 			float chance1 = byteBuf.readFloat();
-			ItemStack result2 = byteBuf.readItem();
+			ItemStack result2 = ItemStack.STREAM_CODEC.decode(byteBuf);
 			float chance2 = byteBuf.readFloat();
-			ItemStack result3 = byteBuf.readItem();
+			ItemStack result3 = ItemStack.STREAM_CODEC.decode(byteBuf);
 			float chance3 = byteBuf.readFloat();
 			boolean showNotification = byteBuf.readBoolean();
 			return new LootRecipe(s, ingredient, result1, chance1, result2, chance2, result3, chance3, showNotification);
 		}
 
-		@Override
-		public void toNetwork(FriendlyByteBuf byteBuf, LootRecipe recipe) {
+		private static void toNetwork(RegistryFriendlyByteBuf byteBuf, LootRecipe recipe) {
 			byteBuf.writeUtf(recipe.group);
-			recipe.ingredient.toNetwork(byteBuf);
-			byteBuf.writeItem(recipe.result);
+			Ingredient.CONTENTS_STREAM_CODEC.encode(byteBuf, recipe.ingredient);
+			ItemStack.STREAM_CODEC.encode(byteBuf, recipe.result);
 			byteBuf.writeFloat(recipe.resultChance);
-			byteBuf.writeItem(recipe.result2);
+			ItemStack.STREAM_CODEC.encode(byteBuf, recipe.result2);
 			byteBuf.writeFloat(recipe.result2Chance);
-			byteBuf.writeItem(recipe.result3);
+			ItemStack.STREAM_CODEC.encode(byteBuf, recipe.result3);
 			byteBuf.writeFloat(recipe.result3Chance);
 			byteBuf.writeBoolean(recipe.showNotification);
 		}

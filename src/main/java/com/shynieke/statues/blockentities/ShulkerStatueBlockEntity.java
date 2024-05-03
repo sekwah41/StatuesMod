@@ -5,6 +5,7 @@ import com.shynieke.statues.menu.ShulkerStatueMenu;
 import com.shynieke.statues.registry.StatueBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -51,15 +52,15 @@ public class ShulkerStatueBlockEntity extends StatueBlockEntity implements MenuP
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
-		handler.deserializeNBT(compound.getCompound("ItemStackHandler"));
+	public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.loadAdditional(compound, provider);
+		handler.deserializeNBT(provider, compound.getCompound("ItemStackHandler"));
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
-		compound.put("ItemStackHandler", handler.serializeNBT());
+	public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+		super.saveAdditional(compound, provider);
+		compound.put("ItemStackHandler", handler.serializeNBT(provider));
 	}
 
 	public ItemStackHandler getHandler(@Nullable Direction direction) {

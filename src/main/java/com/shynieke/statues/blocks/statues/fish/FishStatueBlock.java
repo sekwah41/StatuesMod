@@ -10,7 +10,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -52,22 +52,21 @@ public class FishStatueBlock extends AbstractStatueBase {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult result) {
-		ItemStack stack = playerIn.getItemInHand(InteractionHand.MAIN_HAND);
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult result) {
 		if (state.is(StatueTags.IS_TROPICAL_FISH) && stack.getItem() == Items.WET_SPONGE) {
 			TropicalFishBlockEntity fishBlockEntity = getFishTE(level, pos);
 			fishBlockEntity.scrambleColors();
 			level.sendBlockUpdated(pos, state, state, 6);
 			level.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundSource.NEUTRAL, 1F, 1.0F);
-			if (!playerIn.getAbilities().instabuild) {
+			if (!player.getAbilities().instabuild) {
 				stack.shrink(1);
-				if (!playerIn.getInventory().add(new ItemStack(Items.SPONGE))) {
+				if (!player.getInventory().add(new ItemStack(Items.SPONGE))) {
 					ItemEntity itemEntity = new ItemEntity(level, pos.getX(), pos.getY() + 0.5, pos.getZ(), stack);
 					level.addFreshEntity(itemEntity);
 				}
 			}
 		}
-		return super.use(state, level, pos, playerIn, handIn, result);
+		return super.useItemOn(stack, state, level, pos, player, handIn, result);
 	}
 
 	@Nullable

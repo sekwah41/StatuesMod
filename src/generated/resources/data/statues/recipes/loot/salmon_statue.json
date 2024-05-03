@@ -4,9 +4,11 @@
     "item": "statues:salmon_statue"
   },
   "result": {
-    "item": "minecraft:salmon"
+    "count": 1,
+    "id": "minecraft:salmon"
   },
   "result2": {
-    "item": "minecraft:bone_meal"
+    "count": 1,
+    "id": "minecraft:bone_meal"
   }
 }

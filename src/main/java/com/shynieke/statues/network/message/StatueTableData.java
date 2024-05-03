@@ -2,11 +2,15 @@ package com.shynieke.statues.network.message;
 
 import com.shynieke.statues.Reference;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
 public record StatueTableData(boolean isButtonPressed) implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(Reference.MOD_ID, "table_message");
+	public static final StreamCodec<FriendlyByteBuf, StatueTableData> CODEC = CustomPacketPayload.codec(
+			StatueTableData::write,
+			StatueTableData::new);
+	public static final Type<StatueTableData> ID = CustomPacketPayload.createType(new ResourceLocation(Reference.MOD_ID, "table_message").toString());
 
 	public StatueTableData(final FriendlyByteBuf packetBuffer) {
 		this(packetBuffer.readBoolean());
@@ -17,7 +21,7 @@ public record StatueTableData(boolean isButtonPressed) implements CustomPacketPa
 	}
 
 	@Override
-	public ResourceLocation id() {
+	public Type<? extends CustomPacketPayload> type() {
 		return ID;
 	}
 }

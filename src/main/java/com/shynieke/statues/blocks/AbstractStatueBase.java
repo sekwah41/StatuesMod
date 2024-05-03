@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -48,20 +49,25 @@ public abstract class AbstractStatueBase extends AbstractBaseBlock implements En
 				.setValue(INTERACTIVE, false));
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult result) {
-		if (!level.isClientSide && handIn == InteractionHand.MAIN_HAND) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
+		if (!level.isClientSide) {
 			if (canPlaySound(level, pos, state)) {
 				level.playSound(null, pos, getSound(state), SoundSource.NEUTRAL, 1F, getPitch());
 			}
 		}
-		if (state.getValue(INTERACTIVE).booleanValue() && handIn == InteractionHand.MAIN_HAND) {
+		return super.useWithoutItem(state, level, pos, player, result);
+	}
+
+	@Override
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+	                                          InteractionHand hand, BlockHitResult result) {
+		if (state.getValue(INTERACTIVE).booleanValue() && hand == InteractionHand.MAIN_HAND) {
 			if (!level.isClientSide && (getBE(level, pos) != null)) {
-				return getBE(level, pos).interact(level, pos, state, playerIn, handIn, result);
+				return getBE(level, pos).interact(level, pos, state, player, hand, result);
 			}
 		}
-		return InteractionResult.SUCCESS;
+		return ItemInteractionResult.SUCCESS;
 	}
 
 	public StatueBlockEntity getBE(BlockGetter getter, BlockPos pos) {
@@ -100,19 +106,19 @@ public abstract class AbstractStatueBase extends AbstractBaseBlock implements En
 		return level.isClientSide ? null : createTickerHelper(blockEntityType, blockEntityType1, StatueBlockEntity::serverTick);
 	}
 
-	@Override
-	public ItemStack getCloneItemStack(LevelReader getter, BlockPos pos, BlockState state) {
-		ItemStack itemstack = super.getCloneItemStack(getter, pos, state);
-		StatueBlockEntity statueBlockEntity = getBE(getter, pos);
-		if (statueBlockEntity != null && state.getValue(INTERACTIVE)) {
-			CompoundTag nbt = statueBlockEntity.saveToNbt(new CompoundTag());
-			if (!nbt.isEmpty()) {
-				itemstack.addTagElement("BlockEntityTag", nbt);
-			}
-		}
-
-		return itemstack;
-	}
+//	@Override
+//	public ItemStack getCloneItemStack(LevelReader getter, BlockPos pos, BlockState state) {
+//		ItemStack itemstack = super.getCloneItemStack(getter, pos, state);
+//		StatueBlockEntity statueBlockEntity = getBE(getter, pos);
+//		if (statueBlockEntity != null && state.getValue(INTERACTIVE)) {
+//			CompoundTag nbt = statueBlockEntity.saveToNbt(new CompoundTag());
+//			if (!nbt.isEmpty()) {
+//				itemstack.addTagElement("BlockEntityTag", nbt);
+//			}
+//		}
+//
+//		return itemstack;
+//	}
 
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
@@ -120,10 +126,13 @@ public abstract class AbstractStatueBase extends AbstractBaseBlock implements En
 			BlockEntity blockentity = level.getBlockEntity(pos);
 			if (!level.isClientSide && !player.getAbilities().instabuild) {
 				ItemStack itemstack = new ItemStack(this.asItem());
-				statueBlockEntity.saveToItem(itemstack);
-				blockentity.saveToItem(itemstack);
+				statueBlockEntity.saveToItem(itemstack, level.registryAccess());
+				blockentity.saveToItem(itemstack, level.registryAccess());
 
-				ItemEntity itementity = new ItemEntity(level, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, itemstack);
+				ItemEntity itementity = new ItemEntity(level,
+						(double) pos.getX() + 0.5D,
+						(double) pos.getY() + 0.5D,
+						(double) pos.getZ() + 0.5D, itemstack);
 				itementity.setDefaultPickUpDelay();
 				level.addFreshEntity(itementity);
 			}

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:campfire_statue"
-            ]
+            "items": "statues:campfire_statue"
           }
         ]
       },
@@ -21,7 +19,8 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "statues:campfire_statue"
+      "count": 1,
+      "id": "statues:campfire_statue"
     },
     "title": {
       "translate": "advancement.statues.campfire_statue.title"

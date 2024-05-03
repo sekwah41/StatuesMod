@@ -7,6 +7,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Rotations;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -48,11 +50,11 @@ public class PlayerStatueSpawnItem extends Item {
 			EntityType<?> type = StatueRegistry.PLAYER_STATUE_ENTITY.get();
 			if (type.spawn((ServerLevel) level, stack, context.getPlayer(), relativePos, MobSpawnType.SPAWN_EGG, true, !Objects.equals(pos, relativePos) && direction == Direction.UP) instanceof PlayerStatue playerStatue) {
 				applyRandomRotations(playerStatue, level.random);
-				if (!stack.hasCustomHoverName()) {
+				if (!stack.has(DataComponents.CUSTOM_NAME)) {
 					if (context.getPlayer() != null) {
-						playerStatue.setGameProfile(context.getPlayer().getGameProfile());
+						playerStatue.setGameProfile(new ResolvableProfile(context.getPlayer().getGameProfile()));
 					} else {
-						playerStatue.setGameProfile(new GameProfile(Util.NIL_UUID, "steve"));
+						playerStatue.setGameProfile(new ResolvableProfile(new GameProfile(Util.NIL_UUID, "steve")));
 					}
 				}
 				stack.shrink(1);

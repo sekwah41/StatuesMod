@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:bee_statue"
-            ]
+            "items": "statues:bee_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.bee_statue.desc"
     },
     "icon": {
-      "item": "statues:bee_statue"
+      "count": 1,
+      "id": "statues:bee_statue"
     },
     "title": {
       "translate": "advancement.statues.bee_statue.title"

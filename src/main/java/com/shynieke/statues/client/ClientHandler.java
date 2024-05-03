@@ -13,7 +13,9 @@ import com.shynieke.statues.client.render.StatueBatRenderer;
 import com.shynieke.statues.client.screen.ShulkerStatueScreen;
 import com.shynieke.statues.client.screen.StatueTableScreen;
 import com.shynieke.statues.registry.StatueBlockEntities;
+import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.registry.StatueRegistry;
+import com.shynieke.statues.datacomponent.PlayerCompassData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -23,7 +25,6 @@ import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Services;
 import net.minecraft.server.players.GameProfileCache;
@@ -37,7 +38,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -79,12 +79,9 @@ public class ClientHandler {
 							BlockPos blockpos = this.getWorldPos(level);
 							long gameTime = level.getGameTime();
 
-							CompoundTag tag = stack.getTag();
-							if (tag != null && tag.contains("lastPlayerLocation")) {
-								long location = tag.getLong("lastPlayerLocation");
-								if (location != 0L) {
-									blockpos = BlockPos.of(location);
-								}
+							PlayerCompassData compassData = stack.get(StatueDataComponents.PLAYER_COMPASS_DATA.get());
+							if (compassData != null) {
+								blockpos = compassData.pos();
 							}
 
 							if (blockpos != null && !(entity.distanceToSqr((double) blockpos.getX() + 0.5D, entity.position().y(), (double) blockpos.getZ() + 0.5D) < (double) 1.0E-5F)) {
@@ -174,9 +171,9 @@ public class ClientHandler {
 			Statues.LOGGER.info("Loaded {} translators.", TRANSLATORS.size());
 		}, "Statues Perks Data Loader").start();
 
-		if (ModList.get().isLoaded("curios")) {
-			com.shynieke.statues.compat.curios.client.StatueCurioRenderer.setupRenderer();
-		}
+//		if (ModList.get().isLoaded("curios")) {
+//			com.shynieke.statues.compat.curios.client.StatueCurioRenderer.setupRenderer();
+//		}
 	}
 
 	public static void onRegisterMenu(final RegisterMenuScreensEvent event) {

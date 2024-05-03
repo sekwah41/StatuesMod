@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:endermite_statue"
-            ]
+            "items": "statues:endermite_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.endermite_statue.desc"
     },
     "icon": {
-      "item": "statues:endermite_statue"
+      "count": 1,
+      "id": "statues:endermite_statue"
     },
     "title": {
       "translate": "advancement.statues.endermite_statue.title"

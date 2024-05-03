@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.shynieke.statues.blockentities.PlayerBlockEntity;
 import com.shynieke.statues.client.ClientHandler;
 import com.shynieke.statues.client.model.StatuePlayerTileModel;
 import net.minecraft.ChatFormatting;
@@ -15,11 +14,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.SkinManager;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.apache.commons.lang3.StringUtils;
+import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -41,49 +40,33 @@ public class PlayerBEWLR extends BlockEntityWithoutLevelRenderer {
 		renderPlayerItem(stack, poseStack, bufferSource, combinedLight);
 	}
 
-	private static final Map<String, GameProfile> GAMEPROFILE_CACHE = new HashMap<>();
+	private static final Map<String, ResolvableProfile> GAMEPROFILE_CACHE = new HashMap<>();
 
 	public void renderPlayerItem(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight) {
 		poseStack.pushPose();
 		if (stack != null) {
-			GameProfile gameprofile = null;
+			ResolvableProfile gameprofile = null;
 
-			if (stack.hasCustomHoverName()) {
+			if (stack.has(DataComponents.CUSTOM_NAME)) {
 				String stackName = stack.getHoverName().getString().toLowerCase(Locale.ROOT);
 				boolean validFlag = !stackName.isEmpty() && !stackName.contains(" ");
 
 				if (validFlag) {
 					if (GAMEPROFILE_CACHE.containsKey(stackName)) gameprofile = GAMEPROFILE_CACHE.get(stackName);
 
-					if (stack.hasTag() && gameprofile == null) {
-						CompoundTag compoundtag = stack.getTag();
-						if (compoundtag.contains("PlayerProfile", 10)) {
-							GameProfile foundProfile = NbtUtils.readGameProfile(compoundtag.getCompound("PlayerProfile"));
-							if (foundProfile != null) {
-								GAMEPROFILE_CACHE.put(foundProfile.getName().toLowerCase(), foundProfile);
-							}
-							if (foundProfile.getName().equalsIgnoreCase(stackName)) {
-								gameprofile = foundProfile;
-							}
-						} else if (compoundtag.contains("PlayerProfile", 8) && !StringUtils.isBlank(compoundtag.getString("PlayerProfile"))) {
-							String playerProfile = compoundtag.getString("PlayerProfile");
-							compoundtag.remove("PlayerProfile");
-
-							PlayerBlockEntity.fetchGameProfile(playerProfile).thenAccept((profile) -> {
-								if (profile.isPresent()) {
-									GameProfile profile1 = profile.orElse(new GameProfile(Util.NIL_UUID, playerProfile));
-									GAMEPROFILE_CACHE.put(profile1.getName().toLowerCase(), profile1);
-								}
-							});
-							gameprofile = GAMEPROFILE_CACHE.get(stackName);
+					if (stack.has(DataComponents.PROFILE) && gameprofile == null) {
+						ResolvableProfile resolvableProfile = stack.get(DataComponents.PROFILE);
+						if (resolvableProfile != null && !resolvableProfile.isResolved()) {
+							stack.remove(DataComponents.PROFILE);
+							resolvableProfile.resolve().thenAcceptAsync(profile -> stack.set(DataComponents.PROFILE, profile), Minecraft.getInstance());
 						}
 					}
 
 					if (gameprofile == null) {
-						PlayerBlockEntity.fetchGameProfile(stackName).thenAccept((profile) -> {
+						SkullBlockEntity.fetchGameProfile(stackName).thenAccept((profile) -> {
 							if (profile.isPresent()) {
 								GameProfile profile1 = profile.orElse(new GameProfile(Util.NIL_UUID, stackName));
-								GAMEPROFILE_CACHE.put(profile1.getName().toLowerCase(), profile1);
+								GAMEPROFILE_CACHE.put(profile1.getName().toLowerCase(), new ResolvableProfile(profile1));
 							}
 						});
 					}
@@ -91,10 +74,10 @@ public class PlayerBEWLR extends BlockEntityWithoutLevelRenderer {
 					if (GAMEPROFILE_CACHE.containsKey("steve")) gameprofile = GAMEPROFILE_CACHE.get("steve");
 
 					if (gameprofile == null) {
-						PlayerBlockEntity.fetchGameProfile("steve").thenAccept((profile) -> {
+						SkullBlockEntity.fetchGameProfile("steve").thenAccept((profile) -> {
 							if (profile.isPresent()) {
 								GameProfile profile1 = profile.orElse(new GameProfile(Util.NIL_UUID, "steve"));
-								GAMEPROFILE_CACHE.put(profile1.getName().toLowerCase(), profile1);
+								GAMEPROFILE_CACHE.put(profile1.getName().toLowerCase(), new ResolvableProfile(profile1));
 							}
 						});
 					}
@@ -108,20 +91,20 @@ public class PlayerBEWLR extends BlockEntityWithoutLevelRenderer {
 		poseStack.popPose();
 	}
 
-	public void renderItem(GameProfile gameprofile, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight) {
+	public void renderItem(ResolvableProfile resolvableProfile, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight) {
 		SkinManager skinmanager = Minecraft.getInstance().getSkinManager();
-		if (gameprofile != null && isSlim != skinmanager.getInsecureSkin(gameprofile).model().id().equals("slim"))
+		if (resolvableProfile != null && isSlim != skinmanager.getInsecureSkin(resolvableProfile.gameProfile()).model().id().equals("slim"))
 			isSlim = !isSlim;
 
-		VertexConsumer vertexConsumer = bufferSource.getBuffer(PlayerBER.getRenderType(gameprofile));
+		VertexConsumer vertexConsumer = bufferSource.getBuffer(PlayerBER.getRenderType(resolvableProfile));
 		boolean isSupporter = false;
-		if (gameprofile != null) {
-			final String s = ChatFormatting.stripFormatting(gameprofile.getName());
+		if (resolvableProfile != null) {
+			final String s = ChatFormatting.stripFormatting(resolvableProfile.name().orElse("Steve"));
 			if ("Dinnerbone".equalsIgnoreCase(s) || "Grumm".equalsIgnoreCase(s)) {
 				poseStack.translate(0.0D, 1.85D, 0.0D);
 				poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 			}
-			isSupporter = ClientHandler.SUPPORTER.contains(gameprofile.getId());
+			isSupporter = ClientHandler.SUPPORTER.contains(resolvableProfile.id().orElse(Util.NIL_UUID));
 		}
 
 		int light = isSupporter ? 15728880 : combinedLight;

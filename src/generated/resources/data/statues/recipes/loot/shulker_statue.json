@@ -4,6 +4,7 @@
     "item": "statues:shulker_statue"
   },
   "result3": {
-    "item": "minecraft:shulker_shell"
+    "count": 1,
+    "id": "minecraft:shulker_shell"
   }
 }

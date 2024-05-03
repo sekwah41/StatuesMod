@@ -4,9 +4,11 @@
     "item": "statues:ghast_statue"
   },
   "result": {
-    "item": "minecraft:gunpowder"
+    "count": 1,
+    "id": "minecraft:gunpowder"
   },
   "result3": {
-    "item": "minecraft:ghast_tear"
+    "count": 1,
+    "id": "minecraft:ghast_tear"
   }
 }

@@ -4,9 +4,11 @@
     "item": "statues:snow_golem_statue"
   },
   "result": {
-    "item": "minecraft:snowball"
+    "count": 1,
+    "id": "minecraft:snowball"
   },
   "result3": {
-    "item": "minecraft:pumpkin"
+    "count": 1,
+    "id": "minecraft:pumpkin"
   }
 }

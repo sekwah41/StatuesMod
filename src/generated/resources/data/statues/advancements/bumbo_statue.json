@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:bumbo_statue"
-            ]
+            "items": "statues:bumbo_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.bumbo_statue.desc"
     },
     "icon": {
-      "item": "statues:bumbo_statue"
+      "count": 1,
+      "id": "statues:bumbo_statue"
     },
     "title": {
       "translate": "advancement.statues.bumbo_statue.title"

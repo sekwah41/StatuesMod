@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:panda_angry_statue"
-            ]
+            "items": "statues:panda_angry_statue"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:panda_brown_statue"
-            ]
+            "items": "statues:panda_brown_statue"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:panda_lazy_statue"
-            ]
+            "items": "statues:panda_lazy_statue"
           }
         ]
       },
@@ -41,9 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:panda_normal_statue"
-            ]
+            "items": "statues:panda_normal_statue"
           }
         ]
       },
@@ -53,9 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:panda_playful_statue"
-            ]
+            "items": "statues:panda_playful_statue"
           }
         ]
       },
@@ -65,9 +55,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:panda_weak_statue"
-            ]
+            "items": "statues:panda_weak_statue"
           }
         ]
       },
@@ -77,9 +65,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:panda_worried_statue"
-            ]
+            "items": "statues:panda_worried_statue"
           }
         ]
       },
@@ -92,7 +78,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "statues:panda_brown_statue"
+      "count": 1,
+      "id": "statues:panda_brown_statue"
     },
     "title": {
       "translate": "advancement.statues.panda_all_statue.title"

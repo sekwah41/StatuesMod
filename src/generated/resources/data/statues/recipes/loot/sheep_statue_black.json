@@ -5,9 +5,11 @@
     "item": "statues:sheep_statue_black"
   },
   "result": {
-    "item": "minecraft:black_wool"
+    "count": 1,
+    "id": "minecraft:black_wool"
   },
   "result3": {
-    "item": "minecraft:mutton"
+    "count": 1,
+    "id": "minecraft:mutton"
   }
 }

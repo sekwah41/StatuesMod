@@ -2,6 +2,8 @@ package com.shynieke.statues.items;
 
 import com.shynieke.statues.registry.StatueFoods;
 import com.shynieke.statues.registry.StatueRegistry;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -12,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StatueGoldenMarshmallow extends Item {
 	public StatueGoldenMarshmallow(Properties builder) {
@@ -20,15 +23,15 @@ public class StatueGoldenMarshmallow extends Item {
 
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entityIn) {
-		if (this.isEdible()) {
+		if (stack.has(DataComponents.FOOD)) {
 			if (!level.isClientSide) {
 				if (this == StatueRegistry.MARSHMALLOW_GOLDEN.get()) {
-					List<MobEffect> effectList = BuiltInRegistries.MOB_EFFECT.stream().toList();
+					List<Holder<MobEffect>> effectList = BuiltInRegistries.MOB_EFFECT.holders().collect(Collectors.toList());
 					effectList.remove(MobEffects.CONFUSION);
 
 					int i = level.random.nextInt(effectList.size());
 					int amplifier = level.random.nextInt(2);
-					MobEffect randomPotion = effectList.get(i);
+					Holder<MobEffect> randomPotion = effectList.get(i);
 					MobEffectInstance randomEffect = new MobEffectInstance(randomPotion, 200, amplifier);
 					entityIn.addEffect(randomEffect);
 				}

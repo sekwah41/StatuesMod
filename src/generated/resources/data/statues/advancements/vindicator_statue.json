@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:vindicator_statue"
-            ]
+            "items": "statues:vindicator_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.vindicator_statue.desc"
     },
     "icon": {
-      "item": "statues:vindicator_statue"
+      "count": 1,
+      "id": "statues:vindicator_statue"
     },
     "title": {
       "translate": "advancement.statues.vindicator_statue.title"

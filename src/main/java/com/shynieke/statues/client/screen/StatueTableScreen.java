@@ -32,7 +32,7 @@ public class StatueTableScreen extends AbstractContainerScreen<StatueTableMenu> 
 		this.buttonChisel = this.addRenderableWidget(Button.builder(Component.literal("Chisel"), (button) -> {
 			boolean flag = getMenu().validRecipe[0] == 1;
 			if (flag) {
-				PacketDistributor.SERVER.noArg().send(new StatueTableData(true));
+				PacketDistributor.sendToServer(new StatueTableData(true));
 			}
 		}).bounds(leftPos + 130, topPos + 46, 38, 20).build());
 	}

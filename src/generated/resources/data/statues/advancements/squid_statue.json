@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:squid_statue"
-            ]
+            "items": "statues:squid_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.squid_statue.desc"
     },
     "icon": {
-      "item": "statues:squid_statue"
+      "count": 1,
+      "id": "statues:squid_statue"
     },
     "title": {
       "translate": "advancement.statues.squid_statue.title"

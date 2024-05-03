@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "statues:ghast_statue"
-            ]
+            "items": "statues:ghast_statue"
           }
         ]
       },
@@ -19,7 +17,8 @@
       "translate": "advancement.statues.ghast_statue.desc"
     },
     "icon": {
-      "item": "statues:ghast_statue"
+      "count": 1,
+      "id": "statues:ghast_statue"
     },
     "title": {
       "translate": "advancement.statues.ghast_statue.title"

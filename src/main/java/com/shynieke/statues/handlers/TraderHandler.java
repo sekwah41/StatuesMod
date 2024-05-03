@@ -7,6 +7,7 @@ import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.event.village.WandererTradesEvent;
@@ -56,7 +57,7 @@ public class TraderHandler {
 		}
 
 		public MerchantOffer getOffer(Entity trader, RandomSource rand) {
-			return new MerchantOffer(new ItemStack(Items.EMERALD, this.priceAmount), new ItemStack(this.outputStack.getItem(), this.outputAmount), this.maxUses, this.givenExp, this.priceMultiplier);
+			return new MerchantOffer(new ItemCost(Items.EMERALD, this.priceAmount), new ItemStack(this.outputStack.getItem(), this.outputAmount), this.maxUses, this.givenExp, this.priceMultiplier);
 		}
 	}
 }

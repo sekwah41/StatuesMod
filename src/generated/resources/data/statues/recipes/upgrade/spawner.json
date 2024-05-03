@@ -5,10 +5,10 @@
       "item": "minecraft:echo_shard"
     },
     {
-      "tag": "forge:eggs"
+      "tag": "c:eggs"
     },
     {
-      "tag": "forge:ender_pearls"
+      "tag": "c:ender_pearls"
     },
     {
       "tag": "minecraft:soul_fire_base_blocks"

@@ -5,9 +5,11 @@
     "item": "statues:sheep_statue_light_gray"
   },
   "result": {
-    "item": "minecraft:light_gray_wool"
+    "count": 1,
+    "id": "minecraft:light_gray_wool"
   },
   "result3": {
-    "item": "minecraft:mutton"
+    "count": 1,
+    "id": "minecraft:mutton"
   }
 }

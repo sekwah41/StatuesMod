@@ -4,13 +4,16 @@
     "item": "statues:elder_guardian_statue"
   },
   "result": {
-    "item": "minecraft:prismarine_crystals"
+    "count": 1,
+    "id": "minecraft:prismarine_crystals"
   },
   "result2": {
-    "item": "minecraft:wet_sponge"
+    "count": 1,
+    "id": "minecraft:wet_sponge"
   },
   "result3": {
-    "item": "minecraft:prismarine_crystals"
+    "count": 1,
+    "id": "minecraft:prismarine_crystals"
   },
   "result_chance": 0.75,
   "result_chance3": 0.25

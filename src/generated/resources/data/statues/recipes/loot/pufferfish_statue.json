@@ -12,6 +12,7 @@
     }
   ],
   "result2": {
-    "item": "minecraft:pufferfish"
+    "count": 1,
+    "id": "minecraft:pufferfish"
   }
 }

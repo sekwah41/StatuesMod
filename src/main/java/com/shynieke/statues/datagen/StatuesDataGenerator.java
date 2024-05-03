@@ -13,7 +13,6 @@ import com.shynieke.statues.datagen.server.StatueGLMProvider;
 import com.shynieke.statues.datagen.server.StatueItemTagProvider;
 import com.shynieke.statues.datagen.server.StatueLootProvider;
 import com.shynieke.statues.datagen.server.StatueRecipeProvider;
-import com.shynieke.statues.datagen.server.patchouli.StatuePatchouliProvider;
 import com.shynieke.statues.registry.StatueTrims;
 import net.minecraft.core.Cloner;
 import net.minecraft.core.HolderLookup;
@@ -25,7 +24,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.registries.VanillaRegistries;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -34,7 +33,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class StatuesDataGenerator {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
@@ -44,14 +43,14 @@ public class StatuesDataGenerator {
 		ExistingFileHelper helper = event.getExistingFileHelper();
 
 		if (event.includeServer()) {
-			generator.addProvider(event.includeServer(), new StatueLootProvider(packOutput));
-			generator.addProvider(event.includeServer(), new StatueRecipeProvider(packOutput));
+			generator.addProvider(event.includeServer(), new StatueLootProvider(packOutput, lookupProvider));
+			generator.addProvider(event.includeServer(), new StatueRecipeProvider(packOutput, lookupProvider));
 			StatueBlockTagProvider blockTags = new StatueBlockTagProvider(packOutput, lookupProvider, helper);
 			generator.addProvider(event.includeServer(), blockTags);
 			generator.addProvider(event.includeServer(), new StatueItemTagProvider(packOutput, lookupProvider, blockTags, helper));
 			generator.addProvider(event.includeServer(), new StatueBiomeTagProvider(packOutput, lookupProvider, helper));
-			generator.addProvider(event.includeServer(), new StatueGLMProvider(packOutput));
-			generator.addProvider(event.includeServer(), new StatuePatchouliProvider(packOutput));
+			generator.addProvider(event.includeServer(), new StatueGLMProvider(packOutput, lookupProvider));
+//			generator.addProvider(event.includeServer(), new StatuePatchouliProvider(packOutput));
 			generator.addProvider(event.includeServer(), new StatueAdvancementProvider(packOutput, lookupProvider, helper));
 
 			generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(
