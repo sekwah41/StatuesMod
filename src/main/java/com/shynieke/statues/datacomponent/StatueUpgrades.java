@@ -1,7 +1,6 @@
 package com.shynieke.statues.datacomponent;
 
 import com.mojang.serialization.Codec;
-import com.shynieke.statues.util.UpgradeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -21,6 +20,10 @@ public record StatueUpgrades(Map<String, Short> upgradeMap) {
 	public static final StreamCodec<RegistryFriendlyByteBuf, StatueUpgrades> STREAM_CODEC = StreamCodec.of(
 			StatueUpgrades::toNetwork, StatueUpgrades::fromNetwork
 	);
+
+	public static StatueUpgrades empty() {
+		return new StatueUpgrades(Map.of());
+	}
 
 	private static StatueUpgrades fromNetwork(RegistryFriendlyByteBuf byteBuf) {
 		return new StatueUpgrades(byteBuf.readMap(FriendlyByteBuf::readUtf, FriendlyByteBuf::readShort));

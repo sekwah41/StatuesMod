@@ -1,8 +1,8 @@
 package com.shynieke.statues.items;
 
 import com.shynieke.statues.blocks.statues.PlayerStatueBlock;
-import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.datacomponent.PlayerCompassData;
+import com.shynieke.statues.registry.StatueDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

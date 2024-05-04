@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractStatueBlockEntity extends BlockEntity {
-	private final StatueUpgrades upgrades = StatueUpgrades.EMPTY;
+	private final StatueUpgrades upgrades = StatueUpgrades.empty();
 
 	@Nullable
 	private StatueStats stats;
@@ -100,11 +100,11 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 	@Override
 	protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
 		super.applyImplicitComponents(input);
-		Map<String, Short> upgradeMap = input.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.EMPTY).upgradeMap();
+		Map<String, Short> upgradeMap = input.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty()).upgradeMap();
 		if (!upgradeMap.isEmpty())
 			this.upgrades.upgradeMap().putAll(upgradeMap);
 
-		this.stats = input.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+		this.stats = input.getOrDefault(StatueDataComponents.STATS, StatueStats.empty());
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import com.shynieke.statues.blocks.AbstractBaseBlock;
 import com.shynieke.statues.registry.StatueBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;

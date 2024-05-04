@@ -88,7 +88,7 @@ public class UpgradeRecipe implements Recipe<Container> {
 		}
 		if (statueStack.getItem() instanceof StatueBlockItem) {
 			boolean upgraded = statueStack.getOrDefault(StatueDataComponents.UPGRADED, false);
-			StatueStats stats = statueStack.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+			StatueStats stats = statueStack.getOrDefault(StatueDataComponents.STATS, StatueStats.empty());
 			if (upgradeType.requiresUpgrade()) {
 				//Check if it hasn't been upgraded
 				if (!upgraded || stats.upgradeSlots() < 1)
@@ -99,7 +99,7 @@ public class UpgradeRecipe implements Recipe<Container> {
 					return false;
 			}
 
-			StatueUpgrades statueUpgrades = statueStack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.EMPTY);
+			StatueUpgrades statueUpgrades = statueStack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty());
 			if (tier != -1 && tier != statueUpgrades.getUpgradeLevel(statueStack, upgradeType.name().toLowerCase(Locale.ROOT))) {
 				return false;
 			}

@@ -22,7 +22,7 @@ public class StatueTableBER implements BlockEntityRenderer<StatueTableBlockEntit
 
 	@Override
 	public void render(StatueTableBlockEntity tableBlockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource,
-					   int combinedLightIn, int combinedOverlayIn) {
+	                   int combinedLightIn, int combinedOverlayIn) {
 		if (tableBlockEntity.getHandler() != null) {
 			IItemHandler handler = tableBlockEntity.getHandler();
 			final BlockState state = tableBlockEntity.getBlockState();

@@ -21,9 +21,9 @@ public final class LootDisplay implements Display {
 	private final List<EntryIngredient> outputEntries;
 
 	public LootDisplay(Ingredient ingredient,
-					   ItemStack stack1, float chance1,
-					   ItemStack stack2, float chance2,
-					   ItemStack stack3, float chance3) {
+	                   ItemStack stack1, float chance1,
+	                   ItemStack stack2, float chance2,
+	                   ItemStack stack3, float chance3) {
 		this.chance1 = chance1;
 		this.chance2 = chance2;
 		this.chance3 = chance3;

@@ -10,8 +10,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.event.village.WandererTradesEvent;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.village.WandererTradesEvent;
 
 public class TraderHandler {
 	@SubscribeEvent

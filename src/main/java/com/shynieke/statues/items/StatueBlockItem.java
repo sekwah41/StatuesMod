@@ -87,7 +87,7 @@ public class StatueBlockItem extends BlockItem {
 		}
 
 
-		StatueUpgrades upgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.EMPTY);
+		StatueUpgrades upgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty());
 		Map<String, Short> upgradeMap = upgrades.upgradeMap();
 		if (!upgradeMap.isEmpty()) {
 			components.addAll(upgrades.getUpgradeNames());

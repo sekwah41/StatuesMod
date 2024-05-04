@@ -28,7 +28,7 @@ public final class UpgradeDisplay implements Display {
 	private final EntryIngredient coreEntry;
 
 	public UpgradeDisplay(List<ItemStack> centerStacks, NonNullList<Ingredient> catalysts, List<ItemStack> stacks, boolean requireCore,
-						  UpgradeType upgradeType, int tier) {
+	                      UpgradeType upgradeType, int tier) {
 		this.requireCore = requireCore;
 		this.upgradeType = upgradeType;
 		this.tier = tier;

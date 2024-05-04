@@ -41,7 +41,7 @@ public class StatueHandler {
 	}
 
 	private void increaseKillCounter(ItemStack stack) {
-		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.empty());
 		stats.setKillCount(stats.killCount() + 1);
 		int level = getLevel(stats.killCount());
 		if (stats.level() != level) {

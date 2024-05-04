@@ -2,7 +2,6 @@ package com.shynieke.statues.entity;
 
 import com.shynieke.statues.config.StatuesConfig;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -19,8 +18,8 @@ import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 

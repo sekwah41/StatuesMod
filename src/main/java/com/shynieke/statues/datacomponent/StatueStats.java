@@ -5,11 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
-import java.util.Map;
 import java.util.Objects;
 
 public final class StatueStats {
-	public static final StatueStats EMPTY = new StatueStats(0, 0, 0);
 	public static final Codec<StatueStats> CODEC = RecordCodecBuilder.create(inst -> inst.group(
 					Codec.INT.optionalFieldOf("level", 0).forGetter(StatueStats::level),
 					Codec.INT.optionalFieldOf("killCount", 0).forGetter(StatueStats::killCount),
@@ -26,6 +24,10 @@ public final class StatueStats {
 		this.level = level;
 		this.killCount = killCount;
 		this.upgradeSlots = upgradeSlots;
+	}
+
+	public static StatueStats empty() {
+		return new StatueStats(0, 0, 0);
 	}
 
 	private static StatueStats fromNetwork(RegistryFriendlyByteBuf byteBuf) {

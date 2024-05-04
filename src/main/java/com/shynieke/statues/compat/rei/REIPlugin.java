@@ -185,14 +185,14 @@ public class REIPlugin implements REIClientPlugin {
 		int tier = recipe.getTier();
 		stack.set(StatueDataComponents.UPGRADED.get(), true);
 
-		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS.get(), StatueStats.EMPTY);
+		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS.get(), StatueStats.empty());
 		stats.setLevel(tier == -1 ? 0 : tier + 1);
 		stats.setUpgradeSlots(20);
 		stack.set(StatueDataComponents.STATS.get(), stats);
 	}
 
 	private void setUpgradeSlots(ItemStack stack, int count) {
-		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS.get(), StatueStats.EMPTY);
+		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS.get(), StatueStats.empty());
 		stats.setUpgradeSlots(count);
 		stack.set(StatueDataComponents.STATS.get(), stats);
 	}

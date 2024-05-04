@@ -54,7 +54,7 @@ public enum UpgradeType implements StringRepresentable {
 			return true;
 		} else if (this == UPGRADE) {
 			if (!stack.has(StatueDataComponents.UPGRADED)) {
-				StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+				StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.empty());
 				stack.set(StatueDataComponents.STATS, stats);
 				stack.set(StatueDataComponents.UPGRADED, true);
 
@@ -72,7 +72,7 @@ public enum UpgradeType implements StringRepresentable {
 					}
 
 					if (stack.has(StatueDataComponents.UPGRADED)) {
-						StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+						StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.empty());
 						int upgradeSlots = stats.upgradeSlots();
 						if (isSubsequentUsesSlot() && !(upgradeSlots > 0)) {
 							//No upgrade slots
@@ -80,7 +80,7 @@ public enum UpgradeType implements StringRepresentable {
 						}
 						String ID = this.name().toLowerCase(Locale.ROOT);
 						String glowingID = GLOWING.name().toLowerCase(Locale.ROOT);
-						StatueUpgrades statueUpgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.EMPTY);
+						StatueUpgrades statueUpgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty());
 						short currentLevel = statueUpgrades.upgradeMap().getOrDefault(ID, (short) 0);
 						if ((currentLevel + 1) <= getCap()) {
 							if (level != -1) {
@@ -126,7 +126,7 @@ public enum UpgradeType implements StringRepresentable {
 						}
 
 						if (stack.has(StatueDataComponents.UPGRADED)) {
-							StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.EMPTY);
+							StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS, StatueStats.empty());
 							int upgradeSlots = stats.upgradeSlots();
 							if (isSubsequentUsesSlot() && !(upgradeSlots > 0)) {
 								//No upgrade slots
@@ -134,7 +134,7 @@ public enum UpgradeType implements StringRepresentable {
 							}
 
 							String glowingID = GLOWING.name().toLowerCase(Locale.ROOT);
-							StatueUpgrades statueUpgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.EMPTY);
+							StatueUpgrades statueUpgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty());
 							short glowLevel = statueUpgrades.upgradeMap().getOrDefault(glowingID, (short) 0);
 
 							if (glowLevel > 0) {

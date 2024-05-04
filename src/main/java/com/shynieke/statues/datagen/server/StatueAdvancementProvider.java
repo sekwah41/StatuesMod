@@ -6,9 +6,9 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.critereon.EnterBlockTrigger;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
@@ -27,6 +27,7 @@ import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,8 @@ public class StatueAdvancementProvider extends AdvancementProvider {
 	public static class StatueAdvancementGenerator implements AdvancementGenerator {
 
 		@Override
-		public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer, ExistingFileHelper existingFileHelper) {
+		public void generate(@NotNull HolderLookup.Provider registries, @NotNull Consumer<AdvancementHolder> consumer,
+		                     @NotNull ExistingFileHelper existingFileHelper) {
 			//Root advancement
 			AdvancementHolder root = Advancement.Builder.advancement()
 					.display(rootDisplay(StatueRegistry.STATUE_CORE.get(), advancementPrefix("root" + ".title"),
@@ -211,7 +213,7 @@ public class StatueAdvancementProvider extends AdvancementProvider {
 		 * @param root           The root advancement.
 		 */
 		protected static AdvancementHolder onHoldBlock(Consumer<AdvancementHolder> consumer, DeferredHolder<Block, ? extends Block> registryObject,
-													   AdvancementType type, boolean hidden, AdvancementHolder root) {
+		                                               AdvancementType type, boolean hidden, AdvancementHolder root) {
 			String path = registryObject.getId().getPath();
 			ResourceLocation registryLocation = modLoc(path);
 
@@ -231,7 +233,7 @@ public class StatueAdvancementProvider extends AdvancementProvider {
 		 * @param root           The root advancement.
 		 */
 		protected static AdvancementHolder onHoldBlock(Consumer<AdvancementHolder> consumer, DeferredBlock<? extends Block> deferredHolder,
-													   AdvancementHolder root) {
+		                                               AdvancementHolder root) {
 			String path = deferredHolder.getId().getPath();
 			ResourceLocation registryLocation = modLoc(path);
 
@@ -254,9 +256,10 @@ public class StatueAdvancementProvider extends AdvancementProvider {
 		 * @param path            The path of the advancement.
 		 * @param registryObjects The block registry objects that you need to hold one of.
 		 */
+		@SafeVarargs
 		protected static AdvancementHolder onHoldAnyBlock(Consumer<AdvancementHolder> consumer, DeferredBlock<? extends Block> deferredHolder,
-														  AdvancementType type, boolean hidden, AdvancementHolder root, String path,
-														  AdvancementRequirements.Strategy strategy, DeferredBlock<? extends Block>... registryObjects) {
+		                                                  AdvancementType type, boolean hidden, AdvancementHolder root, String path,
+		                                                  AdvancementRequirements.Strategy strategy, DeferredBlock<? extends Block>... registryObjects) {
 			ResourceLocation registryLocation = modLoc(path);
 
 			DisplayInfo info = hidden ? hiddenDisplay(deferredHolder.get(), path, type) : simpleDisplay(deferredHolder.get(), path, type);
@@ -279,8 +282,9 @@ public class StatueAdvancementProvider extends AdvancementProvider {
 		 * @param path            The path of the advancement.
 		 * @param deferredHolders The block registry objects that you need to hold one of.
 		 */
+		@SafeVarargs
 		protected static AdvancementHolder killerCollection(Consumer<AdvancementHolder> consumer, DeferredBlock<? extends Block> displayObject,
-															AdvancementHolder root, String path, DeferredBlock<? extends Block>... deferredHolders) {
+		                                                    AdvancementHolder root, String path, DeferredBlock<? extends Block>... deferredHolders) {
 			ResourceLocation registryLocation = modLoc(path);
 
 			Advancement.Builder builder = Advancement.Builder.advancement()
@@ -306,7 +310,7 @@ public class StatueAdvancementProvider extends AdvancementProvider {
 		 * @param root           The root advancement.
 		 */
 		protected static AdvancementHolder onHoldItem(Consumer<AdvancementHolder> consumer, DeferredHolder<Item, ? extends Item> deferredHolder,
-													  AdvancementType type, boolean hidden, AdvancementHolder root) {
+		                                              AdvancementType type, boolean hidden, AdvancementHolder root) {
 			String path = deferredHolder.getId().getPath();
 			ResourceLocation registryLocation = modLoc(path);
 

@@ -3,7 +3,6 @@ package com.shynieke.statues.registry;
 import com.shynieke.statues.entity.PlayerStatue;
 import com.shynieke.statues.entity.StatueBatEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
