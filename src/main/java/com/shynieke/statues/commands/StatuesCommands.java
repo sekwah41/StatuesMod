@@ -5,8 +5,9 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.shynieke.statues.Reference;
+import com.shynieke.statues.datacomponent.StatueStats;
 import com.shynieke.statues.recipe.UpgradeType;
+import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.registry.StatueTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
@@ -14,11 +15,10 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.server.command.EnumArgument;
+import net.neoforged.neoforge.server.command.EnumArgument;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,9 +58,9 @@ public class StatuesCommands {
 		}
 		ItemStack heldStack = player.getMainHandItem();
 		if (!heldStack.isEmpty() && heldStack.is(StatueTags.UPGRADEABLE_STATUES)) {
-			CompoundTag tag = heldStack.getTagElement("BlockEntityTag");
-			if (tag == null || !tag.contains(Reference.UPGRADED) || tag.getInt(Reference.UPGRADE_SLOTS) < 1) {
-				fillInTag(heldStack, upgrade, tier);
+			if (heldStack.has(StatueDataComponents.UPGRADED) ||
+					heldStack.getOrDefault(StatueDataComponents.STATS, StatueStats.empty()).upgradeSlots() < 1) {
+				fillInTag(heldStack, tier);
 			}
 			for (int i = 0; i < tier; i++) {
 				upgrade.apply(heldStack, i);
@@ -77,12 +77,12 @@ public class StatuesCommands {
 		return 0;
 	}
 
-	private static void fillInTag(ItemStack stack, UpgradeType type, int tier) {
-		CompoundTag entityTag = new CompoundTag();
-		entityTag.putInt(Reference.LEVEL, tier == -1 ? type == UpgradeType.UPGRADE ? 0 : 1 : tier + 1);
-		entityTag.putBoolean(Reference.UPGRADED, true);
-		entityTag.putInt(Reference.UPGRADE_SLOTS, 20);
+	private static void fillInTag(ItemStack stack, int tier) {
+		stack.set(StatueDataComponents.UPGRADED.get(), true);
 
-		stack.addTagElement("BlockEntityTag", entityTag);
+		StatueStats stats = stack.getOrDefault(StatueDataComponents.STATS.get(), StatueStats.empty());
+		stats.setLevel(tier == -1 ? 0 : tier + 1);
+		stats.setUpgradeSlots(20);
+		stack.set(StatueDataComponents.STATS.get(), stats);
 	}
 }

@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -63,7 +64,7 @@ public class StatueHandler {
 	}
 
 	@SubscribeEvent
-	public void onLivingSpawnEvent(MobSpawnEvent.FinalizeSpawn event) {
+	public void onLivingSpawnEvent(FinalizeSpawnEvent event) {
 		MobSpawnType spawnReason = event.getSpawnType();
 		if (spawnReason == MobSpawnType.NATURAL || spawnReason == MobSpawnType.REINFORCEMENT || spawnReason == MobSpawnType.EVENT) {
 			Mob mob = event.getEntity();

@@ -1,5 +1,6 @@
 package com.shynieke.statues.blockentities;
 
+import com.mojang.datafixers.util.Either;
 import com.shynieke.statues.Statues;
 import com.shynieke.statues.blocks.AbstractStatueBase;
 import com.shynieke.statues.fakeplayer.StatueFakePlayer;
@@ -43,16 +44,17 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.extensions.IOwnedSpawner;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class StatueBlockEntity extends AbstractStatueBlockEntity {
+public class StatueBlockEntity extends AbstractStatueBlockEntity implements IOwnedSpawner {
 	private AABB hitbox;
 	protected RecipeHolder<LootRecipe> cachedLootRecipe;
 
@@ -280,10 +282,8 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity {
 						continue;
 					}
 
-					var event = EventHooks.onFinalizeSpawnSpawner(mob, serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()), null, null);
-					if (event != null) {
-						mob.finalizeSpawn(serverLevel, event.getDifficulty(), event.getSpawnType(), event.getSpawnData());
-					}
+					net.neoforged.neoforge.event.EventHooks.finalizeMobSpawnSpawner(mob, serverLevel,
+							serverLevel.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, null, this, true);
 				}
 
 				if (!serverLevel.tryAddFreshEntityWithPassengers(entity)) {
@@ -365,5 +365,14 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity {
 				}
 			}
 		}
+	}
+
+	@Override
+	@Nullable
+	public Either<BlockEntity, Entity> getOwner() {
+		if (this.isSpawner()) {
+			return com.mojang.datafixers.util.Either.left(this);
+		}
+		return null;
 	}
 }
