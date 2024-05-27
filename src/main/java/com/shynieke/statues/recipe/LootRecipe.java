@@ -152,11 +152,11 @@ public class LootRecipe implements Recipe<Container> {
 		private static LootRecipe fromNetwork(RegistryFriendlyByteBuf byteBuf) {
 			String s = byteBuf.readUtf(32767);
 			Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(byteBuf);
-			ItemStack result1 = ItemStack.STREAM_CODEC.decode(byteBuf);
+			ItemStack result1 = ItemStack.OPTIONAL_STREAM_CODEC.decode(byteBuf);
 			float chance1 = byteBuf.readFloat();
-			ItemStack result2 = ItemStack.STREAM_CODEC.decode(byteBuf);
+			ItemStack result2 = ItemStack.OPTIONAL_STREAM_CODEC.decode(byteBuf);
 			float chance2 = byteBuf.readFloat();
-			ItemStack result3 = ItemStack.STREAM_CODEC.decode(byteBuf);
+			ItemStack result3 = ItemStack.OPTIONAL_STREAM_CODEC.decode(byteBuf);
 			float chance3 = byteBuf.readFloat();
 			boolean showNotification = byteBuf.readBoolean();
 			return new LootRecipe(s, ingredient, result1, chance1, result2, chance2, result3, chance3, showNotification);
@@ -165,11 +165,11 @@ public class LootRecipe implements Recipe<Container> {
 		private static void toNetwork(RegistryFriendlyByteBuf byteBuf, LootRecipe recipe) {
 			byteBuf.writeUtf(recipe.group);
 			Ingredient.CONTENTS_STREAM_CODEC.encode(byteBuf, recipe.ingredient);
-			ItemStack.STREAM_CODEC.encode(byteBuf, recipe.result);
+			ItemStack.OPTIONAL_STREAM_CODEC.encode(byteBuf, recipe.result);
 			byteBuf.writeFloat(recipe.resultChance);
-			ItemStack.STREAM_CODEC.encode(byteBuf, recipe.result2);
+			ItemStack.OPTIONAL_STREAM_CODEC.encode(byteBuf, recipe.result2);
 			byteBuf.writeFloat(recipe.result2Chance);
-			ItemStack.STREAM_CODEC.encode(byteBuf, recipe.result3);
+			ItemStack.OPTIONAL_STREAM_CODEC.encode(byteBuf, recipe.result3);
 			byteBuf.writeFloat(recipe.result3Chance);
 			byteBuf.writeBoolean(recipe.showNotification);
 		}
