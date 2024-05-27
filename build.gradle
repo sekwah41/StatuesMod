@@ -92,12 +92,12 @@ dependencies {
 
 //    localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
 
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
+    compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+    compileOnly "dev.architectury:architectury-neoforge:${architectury_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:${rei_version}"
 
-    localRuntime "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
 //    implementation "com.blamejared.crafttweaker:CraftTweaker-neoforge-${mc_version}:${crafttweaker_version}"
 
@@ -106,8 +106,8 @@ dependencies {
 //    implementation "vazkii.patchouli:Patchouli:${patchouli_version}"
 //    implementation "xyz.brassgoggledcoders:PatchouliProvider:${patchouli_provider_version}"
 
-//    implementation "curse.maven:jade-324721:5109393" //Jade (WAILA)
-//    implementation "curse.maven:TheOneProbe-245211:5084077" //The One probe (TOP)
+//    localRuntime "curse.maven:jade-324721:5366595" //Jade (WAILA)
+//    localRuntime "curse.maven:TheOneProbe-245211:5084077" //The One probe (TOP)
 }
 
 jar {
