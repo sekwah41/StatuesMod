@@ -293,6 +293,10 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		return hasUpgrade("looting");
 	}
 
+	public int getLooting() {
+		return getUpgradeLevel("looting") - 1;
+	}
+
 	public boolean canAutomate() {
 		return hasUpgrade("automation");
 	}
