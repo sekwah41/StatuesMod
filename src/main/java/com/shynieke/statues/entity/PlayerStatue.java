@@ -430,7 +430,6 @@ public class PlayerStatue extends LivingEntity {
 	public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (player.isShiftKeyDown()) {
-			System.out.println(getLockedBy());
 			if (!this.level().isClientSide && player != null && canOpenUI(player)) {
 				((ServerPlayer) player).connection.send(new PlayerStatueScreenData(getId()));
 			}
