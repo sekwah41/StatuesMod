@@ -100,7 +100,7 @@ public class UpgradeRecipe implements Recipe<Container> {
 			}
 
 			StatueUpgrades statueUpgrades = statueStack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty());
-			if (tier != -1 && tier != statueUpgrades.getUpgradeLevel(statueStack, upgradeType.name().toLowerCase(Locale.ROOT))) {
+			if (tier != -1 && tier != statueUpgrades.getUpgradeLevel(upgradeType.name().toLowerCase(Locale.ROOT))) {
 				return false;
 			}
 		}

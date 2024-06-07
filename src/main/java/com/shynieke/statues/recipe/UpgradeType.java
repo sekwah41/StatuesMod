@@ -7,7 +7,9 @@ import com.shynieke.statues.registry.StatueDataComponents;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public enum UpgradeType implements StringRepresentable {
 	CRAFTING("crafting", false, false, 1), //Unused but packs can add crafting recipes using the S.T.A.T.U.E
@@ -81,14 +83,15 @@ public enum UpgradeType implements StringRepresentable {
 						String ID = this.name().toLowerCase(Locale.ROOT);
 						String glowingID = GLOWING.name().toLowerCase(Locale.ROOT);
 						StatueUpgrades statueUpgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty());
+						Map<String, Short> upgradeMap = new HashMap<>();
 						short currentLevel = statueUpgrades.upgradeMap().getOrDefault(ID, (short) 0);
 						if ((currentLevel + 1) <= getCap()) {
 							if (level != -1) {
 								if (currentLevel == level) {
 									if (this == GLOWING) {
-										statueUpgrades.upgrade(glowingID);
+										upgradeMap.putAll(statueUpgrades.withUpgrade(glowingID));
 									} else {
-										statueUpgrades.upgrade(ID);
+										upgradeMap.putAll(statueUpgrades.withUpgrade(ID));
 									}
 									if (isSubsequentUsesSlot()) {
 										upgradeSlots -= 1;
@@ -101,9 +104,9 @@ public enum UpgradeType implements StringRepresentable {
 								}
 							} else {
 								if (this == GLOWING) {
-									statueUpgrades.upgrade(glowingID);
+									upgradeMap.putAll(statueUpgrades.withUpgrade(glowingID));
 								} else {
-									statueUpgrades.upgrade(ID);
+									upgradeMap.putAll(statueUpgrades.withUpgrade(ID));
 								}
 								if (isSubsequentUsesSlot()) {
 									upgradeSlots -= 1;
@@ -115,7 +118,7 @@ public enum UpgradeType implements StringRepresentable {
 							//Next update would be over the cap
 							return false;
 						}
-						stack.set(StatueDataComponents.UPGRADES, statueUpgrades);
+						stack.set(StatueDataComponents.UPGRADES, new StatueUpgrades(upgradeMap));
 						return true;
 					}
 				} else {
@@ -135,15 +138,16 @@ public enum UpgradeType implements StringRepresentable {
 
 							String glowingID = GLOWING.name().toLowerCase(Locale.ROOT);
 							StatueUpgrades statueUpgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty());
+							Map<String, Short> upgradeMap = new HashMap<>();
 							short glowLevel = statueUpgrades.upgradeMap().getOrDefault(glowingID, (short) 0);
 
 							if (glowLevel > 0) {
-								statueUpgrades.downgrade(glowingID);
+								upgradeMap.putAll(statueUpgrades.withDowngrade(glowingID));
 
-								if (statueUpgrades.upgradeMap().getOrDefault(glowingID, (short) 0) == 0)
-									statueUpgrades.upgradeMap().remove(glowingID);
+								if (upgradeMap.getOrDefault(glowingID, (short) 0) == 0)
+									upgradeMap.remove(glowingID);
 
-								stack.set(StatueDataComponents.UPGRADES, statueUpgrades);
+								stack.set(StatueDataComponents.UPGRADES, new StatueUpgrades(upgradeMap));
 							} else {
 								//Can't downgrade a stack that isn't glowing
 								return false;

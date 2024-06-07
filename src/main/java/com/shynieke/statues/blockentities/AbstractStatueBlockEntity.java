@@ -42,11 +42,12 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractStatueBlockEntity extends BlockEntity {
-	private final StatueUpgrades upgrades = StatueUpgrades.empty();
+	private final Map<String, Short> upgrades = new HashMap<>();
 
 	@Nullable
 	private StatueStats stats;
@@ -102,7 +103,7 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		super.applyImplicitComponents(input);
 		Map<String, Short> upgradeMap = input.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty()).upgradeMap();
 		if (!upgradeMap.isEmpty())
-			this.upgrades.upgradeMap().putAll(upgradeMap);
+			this.upgrades.putAll(upgradeMap);
 
 		this.stats = input.getOrDefault(StatueDataComponents.STATS, StatueStats.empty());
 	}
@@ -110,7 +111,7 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.Builder builder) {
 		super.collectImplicitComponents(builder);
-		builder.set(StatueDataComponents.UPGRADES, this.upgrades);
+		builder.set(StatueDataComponents.UPGRADES, new StatueUpgrades(this.upgrades));
 		builder.set(StatueDataComponents.STATS, this.stats);
 	}
 
@@ -209,8 +210,8 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 				.parse(NbtOps.INSTANCE, compound.get("upgrades"))
 				.resultOrPartial(error -> Statues.LOGGER.error("Failed to load upgrades from statue: {}", error))
 				.ifPresent(upgrades -> {
-					this.upgrades.upgradeMap().clear();
-					this.upgrades.upgradeMap().putAll(upgrades.upgradeMap());
+					this.upgrades.clear();
+					this.upgrades.putAll(upgrades.upgradeMap());
 				});
 
 		if (compound.contains("stats")) {
@@ -227,7 +228,7 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 
 	public CompoundTag saveToNbt(CompoundTag compound, HolderLookup.Provider provider) {
 		saveUpgrades(compound, provider);
-		compound.put("upgrades", StatueUpgrades.CODEC.encodeStart(NbtOps.INSTANCE, this.upgrades).getOrThrow());
+		compound.put("upgrades", StatueUpgrades.CODEC.encodeStart(NbtOps.INSTANCE, new StatueUpgrades(this.upgrades)).getOrThrow());
 		compound.put("stats", StatueStats.CODEC.encodeStart(NbtOps.INSTANCE, this.stats).getOrThrow());
 
 		return compound;
@@ -249,7 +250,7 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 	}
 
 	public Map<String, Short> getUpgrades() {
-		return upgrades.upgradeMap();
+		return upgrades;
 	}
 
 	public boolean isDecorative() {

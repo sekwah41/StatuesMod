@@ -10,11 +10,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public record StatueUpgrades(Map<String, Short> upgradeMap) {
-	public static final StatueUpgrades EMPTY = new StatueUpgrades(Map.of());
+	public static final StatueUpgrades EMPTY = new StatueUpgrades(new HashMap<>());
 	public static final Codec<StatueUpgrades> CODEC = Codec.unboundedMap(Codec.STRING, Codec.SHORT)
 			.xmap(StatueUpgrades::new, StatueUpgrades::upgradeMap);
 	public static final StreamCodec<RegistryFriendlyByteBuf, StatueUpgrades> STREAM_CODEC = StreamCodec.of(
@@ -38,19 +39,23 @@ public record StatueUpgrades(Map<String, Short> upgradeMap) {
 		});
 	}
 
-	public void upgrade(String id) {
-		short level = upgradeMap.getOrDefault(id, (short) 0);
-		upgradeMap.put(id, (short) (level + 1));
+	public Map<String, Short> withUpgrade(String id) {
+		Map<String, Short> newMap = new HashMap<>(upgradeMap);
+		short level = newMap.getOrDefault(id, (short) 0);
+		newMap.put(id, (short) (level + 1));
+		return newMap;
 	}
 
-	public void downgrade(String id) {
-		short level = upgradeMap.getOrDefault(id, (short) 0);
+	public Map<String, Short> withDowngrade(String id) {
+		Map<String, Short> newMap = new HashMap<>(upgradeMap);
+		short level = newMap.getOrDefault(id, (short) 0);
 		if (level > 0) {
-			upgradeMap.put(id, (short) (level - 1));
+			newMap.put(id, (short) (level - 1));
 		}
+		return newMap;
 	}
 
-	public int getUpgradeLevel(ItemStack stack, String id) {
+	public int getUpgradeLevel(String id) {
 		return upgradeMap == null ? -1 : upgradeMap.getOrDefault(id, (short) 0);
 	}
 
