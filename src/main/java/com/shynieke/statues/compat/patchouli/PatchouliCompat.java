@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class PatchouliCompat {
 	public static void convertBook(Player playerIn) {
-//		Item guideBook = BuiltInRegistries.ITEM.get(new ResourceLocation("patchouli", "guide_book"));
+//		Item guideBook = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("patchouli", "guide_book"));
 //		if (guideBook != null) {
 //			playerIn.getMainHandItem().shrink(1);
 //			ItemStack patchouliBook = new ItemStack(guideBook);

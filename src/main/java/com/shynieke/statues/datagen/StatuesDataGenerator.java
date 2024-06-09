@@ -13,6 +13,7 @@ import com.shynieke.statues.datagen.server.StatueGLMProvider;
 import com.shynieke.statues.datagen.server.StatueItemTagProvider;
 import com.shynieke.statues.datagen.server.StatueLootProvider;
 import com.shynieke.statues.datagen.server.StatueRecipeProvider;
+import com.shynieke.statues.registry.StatueJukeboxSongs;
 import com.shynieke.statues.registry.StatueTrims;
 import net.minecraft.core.Cloner;
 import net.minecraft.core.HolderLookup;
@@ -71,6 +72,7 @@ public class StatuesDataGenerator {
 		registryBuilder.add(Registries.PLACED_FEATURE, $ -> {
 		});
 		registryBuilder.add(Registries.TRIM_PATTERN, StatueTrims::bootstrap);
+		registryBuilder.add(Registries.JUKEBOX_SONG, StatueJukeboxSongs::bootstrap);
 		registryBuilder.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, StatueBiomeModifiers::bootstrap);
 		// We need the BIOME registry to be present, so we can use a biome tag, doesn't matter that it's empty
 		registryBuilder.add(Registries.BIOME, $ -> {

@@ -91,7 +91,7 @@ public class StatueSavedData extends SavedData {
 	}
 
 	private static ResourceKey<Level> getLevelKey(String location) {
-		return ResourceKey.create(Registries.DIMENSION, new ResourceLocation(location));
+		return ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(location));
 	}
 
 	public static StatueSavedData get() {

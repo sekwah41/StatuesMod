@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
@@ -40,8 +41,8 @@ public class HardcoreRecipe extends ShapedRecipe {
 	}
 
 	@Override
-	public boolean matches(CraftingContainer container, Level level) {
-		return super.matches(container, level) && level != null && level.getLevelData().isHardcore();
+	public boolean matches(CraftingInput craftingInput, Level level) {
+		return super.matches(craftingInput, level) && level != null && level.getLevelData().isHardcore();
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class HardcoreRecipe extends ShapedRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container, HolderLookup.Provider lookupProvider) {
+	public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider lookupProvider) {
 		return this.getResultItem(lookupProvider).copy();
 	}
 

@@ -10,13 +10,16 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public class LootRecipe implements Recipe<Container> {
+public class LootRecipe implements Recipe<RecipeInput> {
 	protected final String group;
 	protected final Ingredient ingredient;
 	protected final ItemStack result, result2, result3;
@@ -48,12 +51,12 @@ public class LootRecipe implements Recipe<Container> {
 	}
 
 	@Override
-	public boolean matches(Container container, Level level) {
-		return this.getIngredients().get(0).test(container.getItem(0));
+	public boolean matches(RecipeInput recipeInput, Level level) {
+		return this.getIngredients().get(0).test(recipeInput.getItem(0));
 	}
 
 	@Override
-	public ItemStack assemble(Container container, HolderLookup.Provider lookupProvider) {
+	public ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider lookupProvider) {
 		return this.getResultItem(lookupProvider).copy();
 	}
 

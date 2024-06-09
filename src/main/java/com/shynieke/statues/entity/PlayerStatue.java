@@ -36,7 +36,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -48,6 +47,7 @@ import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -223,7 +223,7 @@ public class PlayerStatue extends LivingEntity {
 		switch (slotIn.getType()) {
 			case HAND:
 				return this.handItems.get(slotIn.getIndex());
-			case ARMOR:
+			case HUMANOID_ARMOR:
 				return this.armorItems.get(slotIn.getIndex());
 			default:
 				return ItemStack.EMPTY;
@@ -235,7 +235,7 @@ public class PlayerStatue extends LivingEntity {
 		this.verifyEquippedItem(stack);
 		switch (slotIn.getType()) {
 			case HAND -> this.onEquipItem(slotIn, this.handItems.set(slotIn.getIndex(), stack), stack);
-			case ARMOR -> this.onEquipItem(slotIn, this.armorItems.set(slotIn.getIndex(), stack), stack);
+			case HUMANOID_ARMOR -> this.onEquipItem(slotIn, this.armorItems.set(slotIn.getIndex(), stack), stack);
 		}
 
 	}
@@ -441,7 +441,7 @@ public class PlayerStatue extends LivingEntity {
 					return InteractionResult.CONSUME;
 				} else {
 					if (!isLocked()) {
-						EquipmentSlot equipmentSlot = Mob.getEquipmentSlotForItem(itemstack);
+						EquipmentSlot equipmentSlot = getEquipmentSlotForItem(itemstack);
 						if (itemstack.isEmpty()) {
 							EquipmentSlot equipmentslot1 = this.getClickedSlot(vec);
 							EquipmentSlot equipmentslot2 = this.isDisabled(equipmentslot1) ? equipmentSlot : equipmentslot1;
@@ -536,25 +536,27 @@ public class PlayerStatue extends LivingEntity {
 	 * Called when the entity is attacked.
 	 */
 	public boolean hurt(DamageSource source, float amount) {
-		if (!this.level().isClientSide && !this.isRemoved()) {
+		if (this.isRemoved()) {
+			return false;
+		} else if (this.level() instanceof ServerLevel serverlevel) {
 			if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
 				this.remove(RemovalReason.DISCARDED);
 				return false;
 			} else if (!this.isInvulnerableTo(source)) {
 				if (source.is(DamageTypeTags.IS_EXPLOSION)) {
-					this.brokenByAnything(source);
+					this.brokenByAnything(serverlevel, source);
 					this.remove(RemovalReason.KILLED);
 					return false;
 				} else if (source.is(DamageTypeTags.IGNITES_ARMOR_STANDS)) {
 					if (this.isOnFire()) {
-						this.damageArmorStand(source, 0.15F);
+						this.causeDamage(serverlevel, source, 0.15F);
 					} else {
 						this.setRemainingFireTicks(5 * 20);
 					}
 
 					return false;
 				} else if (source.is(DamageTypeTags.BURNS_ARMOR_STANDS) && this.getHealth() > 0.5F) {
-					this.damageArmorStand(source, 4.0F);
+					this.causeDamage(serverlevel, source, 4.0F);
 					return false;
 				} else {
 					boolean flag = source.getDirectEntity() instanceof AbstractArrow;
@@ -575,7 +577,7 @@ public class PlayerStatue extends LivingEntity {
 							this.level().broadcastEntityEvent(this, (byte) 32);
 							this.punchCooldown = i;
 						} else {
-							this.breakPlayerStatue(source);
+							this.breakPlayerStatue(serverlevel, source);
 							this.playParticles();
 							this.remove(RemovalReason.KILLED);
 						}
@@ -625,11 +627,11 @@ public class PlayerStatue extends LivingEntity {
 
 	}
 
-	private void damageArmorStand(DamageSource source, float p_213817_2_) {
+	private void causeDamage(ServerLevel serverLevel, DamageSource source, float p_213817_2_) {
 		float f = this.getHealth();
 		f = f - p_213817_2_;
 		if (f <= 0.5F) {
-			this.brokenByAnything(source);
+			this.brokenByAnything(serverLevel, source);
 			this.remove(RemovalReason.KILLED);
 		} else {
 			this.setHealth(f);
@@ -637,7 +639,7 @@ public class PlayerStatue extends LivingEntity {
 
 	}
 
-	private void breakPlayerStatue(DamageSource source) {
+	private void breakPlayerStatue(ServerLevel serverLevel, DamageSource source) {
 		ItemStack stack = new ItemStack(StatueRegistry.PLAYER_STATUE.get());
 //		if (getGameProfile().isPresent()) { TODO: Re-implement?
 //			ResolvableProfile resolvableProfile = getGameProfile().get();
@@ -653,7 +655,7 @@ public class PlayerStatue extends LivingEntity {
 
 		Block.popResource(this.level(), this.blockPosition(), stack);
 		Block.popResource(this.level(), this.blockPosition(), new ItemStack(StatueRegistry.STATUE_CORE.get()));
-		this.brokenByAnything(source);
+		this.brokenByAnything(serverLevel, source);
 	}
 
 //	@Override TODO: Re-implement?
@@ -674,9 +676,9 @@ public class PlayerStatue extends LivingEntity {
 //		return stack;
 //	}
 
-	private void brokenByAnything(DamageSource source) {
+	private void brokenByAnything(ServerLevel serverLevel, DamageSource source) {
 		this.playBrokenSound();
-		this.dropAllDeathLoot(source);
+		this.dropAllDeathLoot(serverLevel, source);
 
 		for (int i = 0; i < this.handItems.size(); ++i) {
 			ItemStack itemstack = this.handItems.get(i);

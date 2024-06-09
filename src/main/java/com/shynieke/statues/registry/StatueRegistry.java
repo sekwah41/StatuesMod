@@ -284,7 +284,7 @@ public class StatueRegistry {
 	public static final DeferredItem<Item> NUGGET = ITEMS.register("royal_nugget", () -> new Item(itemBuilder().food(StatueFoods.ROYAL_NUGGET)));
 	public static final DeferredItem<Item> PLAYER_COMPASS = ITEMS.register("player_compass", () -> new PlayerCompassItem(itemBuilder()));
 	public static final DeferredItem<StatueMooshroomSoup> SOUP = ITEMS.register("mooshroom_soup", () -> new StatueMooshroomSoup(itemBuilder()));
-	public static final DeferredItem<StatueCoreItem> STATUE_CORE = ITEMS.register("statue_core", () -> new StatueCoreItem(itemBuilder()));
+	public static final DeferredItem<StatueCoreItem> STATUE_CORE = ITEMS.register("statue_core", () -> new StatueCoreItem(itemBuilder().jukeboxPlayable(StatueJukeboxSongs.CREDITS)));
 	public static final DeferredItem<StatueTeaItem> TEA = ITEMS.register("tea", () -> new StatueTeaItem(itemBuilder(), StatueFoods.TEA));
 	public static final DeferredItem<Item> CORE_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("core_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(StatueTrims.CORE));
 	public static final DeferredItem<Item> CORE_FLOWER_SEED = ITEMS.register("core_flower_seed", () -> new ItemNameBlockItem(CORE_FLOWER_CROP.get(), itemBuilder()));

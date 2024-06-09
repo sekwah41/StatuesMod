@@ -45,7 +45,9 @@ public class StatueBlockstateProvider extends BlockStateProvider {
 		VariantBlockStateBuilder builder = getVariantBuilder(block);
 		for (int i = 0; i <= block.getMaxAge(); i++) {
 			ModelFile file = models().crop(BuiltInRegistries.BLOCK.getKey(block).getPath() + "_" + (i),
-					new ResourceLocation(Reference.MOD_ID, "block/" + BuiltInRegistries.BLOCK.getKey(block).getPath() + "_stage" + (i))).renderType(new ResourceLocation("cutout"));
+					ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID,
+							"block/" + BuiltInRegistries.BLOCK.getKey(block).getPath() +
+									"_stage" + (i))).renderType(ResourceLocation.withDefaultNamespace("cutout"));
 			builder.partialState().with(property, i).modelForState().modelFile(file).addModel();
 		}
 	}

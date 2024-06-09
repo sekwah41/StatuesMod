@@ -1,0 +1,8 @@
+{
+  "comparator_output": 0,
+  "description": {
+    "translate": "jukebox_song.statues.credits"
+  },
+  "length_in_seconds": 12060.0,
+  "sound_event": "minecraft:music.credits"
+}

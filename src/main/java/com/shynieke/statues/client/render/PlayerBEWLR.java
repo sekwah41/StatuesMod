@@ -110,11 +110,11 @@ public class PlayerBEWLR extends BlockEntityWithoutLevelRenderer {
 		int light = isSupporter ? 15728880 : combinedLight;
 		if (isSlim) {
 			if (slimModel != null) {
-				slimModel.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				slimModel.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
 			}
 		} else {
 			if (model != null) {
-				model.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				model.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
 			}
 		}
 	}

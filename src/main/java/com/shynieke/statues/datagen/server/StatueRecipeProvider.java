@@ -8,8 +8,11 @@ import com.shynieke.statues.registry.StatueRegistry;
 import com.shynieke.statues.registry.StatueTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -23,6 +26,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.Blocks;
@@ -31,12 +36,15 @@ import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class StatueRecipeProvider extends RecipeProvider {
+	private final CompletableFuture<HolderLookup.Provider> registries;
 
 	public StatueRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
 		super(packOutput, lookupProvider);
+		this.registries = lookupProvider;
 	}
 
 	@Override
@@ -54,7 +62,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 						StatueRegistry.CAT_TABBY_STATUE.get(), StatueRegistry.CAT_TUXEDO_STATUE.get(),
 						StatueRegistry.CAT_WHITE_STATUE.get()))
 				.result1(Items.STRING).result3(getIOU()).save(consumer,
-						new ResourceLocation(Reference.MOD_ID, "loot/cat_statue")); //TODO: Allow the sleeping loot table
+						ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "loot/cat_statue")); //TODO: Allow the sleeping loot table
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.CHICKEN_STATUE.get()))
 				.result1(Items.FEATHER).result2(Items.CHICKEN).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.CHICKEN_JOCKEY_STATUE.get()))
@@ -95,7 +103,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 						StatueRegistry.PANDA_NORMAL_STATUE.get(), StatueRegistry.PANDA_PLAYFUL_STATUE.get(),
 						StatueRegistry.PANDA_WEAK_STATUE.get(), StatueRegistry.PANDA_WORRIED_STATUE.get()))
 				.result1(Items.BAMBOO).save(consumer,
-						new ResourceLocation(Reference.MOD_ID, "loot/panda_statue"));
+						ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "loot/panda_statue"));
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.PILLAGER_STATUE.get()))
 				.result1(Items.ARROW).result2(Items.CROSSBOW, 0.25F).result3(Items.EMERALD, 0.05F).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.RABBIT_BR_STATUE.get(), StatueRegistry.RABBIT_BS_STATUE.get(),
@@ -103,7 +111,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 						StatueRegistry.RABBIT_WH_STATUE.get(), StatueRegistry.RABBIT_WS_STATUE.get()
 				))
 				.result1(Items.RABBIT_HIDE).result1(Items.RABBIT).result1(Items.RABBIT_FOOT).save(consumer,
-						new ResourceLocation(Reference.MOD_ID, "loot/rabbit_statue"));
+						ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "loot/rabbit_statue"));
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.RAVAGER_STATUE.get()))
 				.result3(Items.SADDLE).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.SALMON_STATUE.get()))
@@ -115,7 +123,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 						StatueRegistry.TROPICAL_FISH_HB.get(), StatueRegistry.TROPICAL_FISH_SB.get(),
 						StatueRegistry.TROPICAL_FISH_SD.get(), StatueRegistry.TROPICAL_FISH_SS.get()))
 				.result1(Items.TROPICAL_FISH).result2(Items.BONE_MEAL).save(consumer,
-						new ResourceLocation(Reference.MOD_ID, "loot/tropical_fish"));
+						ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "loot/tropical_fish"));
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.SHULKER_STATUE.get()))
 				.result3(Items.SHULKER_SHELL).save(consumer);
 
@@ -162,7 +170,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 				.result2(Items.INK_SAC).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.VILLAGER_BR_STATUE.get(), StatueRegistry.VILLAGER_GR_STATUE.get(),
 						StatueRegistry.VILLAGER_PU_STATUE.get(), StatueRegistry.VILLAGER_WH_STATUE.get()))
-				.result3(Items.EMERALD).save(consumer, new ResourceLocation(Reference.MOD_ID, "loot/villager_statue")); //TODO: Use trading in future
+				.result3(Items.EMERALD).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "loot/villager_statue")); //TODO: Use trading in future
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.WITCH_STATUE.get()))
 				.result1(Items.GLOWSTONE_DUST).result2(Items.REDSTONE).result3(Items.GLASS_BOTTLE).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.WASTELAND_STATUE.get()))
@@ -203,50 +211,50 @@ public class StatueRecipeProvider extends RecipeProvider {
 				.result1(Items.SCULK_SENSOR).result2(Items.SCULK_SHRIEKER).result3(Items.SCULK_CATALYST).save(consumer);
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), new ArrayList<>())
-				.requiresCore().upgradeType(UpgradeType.UPGRADE).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/statue_upgrade"));
+				.requiresCore().upgradeType(UpgradeType.UPGRADE).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/statue_upgrade"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.GLOW_INK_SAC)))
-				.upgradeType(UpgradeType.GLOWING).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/glowing"));
+				.upgradeType(UpgradeType.GLOWING).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/glowing"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.INK_SAC)))
-				.upgradeType(UpgradeType.UNGLOWING).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/unglowing"));
+				.upgradeType(UpgradeType.UNGLOWING).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/unglowing"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.ECHO_SHARD),
 						Ingredient.of(Tags.Items.EGGS), Ingredient.of(Tags.Items.ENDER_PEARLS), Ingredient.of(ItemTags.SOUL_FIRE_BASE_BLOCKS)))
-				.upgradeType(UpgradeType.SPAWNER).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/spawner"));
+				.upgradeType(UpgradeType.SPAWNER).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/spawner"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(ItemTags.SKULLS),
 						Ingredient.of(Items.MYCELIUM), Ingredient.of(Items.LANTERN)))
-				.upgradeType(UpgradeType.DESPAWNER).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/despawner"));
+				.upgradeType(UpgradeType.DESPAWNER).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/despawner"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.DIAMOND_SWORD))).tier(0)
-				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/mob_killer"));
+				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/mob_killer"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Tags.Items.STORAGE_BLOCKS_LAPIS),
 						Ingredient.of(Tags.Items.STORAGE_BLOCKS_LAPIS), Ingredient.of(Tags.Items.STORAGE_BLOCKS_LAPIS),
 						DataComponentIngredient.of(false, new ItemStack(Items.ENCHANTED_BOOK)))).tier(1) //TODO: Test upgrade
-				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/mob_killer_2"));
+				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/mob_killer_2"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.EXPERIENCE_BOTTLE))).tier(2)
-				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/mob_killer_3"));
+				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/mob_killer_3"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Tags.Items.ENDER_PEARLS),
 						Ingredient.of(Tags.Items.GUNPOWDERS), Ingredient.of(Tags.Items.BONES), Ingredient.of(Items.ROTTEN_FLESH)))
-				.upgradeType(UpgradeType.LOOTING).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/looting"));
+				.upgradeType(UpgradeType.LOOTING).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/looting"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.HOPPER), Ingredient.of(Items.OBSERVER)))
-				.upgradeType(UpgradeType.AUTOMATION).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/automation"));
+				.upgradeType(UpgradeType.AUTOMATION).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/automation"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Tags.Items.DUSTS_REDSTONE),
 						Ingredient.of(Items.SUGAR), Ingredient.of(Items.CLOCK)))
-				.upgradeType(UpgradeType.SPEED).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/speed"));
+				.upgradeType(UpgradeType.SPEED).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/speed"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.STATUE_INTERACTABLE), List.of(Ingredient.of(Items.SCULK_SENSOR)))
-				.upgradeType(UpgradeType.INTERACTION).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/interaction"));
+				.upgradeType(UpgradeType.INTERACTION).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/interaction"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.NOTE_BLOCK),
 						Ingredient.of(Items.AMETHYST_SHARD)))
-				.upgradeType(UpgradeType.SOUND).save(consumer, new ResourceLocation(Reference.MOD_ID, "upgrade/sound"));
+				.upgradeType(UpgradeType.SOUND).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/sound"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, StatueRegistry.STATUE_TABLE.get())
 				.pattern(" P ")
@@ -267,22 +275,30 @@ public class StatueRecipeProvider extends RecipeProvider {
 		SingleItemRecipeBuilder.stonecutting(Ingredient.of(Items.QUARTZ_BLOCK), RecipeCategory.DECORATIONS,
 						StatueRegistry.DISPLAY_STAND.get(), 2)
 				.unlockedBy("has_quartz_block", has(Items.QUARTZ_BLOCK))
-				.save(consumer, new ResourceLocation(Reference.MOD_ID, "display_stand_from_quartz_block_stonecutting"));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "display_stand_from_quartz_block_stonecutting"));
 
 	}
 
 
-	private static ItemStack getIOU() {
+	private ItemStack getIOU() {
 		ItemStack paperStack = new ItemStack(Items.PAPER);
 		paperStack.set(DataComponents.CUSTOM_NAME, Component.literal("I.O.U").withStyle(ChatFormatting.LIGHT_PURPLE));
 		return paperStack;
 	}
 
-	private static ItemStack getWastelandBlock() {
+	private ItemStack getWastelandBlock() {
 		ItemStack wasteland = new ItemStack(Blocks.SAND);
 		wasteland.set(DataComponents.CUSTOM_NAME, Component.literal("Wasteland Block").withStyle(ChatFormatting.LIGHT_PURPLE));
 
-		wasteland.enchant(Enchantments.VANISHING_CURSE, 1);
+		//TODO: Check if this worked!
+		try {
+			Holder.Reference<Enchantment> VANISHING = registries.get().lookupOrThrow(Registries.ENCHANTMENT)
+					.getOrThrow(Enchantments.VANISHING_CURSE);
+			wasteland.enchant(VANISHING, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		ItemEnchantments enchantments = wasteland.getEnchantments();
 		enchantments.withTooltip(false);
 		wasteland.set(DataComponents.ENCHANTMENTS, enchantments);

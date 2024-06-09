@@ -13,7 +13,7 @@ public record PlayerStatueSyncData(UUID playerUUID, CompoundTag tag) implements 
 	public static final StreamCodec<FriendlyByteBuf, PlayerStatueSyncData> CODEC = CustomPacketPayload.codec(
 			PlayerStatueSyncData::write,
 			PlayerStatueSyncData::new);
-	public static final Type<PlayerStatueSyncData> ID = CustomPacketPayload.createType(new ResourceLocation(Reference.MOD_ID, "statue_sync").toString());
+	public static final Type<PlayerStatueSyncData> ID = new Type<>(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "statue_sync"));
 
 	public PlayerStatueSyncData(final FriendlyByteBuf buf) {
 		this(buf.readUUID(), buf.readNbt());

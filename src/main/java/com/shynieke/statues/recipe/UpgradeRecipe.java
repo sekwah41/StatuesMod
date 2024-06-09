@@ -17,6 +17,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -24,7 +25,7 @@ import net.neoforged.neoforge.common.util.RecipeMatcher;
 
 import java.util.Locale;
 
-public class UpgradeRecipe implements Recipe<Container> {
+public class UpgradeRecipe implements Recipe<RecipeInput> {
 	protected final String group;
 	protected final Ingredient center;
 	protected final NonNullList<Ingredient> catalysts;
@@ -81,8 +82,8 @@ public class UpgradeRecipe implements Recipe<Container> {
 	}
 
 	@Override
-	public boolean matches(Container container, Level level) {
-		ItemStack statueStack = container.getItem(0);
+	public boolean matches(RecipeInput recipeInput, Level level) {
+		ItemStack statueStack = recipeInput.getItem(0);
 		if (!center.test(statueStack)) {
 			return false;
 		}
@@ -105,7 +106,7 @@ public class UpgradeRecipe implements Recipe<Container> {
 			}
 		}
 		if (requireCore) {
-			ItemStack coreStack = container.getItem(1);
+			ItemStack coreStack = recipeInput.getItem(1);
 			if (!coreStack.is(StatueTags.STATUE_CORE)) {
 				return false;
 			}
@@ -113,7 +114,7 @@ public class UpgradeRecipe implements Recipe<Container> {
 
 		if (this.catalysts.isEmpty()) {
 			for (int j = 2; j < 6; ++j) {
-				ItemStack itemstack = container.getItem(j);
+				ItemStack itemstack = recipeInput.getItem(j);
 				if (!itemstack.isEmpty()) {
 					return false;
 				}
@@ -126,7 +127,7 @@ public class UpgradeRecipe implements Recipe<Container> {
 		int itemCount = 0;
 
 		for (int j = 2; j < 6; ++j) {
-			ItemStack itemstack = container.getItem(j);
+			ItemStack itemstack = recipeInput.getItem(j);
 			if (!itemstack.isEmpty()) {
 				++itemCount;
 				inputs.add(itemstack);
@@ -137,7 +138,7 @@ public class UpgradeRecipe implements Recipe<Container> {
 	}
 
 	@Override
-	public ItemStack assemble(Container container, HolderLookup.Provider lookupProvider) {
+	public ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider lookupProvider) {
 		return this.getResultItem(lookupProvider).copy();
 	}
 

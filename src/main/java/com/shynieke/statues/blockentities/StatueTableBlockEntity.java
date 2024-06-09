@@ -7,6 +7,7 @@ import com.shynieke.statues.recipe.StatuesRecipes;
 import com.shynieke.statues.recipe.UpgradeRecipe;
 import com.shynieke.statues.registry.StatueBlockEntities;
 import com.shynieke.statues.registry.StatueTags;
+import com.shynieke.statues.util.MultipleRecipeInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,6 +34,9 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StatueTableBlockEntity extends BlockEntity implements MenuProvider {
 	public int time;
@@ -84,14 +89,13 @@ public class StatueTableBlockEntity extends BlockEntity implements MenuProvider 
 			this.currentRecipe = null;
 			return;
 		}
-		SimpleContainer container = new SimpleContainer(6);
+		List<ItemStack> inputs = new ArrayList<>();
 		IItemHandler handler = getHandler();
 		if (handler == null) return;
 		for (int i = 0; i < handler.getSlots(); i++) {
-			container.setItem(i, handler.getStackInSlot(i));
+			inputs.add(i, handler.getStackInSlot(i));
 		}
-
-		this.currentRecipe = this.level.getRecipeManager().getRecipeFor(StatuesRecipes.UPGRADE_RECIPE.get(), container, this.level).orElse(null);
+		this.currentRecipe = this.level.getRecipeManager().getRecipeFor(StatuesRecipes.UPGRADE_RECIPE.get(), new MultipleRecipeInput(inputs), this.level).orElse(null);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
 public class LootHelper {
@@ -21,7 +22,7 @@ public class LootHelper {
 	}
 
 	public static RecipeHolder<LootRecipe> getMatchingLoot(Level level, ItemStack stack) {
-		return level.getRecipeManager().getRecipeFor(StatuesRecipes.LOOT_RECIPE.get(), new SimpleContainer(stack), level).orElse(null);
+		return level.getRecipeManager().getRecipeFor(StatuesRecipes.LOOT_RECIPE.get(), new SingleRecipeInput(stack), level).orElse(null);
 	}
 
 	public static boolean hasLoot(Level level, ItemStack stack) {

@@ -34,11 +34,11 @@ public class StatueBlockItem extends BlockItem {
 	}
 
 	public boolean isBaby() {
-		return this.getBlock() instanceof AbstractStatueBase statueBase ? statueBase.isBaby() : false;
+		return this.getBlock() instanceof AbstractStatueBase statueBase && statueBase.isBaby();
 	}
 
 	public boolean isHiddenStatue() {
-		return this.getBlock() instanceof AbstractStatueBase statueBase ? statueBase.isHiddenStatue() : false;
+		return this.getBlock() instanceof AbstractStatueBase statueBase && statueBase.isHiddenStatue();
 	}
 
 	public EntityType<?> getEntity() {

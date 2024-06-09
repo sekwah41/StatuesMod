@@ -395,7 +395,7 @@ public class StatueAdvancementProvider extends AdvancementProvider {
 		 * @return The ResourceLocation.
 		 */
 		private static ResourceLocation modLoc(String path) {
-			return new ResourceLocation(Reference.MOD_ID, path);
+			return ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path);
 		}
 
 		/**

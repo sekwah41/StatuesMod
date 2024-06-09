@@ -1,21 +1,19 @@
 package com.shynieke.statues.items;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
 
-public class StatueCoreItem extends RecordItem {
+public class StatueCoreItem extends Item {
 
 	public StatueCoreItem(Item.Properties builder) {
-		super(0, SoundEvents.MUSIC_CREDITS.value(), builder, 12060);
+		super(builder);
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
 	}
 }

@@ -123,7 +123,7 @@ public class LootRecipeBuilder implements RecipeBuilder {
 	@Override
 	public void save(RecipeOutput recipeOutput) {
 		ResourceLocation itemKey = BuiltInRegistries.ITEM.getKey(this.statueIngredient.getItems()[0].getItem());
-		ResourceLocation recipeID = new ResourceLocation(itemKey.getNamespace(), "loot/" + itemKey.getPath());
+		ResourceLocation recipeID = ResourceLocation.fromNamespaceAndPath(itemKey.getNamespace(), "loot/" + itemKey.getPath());
 
 		save(recipeOutput, recipeID);
 	}

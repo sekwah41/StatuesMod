@@ -92,7 +92,7 @@ public class PlayerBER implements BlockEntityRenderer<PlayerBlockEntity> {
 
 		//TODO: Implement Translator effect
 
-		playerModel.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		playerModel.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
 
 		poseStack.popPose();
 	}

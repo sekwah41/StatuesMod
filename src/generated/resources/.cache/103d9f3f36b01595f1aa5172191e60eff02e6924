@@ -1,4 +1,5 @@
-// 1.20.6	2024-05-03T21:59:39.7134249	Registries
+// 1.21 Pre-Release 4	2024-06-09T16:50:22.3344851	Registries
+bc7ea3f904e7fb36de7d3656abc98016c75a776f data/statues/jukebox_song/credits.json
 aca6701e2de1d3dcb9a0430456d039bae0872717 data/statues/neoforge/biome_modifier/add_fewer_statue_bat_spawn.json
 760c99e0a58a4a3df8d4af59608f1b91e6e06b77 data/statues/neoforge/biome_modifier/add_statue_bat_spawn.json
 976179df24ec66fc96795c6935c4965f1ac25b0a data/statues/trim_pattern/core.json
