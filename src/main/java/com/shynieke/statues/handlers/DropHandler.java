@@ -177,9 +177,10 @@ public class DropHandler {
 			dropLootStatues(entity, itemStackToDrop, source, event);
 		} else if (entity instanceof Frog frog) {
 			ItemStack itemStackToDrop = new ItemStack(StatueRegistry.FROG_TEMPERATE_STATUE.get());
-			if (frog.getVariant() == FrogVariant.WARM) {
+			ResourceKey<FrogVariant> frogVariant = frog.getVariant().unwrapKey().orElseThrow();
+			if (frogVariant.location().equals(FrogVariant.WARM.location())) {
 				itemStackToDrop = new ItemStack(StatueRegistry.FROG_WARM_STATUE.get());
-			} else if (frog.getVariant() == FrogVariant.COLD) {
+			} else if (frogVariant.location().equals(FrogVariant.COLD.location())) {
 				itemStackToDrop = new ItemStack(StatueRegistry.FROG_COLD_STATUE.get());
 			}
 			dropLootStatues(entity, itemStackToDrop, source, event);
