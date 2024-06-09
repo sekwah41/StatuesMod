@@ -290,7 +290,6 @@ public class StatueRecipeProvider extends RecipeProvider {
 		ItemStack wasteland = new ItemStack(Blocks.SAND);
 		wasteland.set(DataComponents.CUSTOM_NAME, Component.literal("Wasteland Block").withStyle(ChatFormatting.LIGHT_PURPLE));
 
-		//TODO: Check if this worked!
 		try {
 			Holder.Reference<Enchantment> VANISHING = registries.get().lookupOrThrow(Registries.ENCHANTMENT)
 					.getOrThrow(Enchantments.VANISHING_CURSE);
