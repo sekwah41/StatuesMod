@@ -138,11 +138,10 @@ public enum UpgradeType implements StringRepresentable {
 
 							String glowingID = GLOWING.name().toLowerCase(Locale.ROOT);
 							StatueUpgrades statueUpgrades = stack.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty());
-							Map<String, Short> upgradeMap = new HashMap<>();
 							short glowLevel = statueUpgrades.upgradeMap().getOrDefault(glowingID, (short) 0);
 
 							if (glowLevel > 0) {
-								upgradeMap.putAll(statueUpgrades.withDowngrade(glowingID));
+								Map<String, Short> upgradeMap = new HashMap<>(statueUpgrades.withDowngrade(glowingID));
 
 								if (upgradeMap.getOrDefault(glowingID, (short) 0) == 0)
 									upgradeMap.remove(glowingID);

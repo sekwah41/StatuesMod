@@ -52,7 +52,7 @@ public class LootRecipe implements Recipe<RecipeInput> {
 
 	@Override
 	public boolean matches(RecipeInput recipeInput, Level level) {
-		return this.getIngredients().get(0).test(recipeInput.getItem(0));
+		return this.getIngredients().getFirst().test(recipeInput.getItem(0));
 	}
 
 	@Override
