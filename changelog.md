@@ -1,1 +1,1 @@
-* Initial 1.20.6 alpha
+* Initial 1.21 build
