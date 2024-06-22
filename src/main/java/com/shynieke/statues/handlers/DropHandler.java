@@ -87,8 +87,8 @@ public class DropHandler {
 				itemStackToDrop.set(DataComponents.CUSTOM_NAME, Component.literal(trans));
 			}
 			String tropi = "Tropibee";
-			if (bee.getDisplayName().getString().equalsIgnoreCase(trans)) {
-				itemStackToDrop = new ItemStack(StatueRegistry.BEE_STATUE.get());
+			if (bee.getDisplayName().getString().equalsIgnoreCase(tropi)) {
+				itemStackToDrop = new ItemStack(StatueRegistry.TROPIBEE.get());
 				itemStackToDrop.set(DataComponents.CUSTOM_NAME, Component.literal(tropi));
 			}
 			dropLootStatues(entity, itemStackToDrop, source, event);
