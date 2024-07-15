@@ -75,22 +75,13 @@ repositories {
     }
 }
 
-// Sets up a dependency configuration called 'localRuntime'.
-// This configuration should be used instead of 'runtimeOnly' to declare
-// a dependency that will be present for runtime testing but that is
-// "optional", meaning it will not be pulled by dependents of this mod.
-configurations {
-    runtimeClasspath.extendsFrom localRuntime
-}
-
-
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
     compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
 
-    localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
 
 //    compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
 //    compileOnly "dev.architectury:architectury-neoforge:${architectury_version}"
@@ -106,8 +97,8 @@ dependencies {
 //    implementation "vazkii.patchouli:Patchouli:${patchouli_version}"
 //    implementation "xyz.brassgoggledcoders:PatchouliProvider:${patchouli_provider_version}"
 
-//    localRuntime "curse.maven:jade-324721:5366595" //Jade (WAILA)
-//    localRuntime "curse.maven:TheOneProbe-245211:5084077" //The One probe (TOP)
+    runtimeOnly "curse.maven:jade-324721:5529595" //Jade (WAILA)
+//    runtimeOnly "curse.maven:TheOneProbe-245211:5084077" //The One probe (TOP)
 }
 
 jar {
