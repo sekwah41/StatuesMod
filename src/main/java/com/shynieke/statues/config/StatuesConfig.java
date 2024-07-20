@@ -45,6 +45,7 @@ public class StatuesConfig {
 		Common(ModConfigSpec.Builder builder) {
 			//General settings
 			builder.comment("General settings")
+					.translation("statues.configuration.general.title")
 					.push("general");
 
 			statueBatSpawning = builder
@@ -75,6 +76,7 @@ public class StatuesConfig {
 
 			//Statue drop settings
 			builder.comment("Statue drop Settings")
+					.translation("statues.configuration.drops.title")
 					.push("drops");
 
 			statueDropChance = builder
@@ -92,6 +94,7 @@ public class StatuesConfig {
 
 			//Player settings
 			builder.comment("Player Statue Settings")
+					.translation("statues.configuration.player.title")
 					.push("player");
 
 			playerDropsStatue = builder
@@ -117,6 +120,7 @@ public class StatuesConfig {
 
 			//Info messages
 			builder.comment("Info messages")
+					.translation("statues.configuration.info_messages.title")
 					.push("info_messages");
 
 			String[] messages = new String[]
@@ -143,12 +147,13 @@ public class StatuesConfig {
 
 			info_messages = builder
 					.comment("Adding lines / removing lines specifies what the informative statue can say")
-					.defineListAllowEmpty(List.of("info_messages"), () -> List.of(messages), o -> (o instanceof String));
+					.defineListAllowEmpty(List.of("info_messages"), () -> List.of(messages), () -> "", o -> (o instanceof String));
 
 			builder.pop();
 
 			// Lucky Players
 			builder.comment("Lucky players")
+					.translation("statues.configuration.lucky_players.title")
 					.push("lucky_players");
 
 			String[] luckyPlayers = new String[]
@@ -158,7 +163,7 @@ public class StatuesConfig {
 
 			lucky_players = builder
 					.comment("Adding usernames will make these users have less luck with getting statues")
-					.defineListAllowEmpty(List.of("lucky_players"), () -> List.of(luckyPlayers), o -> (o instanceof String));
+					.defineListAllowEmpty(List.of("lucky_players"), () -> List.of(luckyPlayers), () -> "", o -> (o instanceof String));
 
 			builder.pop();
 		}
@@ -169,7 +174,8 @@ public class StatuesConfig {
 
 		Client(ModConfigSpec.Builder builder) {
 			builder.comment("Client settings")
-					.push("Client");
+					.translation("statues.configuration.client.title")
+					.push("client");
 
 			allowScrolling = builder
 					.comment("Allow scrolling to increase / decrease an angle value in the posing screen")

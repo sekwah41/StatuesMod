@@ -367,6 +367,49 @@ public class StatueLanguageProvider extends LanguageProvider {
 		addAdvancement("frog_all_statue", "Combining our powers for reals", "Collect all Frog Statues");
 		addAdvancement("tadpole_statue", "Frogn't", "Obtain a Tadpole Statue");
 		addAdvancement("warden_statue", "You've been Awardend", "Obtain a Warden Statue");
+
+		//Config
+		add("statues.configuration.general.title", "General");
+		add("statues.configuration.statueBatSpawning", "Statue Bat Spawning");
+		add("statues.configuration.statueBatSpawning.tooltip", "Setting this to false disables the statue bat from spawning naturally (Default: true)");
+		add("statues.configuration.ancientCityLoot", "Ancient City Loot");
+		add("statues.configuration.ancientCityLoot.tooltip", "When enabled this will allow Ancient City loot to contain statues (Default: true)");
+		add("statues.configuration.ancientCityLootChance", "Ancient City Loot Chance");
+		add("statues.configuration.ancientCityLootChance.tooltip", "The chance of a statue appearing in ancient City loot (Default: 0.1)");
+		add("statues.configuration.statueCooldown", "Statue Cooldown");
+		add("statues.configuration.statueCooldown.tooltip", "The amount of ticks before an upgraded statue becomes interact-able (Default: 200)");
+		add("statues.configuration.statueMinCooldown", "Statue Min Cooldown");
+		add("statues.configuration.statueMinCooldown.tooltip", "The minimum cooldown in ticks a statue can have after the speed has been subtracted (Default: 10)");
+		add("statues.configuration.statueSpeedUpgrade", "Statue Speed Upgrade");
+		add("statues.configuration.statueSpeedUpgrade.tooltip", "The amount of ticks subtracted from the statue cooldown per level of Speed applied (Default: 20)");
+
+		add("statues.configuration.drops.title", "Drops");
+		add("statues.configuration.statueDropChance", "Statue Drop Chance");
+		add("statues.configuration.statueDropChance.tooltip", "The drop chance of statues when statue drops is true (Default: 0.01)");
+		add("statues.configuration.statueKillSource", "Statue Kill Source");
+		add("statues.configuration.statueKillSource.tooltip", "Source of death that determines how the Statues drop (Default: \"PLAYER\") [player statue has it's own config option],\nALL = All sources,\nPLAYER = Player only,\nPLAYER_FAKEPLAYER = Players / Fake players only");
+
+		add("statues.configuration.player.title", "Player");
+		add("statues.configuration.playerDropsStatue", "Player Drops Statue");
+		add("statues.configuration.playerDropsStatue.tooltip", "When true players will drop Player Statues when killed (Default: true)");
+		add("statues.configuration.playerDropsKillSource", "Player Drops Kill Source");
+		add("statues.configuration.playerDropsKillSource.tooltip", "Source of death that determines how the Player Statue drops (Default: \"PLAYER\") [player statue has it's own config option],\n ALL = All sources,\n PLAYER = Player only,\n PLAYER_FAKEPLAYER = Players / Fake players only");
+		add("statues.configuration.playerStatueDropChance", "Player Statue Drop Chance");
+		add("statues.configuration.playerStatueDropChance.tooltip", "The drop chance of player statues when playerDropsStatue is enabled (Default: 1.0)");
+		add("statues.configuration.playerCompass", "Player Compass");
+		add("statues.configuration.playerCompass.tooltip", "When true Statues will add a player compass (Default: true)");
+
+		add("statues.configuration.info_messages.title", "Info Messages");
+		add("statues.configuration.info_messages", "Info Messages");
+		add("statues.configuration.info_messages.tooltip", "Adding lines / removing lines specifies what the informative statue can say");
+
+		add("statues.configuration.lucky_players.title", "Lucky Players");
+		add("statues.configuration.lucky_players", "Lucky Players");
+		add("statues.configuration.lucky_players.tooltip", "Adding usernames will make these users have less luck with getting statues");
+
+		add("statues.configuration.client.title", "Client");
+		add("statues.configuration.allowScrolling", "Allow Scrolling");
+		add("statues.configuration.allowScrolling.tooltip", "Allow scrolling to increase / decrease an angle value in the posing screen");
 	}
 
 	/**
