@@ -1,1 +1,1 @@
-* Update support for NeoForge **21.0.110-beta** in-game configs (Which is now the minimum required version)
+* Supply translations for the config
