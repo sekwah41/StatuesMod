@@ -3,7 +3,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.154'
+    id 'net.neoforged.gradle.userdev' version '7.0.155'
     id 'net.darkhax.curseforgegradle' version '1.1.24'
     id 'com.modrinth.minotaur' version "2.+"
 }
@@ -67,9 +67,13 @@ repositories {
     maven {
         url = "https://maven.shedaniel.me/"
     }
-    maven {
-        url "https://cursemaven.com"
-        content {
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
             includeGroup "curse.maven"
         }
     }
@@ -97,7 +101,7 @@ dependencies {
 //    implementation "vazkii.patchouli:Patchouli:${patchouli_version}"
 //    implementation "xyz.brassgoggledcoders:PatchouliProvider:${patchouli_provider_version}"
 
-    runtimeOnly "curse.maven:jade-324721:5529595" //Jade (WAILA)
+    runtimeOnly "curse.maven:jade-324717:5529595" //Jade (WAILA)
 //    runtimeOnly "curse.maven:TheOneProbe-245211:5084077" //The One probe (TOP)
 }
 
