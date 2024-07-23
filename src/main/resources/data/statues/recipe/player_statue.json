@@ -14,7 +14,7 @@
       "item": "statues:statue_core"
     },
     "L": {
-      "tag": "forge:storage_blocks/lapis"
+      "tag": "c:storage_blocks/lapis"
     },
     "Z": {
       "item": "statues:zombie_statue"
