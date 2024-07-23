@@ -1,1 +1,1 @@
-* Supply translations for the config
+* Fix the tag used in the hardcore `Player Statue` recipe
