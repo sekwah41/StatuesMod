@@ -57,7 +57,7 @@ public class HardcoreRecipe extends ShapedRecipe {
 
 	@Override
 	public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider lookupProvider) {
-		return this.getResultItem(lookupProvider).copy();
+		return this.result.copy();
 	}
 
 	public static class Serializer implements RecipeSerializer<HardcoreRecipe> {
