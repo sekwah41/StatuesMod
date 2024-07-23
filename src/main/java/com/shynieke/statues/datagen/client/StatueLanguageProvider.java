@@ -6,6 +6,7 @@ import com.shynieke.statues.registry.StatueSounds;
 import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -445,5 +446,18 @@ public class StatueLanguageProvider extends LanguageProvider {
 		String prefix = "advancement.statues.";
 		add(prefix + id + ".title", name);
 		add(prefix + id + ".desc", description);
+	}
+
+	/**
+	 * Add the translation for a config entry
+	 *
+	 * @param path        The path of the config entry
+	 * @param name        The name of the config entry
+	 * @param description The description of the config entry (optional in case of targeting "title" or similar entries that have no tooltip)
+	 */
+	private void addConfig(String path, String name, @Nullable String description) {
+		this.add("statues.configuration." + path, name);
+		if (description != null && !description.isEmpty())
+			this.add("statues.configuration." + path + ".tooltip", description);
 	}
 }
