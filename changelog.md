@@ -1,1 +1,1 @@
-* Fix the tag used in the hardcore `Player Statue` recipe
+* Fix upgraded statues losing their upgrade upon being placed and broken
