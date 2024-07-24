@@ -250,7 +250,9 @@ public class PlayerStatue extends LivingEntity {
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("profileExists", entityData.get(RESOLVABLE_PROFILE).isPresent());
 		if (getGameProfile().isPresent()) {
-			compound.put("profile", ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(RESOLVABLE_PROFILE).get()).getOrThrow());
+			ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(RESOLVABLE_PROFILE).get())
+					.resultOrPartial(Statues.LOGGER::error)
+					.ifPresent(profile -> compound.put("profile", profile));
 
 		}
 

@@ -90,22 +90,18 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 
 	@Override
 	public void saveToItem(ItemStack stack, HolderLookup.Provider provider) {
-		CompoundTag compound = this.saveWithoutMetadata(provider);
-		compound.remove("StatueCooldown");
-		compound.remove("InteractionCooldown");
-		compound.remove("StatueAble");
-		compound.remove("StatueInteractable");
-		BlockItem.setBlockEntityData(stack, this.getType(), compound);
+		stack.set(StatueDataComponents.STATS, this.stats);
+		stack.set(StatueDataComponents.UPGRADED, true);
+		stack.set(StatueDataComponents.UPGRADES, new StatueUpgrades(this.upgrades));
 	}
 
 	@Override
 	protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
 		super.applyImplicitComponents(input);
+		this.stats = input.getOrDefault(StatueDataComponents.STATS, StatueStats.empty());
 		Map<String, Short> upgradeMap = input.getOrDefault(StatueDataComponents.UPGRADES, StatueUpgrades.empty()).upgradeMap();
 		if (!upgradeMap.isEmpty())
 			this.upgrades.putAll(upgradeMap);
-
-		this.stats = input.getOrDefault(StatueDataComponents.STATS, StatueStats.empty());
 	}
 
 	@Override
@@ -206,13 +202,15 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		statueLevel = compound.getInt(Reference.LEVEL);
 		upgradeSlots = compound.getInt(Reference.UPGRADE_SLOTS);
 
-		StatueUpgrades.CODEC
-				.parse(NbtOps.INSTANCE, compound.get("upgrades"))
-				.resultOrPartial(error -> Statues.LOGGER.error("Failed to load upgrades from statue: {}", error))
-				.ifPresent(upgrades -> {
-					this.upgrades.clear();
-					this.upgrades.putAll(upgrades.upgradeMap());
-				});
+		if (compound.contains("upgrades")) {
+			StatueUpgrades.CODEC
+					.parse(NbtOps.INSTANCE, compound.get("upgrades"))
+					.resultOrPartial(error -> Statues.LOGGER.error("Failed to load upgrades from statue: {}", error))
+					.ifPresent(upgrades -> {
+						this.upgrades.clear();
+						this.upgrades.putAll(upgrades.upgradeMap());
+					});
+		}
 
 		if (compound.contains("stats")) {
 			StatueStats.CODEC
@@ -228,8 +226,16 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 
 	public CompoundTag saveToNbt(CompoundTag compound, HolderLookup.Provider provider) {
 		saveUpgrades(compound, provider);
-		compound.put("upgrades", StatueUpgrades.CODEC.encodeStart(NbtOps.INSTANCE, new StatueUpgrades(this.upgrades)).getOrThrow());
-		compound.put("stats", StatueStats.CODEC.encodeStart(NbtOps.INSTANCE, this.stats).getOrThrow());
+		if (this.upgrades != null) {
+			StatueUpgrades.CODEC.encodeStart(NbtOps.INSTANCE, new StatueUpgrades(this.upgrades))
+					.resultOrPartial(Statues.LOGGER::error)
+					.ifPresent(upgrades -> compound.put("upgrades", upgrades));
+		}
+		if (this.stats != null) {
+			StatueStats.CODEC.encodeStart(NbtOps.INSTANCE, this.stats)
+					.resultOrPartial(Statues.LOGGER::error)
+					.ifPresent(stats -> compound.put("stats", stats));
+		}
 
 		return compound;
 	}

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.NoteBlock;
@@ -104,19 +105,14 @@ public abstract class AbstractStatueBase extends AbstractBaseBlock implements En
 		return level.isClientSide ? null : createTickerHelper(blockEntityType, blockEntityType1, StatueBlockEntity::serverTick);
 	}
 
-//	@Override
-//	public ItemStack getCloneItemStack(LevelReader getter, BlockPos pos, BlockState state) {
-//		ItemStack itemstack = super.getCloneItemStack(getter, pos, state);
-//		StatueBlockEntity statueBlockEntity = getBE(getter, pos);
-//		if (statueBlockEntity != null && state.getValue(INTERACTIVE)) {
-//			CompoundTag nbt = statueBlockEntity.saveToNbt(new CompoundTag());
-//			if (!nbt.isEmpty()) {
-//				itemstack.addTagElement("BlockEntityTag", nbt);
-//			}
-//		}
-//
-//		return itemstack;
-//	}
+	@Override
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+		ItemStack itemstack = super.getCloneItemStack(level, pos, state);
+		if (level.getBlockEntity(pos) != null) {
+			level.getBlockEntity(pos).saveToItem(itemstack, level.registryAccess());
+		}
+		return itemstack;
+	}
 
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {

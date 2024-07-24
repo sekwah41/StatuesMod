@@ -90,7 +90,9 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 	public void saveAdditional(CompoundTag compound, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(compound, lookupProvider);
 		if (this.playerProfile != null) {
-			compound.put("profile", ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, this.playerProfile).getOrThrow());
+			ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, this.playerProfile)
+					.resultOrPartial(Statues.LOGGER::error)
+					.ifPresent(profile -> compound.put("profile", profile));
 		}
 		compound.putBoolean("comparatorApplied", comparatorApplied);
 		compound.putBoolean("OnlineChecking", onlineChecking);
