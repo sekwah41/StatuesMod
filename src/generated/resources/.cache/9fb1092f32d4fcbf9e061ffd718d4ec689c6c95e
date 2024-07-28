@@ -1,4 +1,4 @@
-// 1.21	2024-06-13T19:18:31.1916589	Recipes
+// 1.21	2024-07-28T20:23:51.5699069	Recipes
 18e987dfadfe8b3a50e692cace2f8740225aa39b data/statues/advancement/recipes/decorations/display_stand_from_quartz_block_stonecutting.json
 63a4b8f8cbc1656364761abc74c1b083424037a7 data/statues/advancement/recipes/misc/info_statue.json
 b6d4957c7a93a1c517d6db67df0e43acd4d3ae97 data/statues/advancement/recipes/misc/statue_table.json
@@ -41,7 +41,7 @@ dd6fd204d77186bdfbc1fdd902a8cc16e7ba00f3 data/statues/recipe/loot/king_cluck_sta
 7239a34533e14848c742f28cbb3ad3affc405f01 data/statues/recipe/loot/pig_statue.json
 e66169d82848411ba9b8c4419fc6dde2c8092e0f data/statues/recipe/loot/pillager_statue.json
 9c031fb19f4945d7cea0ae2844f7103535d65b61 data/statues/recipe/loot/pufferfish_statue.json
-944931e2ab7c404fbb402a5d8e2fe75f87277def data/statues/recipe/loot/rabbit_statue.json
+b8e3405d10a555f9acf8ab0c415658578e2b9421 data/statues/recipe/loot/rabbit_statue.json
 fa20b46014d8e2267a5e3caa2468ee0d3bde0e32 data/statues/recipe/loot/ravager_statue.json
 81d392cbbee1f6e653931886dbef37ba6b8d7f25 data/statues/recipe/loot/salmon_statue.json
 f29b31f71982c0defb95561684dafd4c7bbf1f5e data/statues/recipe/loot/sheep_shaven_statue.json
