@@ -87,12 +87,12 @@ dependencies {
 
     runtimeOnly "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
 
-//    compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-//    compileOnly "dev.architectury:architectury-neoforge:${architectury_version}"
-//    compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
-//    compileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:${rei_version}"
+    compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+    compileOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
+    compileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:${rei_version}"
 
-//    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
 //    implementation "com.blamejared.crafttweaker:CraftTweaker-neoforge-${mc_version}:${crafttweaker_version}"
 
@@ -154,7 +154,7 @@ if (System.getenv().CURSEFORGE_KEY) {
         mainFile.changelog = file("$project.rootDir/changelog.md")
         mainFile.changelogType = 'markdown'
 
-        mainFile.addOptional(/*"curios", "the-cactus-mod",roughly-enough-items", "jei", "patchouli"*/)
+        mainFile.addOptional("jade", "roughly-enough-items", "jei"/*"curios", "the-cactus-mod", "patchouli"*/)
     }
 }
 
@@ -173,8 +173,9 @@ if (System.getenv().MODRINTH_KEY) {
         dependencies {
 //            optional.project "curios"
 //            optional.project "the-cactus-mod"
-//            optional.project "rei"
-//            optional.project "jei"
+            optional.project "jade"
+            optional.project "rei"
+            optional.project "jei"
 //            optional.project "patchouli"
         }
     }
