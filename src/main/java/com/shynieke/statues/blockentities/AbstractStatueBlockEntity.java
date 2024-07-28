@@ -58,7 +58,6 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 	public boolean statueInteractable;
 
 	public boolean statueUpgraded;
-	private int mobKilled, statueLevel, upgradeSlots;
 
 	protected AbstractStatueBlockEntity(BlockEntityType<?> tileType, BlockPos pos, BlockState state) {
 		super(tileType, pos, state);
@@ -175,7 +174,15 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 	}
 
 	public int getStatueLevel() {
-		return statueLevel;
+		return stats.level();
+	}
+
+	public int getUpgradeSlots() {
+		return stats.upgradeSlots();
+	}
+
+	public int getKillCount() {
+		return stats.killCount();
 	}
 
 	public boolean isStatueAble() {
@@ -198,9 +205,6 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 
 	public void loadFromNbt(CompoundTag compound, HolderLookup.Provider provider) {
 		statueUpgraded = compound.getBoolean(Reference.UPGRADED);
-		mobKilled = compound.getInt(Reference.KILL_COUNT);
-		statueLevel = compound.getInt(Reference.LEVEL);
-		upgradeSlots = compound.getInt(Reference.UPGRADE_SLOTS);
 
 		if (compound.contains("upgrades")) {
 			StatueUpgrades.CODEC
@@ -242,9 +246,6 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 
 	public CompoundTag saveUpgrades(CompoundTag tag, HolderLookup.Provider provider) {
 		tag.putBoolean(Reference.UPGRADED, statueUpgraded);
-		tag.putInt(Reference.KILL_COUNT, mobKilled);
-		tag.putInt(Reference.LEVEL, statueLevel);
-		tag.putInt(Reference.UPGRADE_SLOTS, upgradeSlots);
 
 		return tag;
 	}
