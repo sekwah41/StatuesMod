@@ -29,7 +29,7 @@ public class StatueTeaItem extends Item {
 
 			playerIn.awardStat(Stats.ITEM_USED.get(this));
 
-			if (!playerIn.getAbilities().instabuild) {
+			if (!playerIn.hasInfiniteMaterials()) {
 				if (stack.isEmpty()) {
 					return new ItemStack(StatueRegistry.CUP.get());
 				}

@@ -303,7 +303,7 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity implements IOwn
 		if (hasSpecialInteraction() && level != null && !level.isClientSide) {
 			ItemStack stack = playerIn.getItemInHand(hand);
 			int random = level.random.nextInt(100);
-			if (stack.getItem() == Items.BUCKET && !playerIn.getAbilities().instabuild) {
+			if (stack.getItem() == Items.BUCKET && !playerIn.hasInfiniteMaterials()) {
 				level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.NEUTRAL, 1F, 1F);
 				stack.shrink(1);
 
@@ -327,7 +327,7 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity implements IOwn
 	public void mooshroomBehavior(Player playerIn, BlockPos pos, InteractionHand hand) {
 		if (hasSpecialInteraction() && level != null && !level.isClientSide) {
 			ItemStack stack = playerIn.getItemInHand(hand);
-			if (stack.getItem() == Items.BOWL && !playerIn.getAbilities().instabuild) {
+			if (stack.getItem() == Items.BOWL && !playerIn.hasInfiniteMaterials()) {
 				level.playSound(null, pos, SoundEvents.COW_MILK, SoundSource.NEUTRAL, 1F, 1F);
 				stack.shrink(1);
 
@@ -344,7 +344,7 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity implements IOwn
 	public void cowBehavior(Player playerIn, BlockPos pos, InteractionHand hand) {
 		if (hasSpecialInteraction() && level != null && !level.isClientSide) {
 			ItemStack stack = playerIn.getItemInHand(hand);
-			if (stack.getItem() == Items.BUCKET && !playerIn.getAbilities().instabuild) {
+			if (stack.getItem() == Items.BUCKET && !playerIn.hasInfiniteMaterials()) {
 				level.playSound(null, pos, SoundEvents.COW_MILK, SoundSource.NEUTRAL, 1F, 1F);
 				stack.shrink(1);
 

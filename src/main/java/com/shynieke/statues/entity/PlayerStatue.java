@@ -497,7 +497,7 @@ public class PlayerStatue extends LivingEntity {
 			return false;
 		} else if (itemstack.isEmpty() && (this.disabledSlots & 1 << slot.getFilterFlag() + 16) != 0) {
 			return false;
-		} else if (player.getAbilities().instabuild && itemstack.isEmpty() && !stack.isEmpty()) {
+		} else if (player.hasInfiniteMaterials() && itemstack.isEmpty() && !stack.isEmpty()) {
 			ItemStack itemstack2 = stack.copy();
 			itemstack2.setCount(1);
 			this.setItemSlot(slot, itemstack2);

@@ -279,9 +279,7 @@ public class PlayerStatueBlock extends AbstractBaseBlock {
 								playerCompass.set(StatueDataComponents.PLAYER_COMPASS_DATA.get(), new PlayerCompassData(playerPos, tileProfile.name().orElse("Unknown")));
 
 								if (!isPlayerCompass) {
-									if (!playerIn.getAbilities().instabuild) {
-										stack.shrink(1);
-									}
+									stack.consume(1, playerIn);
 									if (stack.isEmpty()) {
 										playerIn.setItemInHand(hand, playerCompass);
 									} else if (!playerIn.getInventory().add(playerCompass)) {
@@ -299,9 +297,7 @@ public class PlayerStatueBlock extends AbstractBaseBlock {
 					}
 					if (stack.getItem() == Items.COMPARATOR) {
 						if (!playerBlockEntity.getComparatorApplied()) {
-							if (!playerIn.getAbilities().instabuild) {
-								stack.shrink(1);
-							}
+							stack.consume(1, playerIn);
 							playerBlockEntity.setComparatorApplied(true);
 							playerBlockEntity.updateOnline();
 							return ItemInteractionResult.SUCCESS;
@@ -325,9 +321,7 @@ public class PlayerStatueBlock extends AbstractBaseBlock {
 							level.addFreshEntity(playerStatueEntity);
 							level.playSound((Player) null, playerStatueEntity.getX(), playerStatueEntity.getY(), playerStatueEntity.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
 
-							if (!playerIn.getAbilities().instabuild) {
-								stack.shrink(1);
-							}
+							stack.consume(1, playerIn);
 						}
 					}
 				}

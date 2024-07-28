@@ -58,7 +58,8 @@ public class FishStatueBlock extends AbstractStatueBase {
 			fishBlockEntity.scrambleColors();
 			level.sendBlockUpdated(pos, state, state, 6);
 			level.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundSource.NEUTRAL, 1F, 1.0F);
-			if (!player.getAbilities().instabuild) {
+
+			if (!player.hasInfiniteMaterials()) {
 				stack.shrink(1);
 				if (!player.getInventory().add(new ItemStack(Items.SPONGE))) {
 					ItemEntity itemEntity = new ItemEntity(level, pos.getX(), pos.getY() + 0.5, pos.getZ(), stack);
