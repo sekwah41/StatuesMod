@@ -107,7 +107,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 						StatueRegistry.RABBIT_BW_STATUE.get(), StatueRegistry.RABBIT_GO_STATUE.get(),
 						StatueRegistry.RABBIT_WH_STATUE.get(), StatueRegistry.RABBIT_WS_STATUE.get()
 				))
-				.result1(Items.RABBIT_HIDE).result1(Items.RABBIT).result1(Items.RABBIT_FOOT).save(consumer,
+				.result1(Items.RABBIT_HIDE).result2(Items.RABBIT).result3(Items.RABBIT_FOOT).save(consumer,
 						ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "loot/rabbit_statue"));
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.RAVAGER_STATUE.get()))
 				.result3(Items.SADDLE).save(consumer);
