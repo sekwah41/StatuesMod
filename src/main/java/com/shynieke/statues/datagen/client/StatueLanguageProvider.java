@@ -411,6 +411,8 @@ public class StatueLanguageProvider extends LanguageProvider {
 		add("statues.configuration.client.title", "Client");
 		add("statues.configuration.allowScrolling", "Allow Scrolling");
 		add("statues.configuration.allowScrolling.tooltip", "Allow scrolling to increase / decrease an angle value in the posing screen");
+
+		add("config.jade.plugin_statues.upgrades", "Statue Upgrades");
 	}
 
 	/**
