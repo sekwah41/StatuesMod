@@ -26,7 +26,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.FireworkExplosion;
@@ -61,6 +60,7 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 
 	protected AbstractStatueBlockEntity(BlockEntityType<?> tileType, BlockPos pos, BlockState state) {
 		super(tileType, pos, state);
+		this.stats = StatueStats.empty();
 		this.cooldown = StatuesConfig.COMMON.statueCooldown.get();
 		this.interactCooldown = StatuesConfig.COMMON.statueCooldown.get();
 		this.statueAble = false;
@@ -174,15 +174,15 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 	}
 
 	public int getStatueLevel() {
-		return stats.level();
+		return stats != null ? stats.level() : -1;
 	}
 
 	public int getUpgradeSlots() {
-		return stats.upgradeSlots();
+		return stats != null ? stats.upgradeSlots() : -1;
 	}
 
 	public int getKillCount() {
-		return stats.killCount();
+		return stats != null ? stats.killCount() : -1;
 	}
 
 	public boolean isStatueAble() {
