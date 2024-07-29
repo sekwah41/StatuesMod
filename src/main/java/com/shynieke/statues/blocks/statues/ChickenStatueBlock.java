@@ -1,5 +1,6 @@
 package com.shynieke.statues.blocks.statues;
 
+import com.shynieke.statues.blockentities.StatueBlockEntity;
 import com.shynieke.statues.blocks.AbstractStatueBase;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.core.BlockPos;
@@ -28,14 +29,18 @@ public class ChickenStatueBlock extends AbstractStatueBase {
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		if (this.isDecorative(state) && placer != null) {
-			Block block = level.getBlockState(pos.below()).getBlock();
-			if (block == Blocks.GOLD_BLOCK) {
-				BlockPos downPos = pos.below();
-				level.addParticle(ParticleTypes.EXPLOSION, downPos.getX(), downPos.getY(), downPos.getZ(), 1.0D, 0.0D, 0.0D);
-				level.setBlockAndUpdate(pos.below(), StatueRegistry.KING_CLUCK_STATUE.get().defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()));
-				level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-			}
+		if (this.isDecorative(state) && placer != null && level.getBlockState(pos.below()).is(Blocks.GOLD_BLOCK)) {
+			BlockPos downPos = pos.below();
+			level.addParticle(ParticleTypes.EXPLOSION, downPos.getX(), downPos.getY(), downPos.getZ(), 1.0D, 0.0D, 0.0D);
+
+			//Get king statue blockstate
+			BlockState kingState = StatueRegistry.KING_CLUCK_STATUE.get().defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
+			level.setBlockAndUpdate(pos.below(), kingState);
+			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+
+			//Set block entity
+			StatueBlockEntity newBlockEntity = new StatueBlockEntity(pos.below(), kingState);
+			level.setBlockEntity(newBlockEntity);
 		}
 		super.setPlacedBy(level, pos, state, placer, stack);
 	}

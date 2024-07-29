@@ -1,5 +1,6 @@
 package com.shynieke.statues.blocks.statues;
 
+import com.shynieke.statues.blockentities.StatueBlockEntity;
 import com.shynieke.statues.blocks.AbstractStatueBase;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.core.BlockPos;
@@ -33,8 +34,13 @@ public class PigStatueBlock extends AbstractStatueBase {
 			if (level.getBlockState(pos.below()).is(Tags.Blocks.SANDS)) {
 				BlockPos downPos = pos.below();
 				level.addParticle(ParticleTypes.EXPLOSION, downPos.getX(), downPos.getY(), downPos.getZ(), 1.0D, 0.0D, 0.0D);
-				level.setBlockAndUpdate(pos.below(), StatueRegistry.WASTELAND_STATUE.get().defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()));
+				BlockState wastelandState = StatueRegistry.WASTELAND_STATUE.get().defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
+				level.setBlockAndUpdate(pos.below(), wastelandState);
 				level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+
+				//Set block entity
+				StatueBlockEntity newBlockEntity = new StatueBlockEntity(pos.below(), wastelandState);
+				level.setBlockEntity(newBlockEntity);
 			}
 		}
 		super.setPlacedBy(level, pos, state, placer, stack);

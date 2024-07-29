@@ -1,5 +1,6 @@
 package com.shynieke.statues.blocks.decorative;
 
+import com.shynieke.statues.blockentities.StatueBlockEntity;
 import com.shynieke.statues.blocks.AbstractBaseBlock;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.core.BlockPos;
@@ -35,8 +36,13 @@ public class SombreroBlock extends AbstractBaseBlock {
 		if (block == Blocks.CACTUS && placer != null) {
 			BlockPos downPos = pos.below();
 			level.addParticle(ParticleTypes.EXPLOSION, downPos.getX(), downPos.getY(), downPos.getZ(), 1.0D, 0.0D, 0.0D);
-			level.setBlockAndUpdate(pos.below(), StatueRegistry.BUMBO_STATUE.get().defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()));
+			BlockState bumboState = StatueRegistry.BUMBO_STATUE.get().defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
+			level.setBlockAndUpdate(pos.below(), bumboState);
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+
+			//Set block entity
+			StatueBlockEntity newBlockEntity = new StatueBlockEntity(pos.below(), bumboState);
+			level.setBlockEntity(newBlockEntity);
 		}
 		super.setPlacedBy(level, pos, state, placer, stack);
 	}
