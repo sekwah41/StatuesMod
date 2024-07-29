@@ -1,4 +1,1 @@
-* Fix the loot table of the Rabbit Statues
-* Allow placed Sheep Statues to be dyed (retaining their upgrades)
-* Add Jade support
-* Re-enable REI support
+* Fix Jade crashing upon trying to render the stats of a special placed statue
