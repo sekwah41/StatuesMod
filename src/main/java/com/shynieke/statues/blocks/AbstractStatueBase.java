@@ -61,7 +61,7 @@ public abstract class AbstractStatueBase extends AbstractBaseBlock implements En
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
 	                                          InteractionHand hand, BlockHitResult result) {
-		if (state.getValue(INTERACTIVE).booleanValue() && hand == InteractionHand.MAIN_HAND) {
+		if (state.getValue(INTERACTIVE) && hand == InteractionHand.MAIN_HAND) {
 			if (!level.isClientSide && (getBE(level, pos) != null)) {
 				return getBE(level, pos).interact(level, pos, state, player, hand, result);
 			}
@@ -93,7 +93,7 @@ public abstract class AbstractStatueBase extends AbstractBaseBlock implements En
 
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		if (state.getValue(INTERACTIVE).booleanValue()) {
+		if (state.getValue(INTERACTIVE)) {
 			return createStatueTicker(level, blockEntityType, StatueBlockEntities.STATUE.get());
 		} else {
 			return null;

@@ -47,7 +47,7 @@ public class PigStatueBlock extends AbstractStatueBase {
 	}
 
 	public boolean isDecorative(BlockState state) {
-		return !state.getValue(INTERACTIVE).booleanValue();
+		return !state.getValue(INTERACTIVE);
 	}
 
 	@Override

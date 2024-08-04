@@ -55,7 +55,7 @@ public class ShulkerStatueBlock extends AbstractStatueBase {
 
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		if (state.getValue(INTERACTIVE).booleanValue()) {
+		if (state.getValue(INTERACTIVE)) {
 			return createStatueTicker(level, blockEntityType, StatueBlockEntities.SHULKER_STATUE.get());
 		} else {
 			return null;

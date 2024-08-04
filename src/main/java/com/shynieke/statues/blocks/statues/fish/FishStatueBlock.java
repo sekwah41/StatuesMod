@@ -124,7 +124,7 @@ public class FishStatueBlock extends AbstractStatueBase {
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
 		if (state.is(StatueTags.IS_TROPICAL_FISH)) {
-			if (state.getValue(INTERACTIVE).booleanValue()) {
+			if (state.getValue(INTERACTIVE)) {
 				return createStatueTicker(level, blockEntityType, StatueBlockEntities.TROPICAL_FISH.get());
 			} else {
 				return null;
