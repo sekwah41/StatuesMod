@@ -98,7 +98,7 @@ public class Statues {
 
 	public void serverAboutToStart(final ServerAboutToStartEvent event) {
 		MinecraftServer server = event.getServer();
-		PlayerBlockEntity.setup(server.getProfileCache(), server.getSessionService(), server);
+		PlayerBlockEntity.setup(server.services, server);
 		GameProfileCache.setUsesAuthentication(server.usesAuthentication());
 	}
 }

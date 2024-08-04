@@ -1,5 +1,6 @@
 package com.shynieke.statues.items;
 
+import com.shynieke.statues.blockentities.PlayerBlockEntity;
 import com.shynieke.statues.client.render.PlayerBEWLR;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -9,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.function.Consumer;
@@ -21,19 +21,19 @@ public class PlayerStatueBlockItem extends StatueBlockItem {
 	}
 
 	@Override
-	public Component getName(ItemStack pStack) {
-		ResolvableProfile resolvableprofile = pStack.get(DataComponents.PROFILE);
+	public Component getName(ItemStack stack) {
+		ResolvableProfile resolvableprofile = stack.get(DataComponents.PROFILE);
 		return (Component) (resolvableprofile != null && resolvableprofile.name().isPresent()
 				? Component.translatable(this.getDescriptionId() + ".named", resolvableprofile.name().get())
-				: super.getName(pStack));
+				: super.getName(stack));
 	}
 
 	@Override
-	public void verifyComponentsAfterLoad(ItemStack pStack) {
-		ResolvableProfile resolvableprofile = pStack.get(DataComponents.PROFILE);
+	public void verifyComponentsAfterLoad(ItemStack stack) {
+		ResolvableProfile resolvableprofile = stack.get(DataComponents.PROFILE);
 		if (resolvableprofile != null && !resolvableprofile.isResolved()) {
-			resolvableprofile.resolve()
-					.thenAcceptAsync(profile -> pStack.set(DataComponents.PROFILE, profile), SkullBlockEntity.CHECKED_MAIN_THREAD_EXECUTOR);
+			PlayerBlockEntity.resolve(resolvableprofile)
+					.thenAcceptAsync(profile -> stack.set(DataComponents.PROFILE, profile), PlayerBlockEntity.CHECKED_MAIN_THREAD_EXECUTOR);
 		}
 	}
 

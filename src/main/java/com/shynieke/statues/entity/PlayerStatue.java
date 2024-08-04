@@ -2,6 +2,7 @@ package com.shynieke.statues.entity;
 
 import com.mojang.authlib.GameProfile;
 import com.shynieke.statues.Statues;
+import com.shynieke.statues.blockentities.PlayerBlockEntity;
 import com.shynieke.statues.client.ClientHandler;
 import com.shynieke.statues.client.screen.PlayerStatueData;
 import com.shynieke.statues.network.message.PlayerStatueScreenData;
@@ -46,7 +47,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -417,7 +417,7 @@ public class PlayerStatue extends LivingEntity {
 				super.setCustomName(name);
 
 				String username = name.getString().toLowerCase(Locale.ROOT);
-				SkullBlockEntity.fetchGameProfile(username)
+				PlayerBlockEntity.fetchGameProfile(username)
 						.thenAccept(
 								profile -> this.setGameProfile(new ResolvableProfile(profile.orElse(new GameProfile(Util.NIL_UUID, username))))
 						);

@@ -4,6 +4,8 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.shynieke.statues.Statues;
+import com.shynieke.statues.blockentities.PlayerBlockEntity;
 import com.shynieke.statues.client.ClientHandler;
 import com.shynieke.statues.client.model.StatuePlayerTileModel;
 import net.minecraft.ChatFormatting;
@@ -18,7 +20,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ResolvableProfile;
-import net.minecraft.world.level.block.entity.SkullBlockEntity;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -54,19 +55,25 @@ public class PlayerBEWLR extends BlockEntityWithoutLevelRenderer {
 				if (validFlag) {
 					if (GAMEPROFILE_CACHE.containsKey(stackName)) gameprofile = GAMEPROFILE_CACHE.get(stackName);
 
+					if (!stack.has(DataComponents.PROFILE)) {
+						stack.set(DataComponents.PROFILE, gameprofile);
+					}
 					if (stack.has(DataComponents.PROFILE) && gameprofile == null) {
 						ResolvableProfile resolvableProfile = stack.get(DataComponents.PROFILE);
 						if (resolvableProfile != null && !resolvableProfile.isResolved()) {
 							stack.remove(DataComponents.PROFILE);
-							resolvableProfile.resolve().thenAcceptAsync(profile -> stack.set(DataComponents.PROFILE, profile), Minecraft.getInstance());
+							PlayerBlockEntity.resolve(resolvableProfile).thenAcceptAsync(profile ->
+									stack.set(DataComponents.PROFILE, profile), Minecraft.getInstance());
 						}
 					}
 
 					if (gameprofile == null) {
-						SkullBlockEntity.fetchGameProfile(stackName).thenAccept((profile) -> {
+						PlayerBlockEntity.fetchGameProfile(stackName).thenAccept((profile) -> {
 							if (profile.isPresent()) {
 								GameProfile profile1 = profile.orElse(new GameProfile(Util.NIL_UUID, stackName));
-								GAMEPROFILE_CACHE.put(profile1.getName().toLowerCase(), new ResolvableProfile(profile1));
+								ResolvableProfile resolvableProfile = new ResolvableProfile(profile1);
+								stack.set(DataComponents.PROFILE, resolvableProfile);
+								GAMEPROFILE_CACHE.put(profile1.getName().toLowerCase(), resolvableProfile);
 							}
 						});
 					}
@@ -74,7 +81,8 @@ public class PlayerBEWLR extends BlockEntityWithoutLevelRenderer {
 					if (GAMEPROFILE_CACHE.containsKey("steve")) gameprofile = GAMEPROFILE_CACHE.get("steve");
 
 					if (gameprofile == null) {
-						SkullBlockEntity.fetchGameProfile("steve").thenAccept((profile) -> {
+						Statues.LOGGER.error("Could not find profile for {}, defaulting to steve!", stackName);
+						PlayerBlockEntity.fetchGameProfile("steve").thenAccept((profile) -> {
 							if (profile.isPresent()) {
 								GameProfile profile1 = profile.orElse(new GameProfile(Util.NIL_UUID, "steve"));
 								GAMEPROFILE_CACHE.put(profile1.getName().toLowerCase(), new ResolvableProfile(profile1));

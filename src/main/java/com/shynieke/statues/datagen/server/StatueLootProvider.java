@@ -4,6 +4,7 @@ import com.shynieke.statues.blocks.AbstractStatueBase;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.WritableRegistry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
@@ -72,7 +74,25 @@ public class StatueLootProvider extends LootTableProvider {
 									.add(LootItem.lootTableItem(StatueRegistry.CORE_FLOWER_SEED.get())))
 					)
 			);
-			this.add(StatueRegistry.PLAYER_STATUE.get(), createNameableBlockEntityTable(StatueRegistry.PLAYER_STATUE.get()));
+			this.add(
+					StatueRegistry.PLAYER_STATUE.get(),
+					block -> LootTable.lootTable()
+							.withPool(
+									this.applyExplosionCondition(
+											block,
+											LootPool.lootPool()
+													.setRolls(ConstantValue.exactly(1.0F))
+													.add(
+															LootItem.lootTableItem(block)
+																	.apply(
+																			CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+																					.include(DataComponents.PROFILE)
+																					.include(DataComponents.CUSTOM_NAME)
+																	)
+													)
+									)
+							)
+			);
 			for (DeferredHolder<Block, ? extends Block> blockObject : StatueRegistry.BLOCKS.getEntries()) {
 				if (blockObject.get() instanceof AbstractStatueBase) {
 					this.dropSelf(blockObject.get());
