@@ -55,7 +55,7 @@ public class LootCategory implements IRecipeCategory<LootRecipe> {
 		}
 		RegistryAccess registryAccess = level.registryAccess();
 
-		builder.addSlot(RecipeIngredientRole.INPUT, 1, 23).addIngredients(recipe.getIngredients().get(0));
+		builder.addSlot(RecipeIngredientRole.INPUT, 1, 23).addIngredients(recipe.getIngredients().getFirst());
 
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 55, 5).addItemStack(recipe.getResultItem(registryAccess));
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 55, 23).addItemStack(recipe.getResultItem2(registryAccess));

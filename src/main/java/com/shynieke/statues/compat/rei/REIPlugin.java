@@ -63,7 +63,7 @@ public class REIPlugin implements REIClientPlugin {
 		lootHolders.forEach((holder) -> {
 			LootRecipe recipe = holder.value();
 			registry.add(new LootDisplay(
-					recipe.getIngredients().get(0),
+					recipe.getIngredients().getFirst(),
 					recipe.getResultItem(registryAccess),
 					recipe.getChance1(),
 					recipe.getResultItem2(registryAccess),

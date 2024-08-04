@@ -42,7 +42,7 @@ public class LootCategory implements DisplayCategory<LootDisplay> {
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.add(Widgets.createArrow(new Point(centerPoint.x - 20, centerPoint.y - 7)));
 
-		widgets.add(Widgets.createSlot(new Point(bounds.getMinX() + 8, centerPoint.y - 7)).entries(display.getInputEntries().get(0)).markInput());
+		widgets.add(Widgets.createSlot(new Point(bounds.getMinX() + 8, centerPoint.y - 7)).entries(display.getInputEntries().getFirst()).markInput());
 		if (display.getOutputEntries().size() != 3) {
 			throw new IndexOutOfBoundsException("A Loot Recipe must have 3 outputs!, found " + display.getOutputEntries().size() + " outputs!. Please report this to the mod author!");
 		} else {
