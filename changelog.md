@@ -1,1 +1,1 @@
-* Fix Jade crashing upon trying to render the stats of a special placed statue
+* Hopefully Fix Player Statue rendering
