@@ -101,7 +101,7 @@ dependencies {
 //    implementation "vazkii.patchouli:Patchouli:${patchouli_version}"
 //    implementation "xyz.brassgoggledcoders:PatchouliProvider:${patchouli_provider_version}"
 
-    implementation "curse.maven:jade-324717:5572926" //Jade (WAILA)
+    compileOnly "curse.maven:jade-324717:5572926" //Jade (WAILA)
 //    runtimeOnly "curse.maven:TheOneProbe-245211:5084077" //The One probe (TOP)
 }
 
