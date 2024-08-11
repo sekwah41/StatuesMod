@@ -1,4 +1,4 @@
-package com.shynieke.statues.blocks.decorative;
+package com.shynieke.statues.blocks.statues;
 
 import com.shynieke.statues.blocks.AbstractStatueBase;
 import net.minecraft.core.BlockPos;
@@ -12,12 +12,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class EndermiteStatueBlock extends AbstractStatueBase {
+public class TadpoleStatueBlock extends AbstractStatueBase {
 
-	private static final VoxelShape SHAPE = Block.box(0.1, 0, 0.1, 16, 4, 16);
+	private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
 
-	public EndermiteStatueBlock(Properties properties) {
-		super(properties.sound(SoundType.STONE).isRedstoneConductor(EndermiteStatueBlock::isntSolid));
+	public TadpoleStatueBlock(Properties properties) {
+		super(properties.sound(SoundType.STONE).isRedstoneConductor(TadpoleStatueBlock::isntSolid));
 	}
 
 	@Override
@@ -27,12 +27,12 @@ public class EndermiteStatueBlock extends AbstractStatueBase {
 
 	@Override
 	public SoundEvent getSound(BlockState state) {
-		return SoundEvents.ENDERMITE_AMBIENT;
+		return SoundEvents.TADPOLE_FLOP;
 	}
 
 	@Override
 	public EntityType<?> getEntity() {
-		return EntityType.ENDERMITE;
+		return EntityType.TADPOLE;
 	}
 
 	private static boolean isntSolid(BlockState state, BlockGetter getter, BlockPos pos) {
