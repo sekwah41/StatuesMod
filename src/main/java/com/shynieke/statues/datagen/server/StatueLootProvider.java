@@ -64,6 +64,12 @@ public class StatueLootProvider extends LootTableProvider {
 							.otherwise(LootItem.lootTableItem(block)))));
 			this.dropSelf(StatueRegistry.DISPLAY_STAND.get());
 			this.dropSelf(StatueRegistry.SOMBRERO.get());
+			this.dropSelf(StatueRegistry.BUMBO_STATUE.get());
+			this.dropSelf(StatueRegistry.EAGLE_RAY.get());
+			this.dropSelf(StatueRegistry.SLABFISH.get());
+			this.dropSelf(StatueRegistry.TROPIBEE.get());
+			this.dropSelf(StatueRegistry.AZZARO.get());
+			this.dropSelf(StatueRegistry.TOTEM_OF_UNDYING_STATUE.get());
 			this.dropSelf(StatueRegistry.INFO_STATUE.get());
 			this.dropSelf(StatueRegistry.STATUE_TABLE.get());
 			this.dropSelf(StatueRegistry.CORE_FLOWER.get());

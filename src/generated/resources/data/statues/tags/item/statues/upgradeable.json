@@ -110,6 +110,8 @@
     "statues:frog_temperate_statue",
     "statues:frog_warm_statue",
     "statues:frog_cold_statue",
-    "statues:warden_statue"
+    "statues:warden_statue",
+    "statues:endermite_statue",
+    "statues:tadpole_statue"
   ]
 }
