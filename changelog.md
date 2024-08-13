@@ -1,1 +1,1 @@
-* Update to 1.21.1
+* Fix Bumbo statue placement causing a crash
