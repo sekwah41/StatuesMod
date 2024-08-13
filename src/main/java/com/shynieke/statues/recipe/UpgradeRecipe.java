@@ -103,6 +103,9 @@ public class UpgradeRecipe implements Recipe<RecipeInput> {
 			if (tier != -1 && tier != statueUpgrades.getUpgradeLevel(upgradeType.name().toLowerCase(Locale.ROOT))) {
 				return false;
 			}
+			if (statueUpgrades.getUpgradeLevel(upgradeType.name().toLowerCase(Locale.ROOT)) >= upgradeType.getCap()) {
+				return false;
+			}
 		}
 		if (requireCore) {
 			ItemStack coreStack = recipeInput.getItem(1);
