@@ -14,7 +14,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TadpoleStatueBlock extends AbstractStatueBase {
 
-	private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
+	private static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 0.0D, 15.0D, 2.0D, 15.0D);
 
 	public TadpoleStatueBlock(Properties properties) {
 		super(properties.sound(SoundType.STONE).isRedstoneConductor(TadpoleStatueBlock::isntSolid));
