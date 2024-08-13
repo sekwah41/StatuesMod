@@ -15,7 +15,7 @@
     }
   ],
   "center": {
-    "tag": "statues:statues/upgradeable"
+    "tag": "statues:statues/lootable"
   },
   "upgradeType": "looting"
 }

@@ -235,11 +235,11 @@ public class StatueRecipeProvider extends RecipeProvider {
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.EXPERIENCE_BOTTLE))).tier(2)
 				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/mob_killer_3"));
 
-		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Tags.Items.ENDER_PEARLS),
+		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.LOOTABLE_STATUES), List.of(Ingredient.of(Tags.Items.ENDER_PEARLS),
 						Ingredient.of(Tags.Items.GUNPOWDERS), Ingredient.of(Tags.Items.BONES), Ingredient.of(Items.ROTTEN_FLESH)))
 				.upgradeType(UpgradeType.LOOTING).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/looting"));
 
-		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.HOPPER), Ingredient.of(Items.OBSERVER)))
+		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.LOOTABLE_STATUES), List.of(Ingredient.of(Items.HOPPER), Ingredient.of(Items.OBSERVER)))
 				.upgradeType(UpgradeType.AUTOMATION).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/automation"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Tags.Items.DUSTS_REDSTONE),

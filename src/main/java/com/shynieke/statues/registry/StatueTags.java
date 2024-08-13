@@ -15,6 +15,7 @@ public class StatueTags {
 
 	public static final TagKey<Item> STATUES_ITEMS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "statues"));
 	public static final TagKey<Item> UPGRADEABLE_STATUES = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "statues/upgradeable"));
+	public static final TagKey<Item> LOOTABLE_STATUES = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "statues/lootable"));
 	public static final TagKey<Item> STATUE_INTERACTABLE = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "statues/interactable"));
 
 	public static final TagKey<Block> STATUE_BLOCKS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "statues"));
