@@ -1,6 +1,5 @@
 package com.shynieke.statues.blocks.decorative;
 
-import com.shynieke.statues.blockentities.StatueBlockEntity;
 import com.shynieke.statues.blocks.AbstractBaseBlock;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.core.BlockPos;
@@ -39,10 +38,6 @@ public class SombreroBlock extends AbstractBaseBlock {
 			BlockState bumboState = StatueRegistry.BUMBO_STATUE.get().defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
 			level.setBlockAndUpdate(pos.below(), bumboState);
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-
-			//Set block entity
-			StatueBlockEntity newBlockEntity = new StatueBlockEntity(pos.below(), bumboState);
-			level.setBlockEntity(newBlockEntity);
 		}
 		super.setPlacedBy(level, pos, state, placer, stack);
 	}
