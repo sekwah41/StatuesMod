@@ -9,9 +9,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "item": "statues:statue_table"
-      }
+      "item": "statues:statue_table"
     }
   ]
 }

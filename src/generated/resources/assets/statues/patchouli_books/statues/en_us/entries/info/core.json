@@ -13,9 +13,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": {
-        "item": "statues:statue_core"
-      }
+      "item": "statues:statue_core"
     }
   ]
 }
