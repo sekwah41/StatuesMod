@@ -5,11 +5,8 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.shynieke.statues.Reference;
 import com.shynieke.statues.datacomponent.StatueStats;
-import com.shynieke.statues.recipe.StatuesRecipes;
 import com.shynieke.statues.recipe.UpgradeType;
-import com.shynieke.statues.registry.StatueBlockEntities;
 import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.registry.StatueTags;
 import net.minecraft.ChatFormatting;
@@ -18,22 +15,14 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.server.command.EnumArgument;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class StatuesCommands {
