@@ -1,10 +1,12 @@
 package com.shynieke.statues.handlers;
 
+import com.shynieke.statues.blockentities.AbstractStatueBlockEntity;
 import com.shynieke.statues.datacomponent.StatueStats;
 import com.shynieke.statues.fakeplayer.StatueFakePlayer;
 import com.shynieke.statues.items.StatueBlockItem;
 import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.storage.StatueSavedData;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -67,7 +69,11 @@ public class StatueHandler {
 		MobSpawnType spawnReason = event.getSpawnType();
 		if (spawnReason == MobSpawnType.NATURAL || spawnReason == MobSpawnType.REINFORCEMENT || spawnReason == MobSpawnType.EVENT) {
 			Mob mob = event.getEntity();
-			if (StatueSavedData.get().isDespawnerNearby(mob.level().dimension(), mob.blockPosition(), 32)) {
+			BlockPos nearestDespawner = StatueSavedData.get().getNearestDespawner(mob.level().dimension(), mob.blockPosition(), 32);
+			if (nearestDespawner != null) {
+				if (mob.level().getBlockEntity(nearestDespawner) instanceof AbstractStatueBlockEntity statueBlockEntity) {
+					if (!statueBlockEntity.drainPower(statueBlockEntity.getDespawnPowerUsage())) return;
+				}
 //				Statues.LOGGER.info(mob.blockPosition() + " Spawn cancelled by a Despawner upgraded Statue " + mob.getType());
 				event.setSpawnCancelled(true);
 			}

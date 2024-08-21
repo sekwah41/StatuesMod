@@ -26,12 +26,12 @@ public class StatueSavedData extends SavedData {
 
 	private static final Map<ResourceKey<Level>, List<BlockPos>> despawnerMap = new HashMap<>();
 
-	public boolean isDespawnerNearby(ResourceKey<Level> dimension, BlockPos pos, int range) {
+	public BlockPos getNearestDespawner(ResourceKey<Level> dimension, BlockPos pos, int range) {
 		if (despawnerMap.containsKey(dimension)) {
 			List<BlockPos> posList = despawnerMap.get(dimension).stream().filter(storedPos -> storedPos.distManhattan(pos) <= range).toList();
-			return !posList.isEmpty();
+			return !posList.isEmpty() ? posList.getFirst() : null;
 		}
-		return false;
+		return null;
 	}
 
 	public void addPosition(ResourceKey<Level> dimension, BlockPos pos) {

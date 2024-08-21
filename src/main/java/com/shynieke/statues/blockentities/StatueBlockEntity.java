@@ -146,6 +146,7 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity implements IOwn
 
 	public void giveItem() {
 		if (level != null) {
+			if (!drainPower(getItemPowerUsage())) return;
 			LootRecipe loot;
 			if (cachedLootRecipe != null) {
 				loot = cachedLootRecipe.value();
@@ -236,6 +237,7 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity implements IOwn
 				ItemStack tempSword = new ItemStack(Items.DIAMOND_SWORD, 1);
 				StatueFakePlayer.useFakePlayer(serverLevel, (fakePlayer -> {
 					fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, tempSword);
+					if (!drainPower(getKillPowerUsage())) return false;
 					target.hurt(serverLevel.damageSources().playerAttack(fakePlayer), (float) fakePlayer.getAttributeValue(Attributes.ATTACK_DAMAGE));
 					return true;
 				}));
@@ -264,6 +266,7 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity implements IOwn
 					continue;
 				}
 
+				if (!drainPower(getSummonPowerUsage())) return;
 				Entity entity = entityType.create(level);
 				if (entity == null) {
 					continue;

@@ -7,6 +7,8 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -22,19 +24,26 @@ public class StatuesConfig {
 	public static class Common {
 
 		public final DoubleValue statueDropChance;
-		public final ModConfigSpec.EnumValue<EnumDeathSource> statueKillSource;
+		public final EnumValue<EnumDeathSource> statueKillSource;
 
 		public final BooleanValue playerDropsStatue;
-		public final ModConfigSpec.EnumValue<EnumDeathSource> playerStatueKillSource;
+		public final EnumValue<EnumDeathSource> playerStatueKillSource;
 		public final DoubleValue playerStatueDropChance;
 		public final BooleanValue playerCompass;
 
 		public final BooleanValue statueBatSpawning;
 		public final BooleanValue ancientCityLoot;
 		public final DoubleValue ancientCityLootChance;
-		public final ModConfigSpec.IntValue statueCooldown;
-		public final ModConfigSpec.IntValue statueMinCooldown;
-		public final ModConfigSpec.IntValue statueSpeedUpgrade;
+		public final IntValue statueCooldown;
+		public final IntValue statueMinCooldown;
+		public final IntValue statueSpeedUpgrade;
+
+		public final BooleanValue requiresPower;
+		public final BooleanValue powerDrain;
+		public final IntValue itemPowerUsage;
+		public final IntValue killPowerUsage;
+		public final IntValue summonPowerUsage;
+		public final IntValue despawnPowerUsage;
 
 		//Lucky Players
 		public final ConfigValue<List<? extends String>> lucky_players;
@@ -164,6 +173,37 @@ public class StatuesConfig {
 			lucky_players = builder
 					.comment("Adding usernames will make these users have less luck with getting statues")
 					.defineListAllowEmpty(List.of("lucky_players"), () -> List.of(luckyPlayers), () -> "", o -> (o instanceof String));
+
+			builder.pop();
+
+			// Power settings
+			builder.comment("Power Settings")
+					.translation("statues.configuration.power_settings.title")
+					.push("power_settings");
+
+			requiresPower = builder
+					.comment("When true statues will require power to function when upgraded (Default: false)")
+					.define("requiresPower", false);
+
+			powerDrain = builder
+					.comment("If statues should drain power over time (Default: true)")
+					.define("powerDrain", true);
+
+			itemPowerUsage = builder
+					.comment("The power used to generate an item (200)")
+					.defineInRange("itemPowerUsage", 200, 0, Integer.MAX_VALUE);
+
+			killPowerUsage = builder
+					.comment("The power used to kill a mob (500)")
+					.defineInRange("killPowerUsage", 500, 0, Integer.MAX_VALUE);
+
+			summonPowerUsage = builder
+					.comment("The power used to summon a mob (500)")
+					.defineInRange("spawnPowerUsage", 100, 0, Integer.MAX_VALUE);
+
+			despawnPowerUsage = builder
+					.comment("The power used to despawn a mob (250)")
+					.defineInRange("despawnPowerUsage", 250, 0, Integer.MAX_VALUE);
 
 			builder.pop();
 		}

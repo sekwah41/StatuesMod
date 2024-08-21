@@ -16,12 +16,14 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -37,6 +39,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.EnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,6 +50,7 @@ import java.util.Map;
 
 public abstract class AbstractStatueBlockEntity extends BlockEntity {
 	private final Map<String, Short> upgrades = new HashMap<>();
+	protected EnergyStorage energyStorage = new EnergyStorage(10000, 100);
 
 	@Nullable
 	private StatueStats stats;
@@ -74,6 +78,8 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		interactCooldown = compound.getInt("InteractionCooldown");
 		statueAble = compound.getBoolean("StatueAble");
 		statueInteractable = compound.getBoolean("StatueInteractable");
+		if (compound.contains("EnergyHandler") && compound.get("EnergyHandler") instanceof IntTag intTag)
+			energyStorage.deserializeNBT(provider, intTag);
 		this.loadFromNbt(compound, provider);
 	}
 
@@ -84,6 +90,7 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		compound.putInt("InteractionCooldown", interactCooldown);
 		compound.putBoolean("StatueAble", statueAble);
 		compound.putBoolean("StatueInteractable", statueInteractable);
+		compound.put("EnergyHandler", energyStorage.serializeNBT(provider));
 		this.saveToNbt(compound, provider);
 	}
 
@@ -115,6 +122,14 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		super.removeComponentsFromTag(tag);
 		tag.remove("tag");
 		tag.remove("stats");
+		tag.remove("EnergyHandler");
+	}
+
+	public EnergyStorage getEnergyStorage(@Nullable Direction facing) {
+		if (StatuesConfig.COMMON.requiresPower.get()) {
+			return energyStorage;
+		}
+		return null;
 	}
 
 	@Override
@@ -310,6 +325,52 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 
 	public int getSpeed() {
 		return hasUpgrade("speed") ? getUpgradeLevel("speed") + 1 : 0;
+	}
+
+	private int getAdjustedPower(int power) {
+		return Mth.ceil(power * (canAutomate() ? 1.2 : 1.0));
+	}
+
+	public int getItemPowerUsage() {
+		double lootingMultiplier = switch (getLooting()) {
+			case 2 -> 1.25;
+			case 3 -> 1.5;
+			default -> 1.0;
+		};
+		int amount = StatuesConfig.COMMON.itemPowerUsage.get();
+		if (amount == 0) return 0;
+		return getAdjustedPower(Mth.ceil(amount * lootingMultiplier));
+	}
+
+	public int getKillPowerUsage() {
+		int amount = StatuesConfig.COMMON.killPowerUsage.get();
+		if (amount == 0) return 0;
+		return getAdjustedPower(amount);
+	}
+
+	public int getSummonPowerUsage() {
+		return StatuesConfig.COMMON.summonPowerUsage.get();
+	}
+
+	public int getDespawnPowerUsage() {
+		return StatuesConfig.COMMON.despawnPowerUsage.get();
+	}
+
+	public int getDrain() {
+		return 100;
+	}
+
+	public boolean usesPower() {
+		return StatuesConfig.COMMON.requiresPower.get();
+	}
+
+	public boolean drainPower(int amount) {
+		if (usesPower() && amount > 0) {
+			boolean hasEnergy = energyStorage.getEnergyStored() >= amount;
+			if (!hasEnergy) return false;
+			energyStorage.extractEnergy(amount, false);
+		}
+		return true;
 	}
 
 	public ItemInteractionResult interact(Level level, BlockPos pos, BlockState state, Player player, InteractionHand handIn, BlockHitResult result) {

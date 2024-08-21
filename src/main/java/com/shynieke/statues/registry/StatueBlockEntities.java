@@ -75,5 +75,8 @@ public class StatueBlockEntities {
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SHULKER_STATUE.get(), ShulkerStatueBlockEntity::getHandler);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, STATUE_TABLE.get(), StatueTableBlockEntity::getHandler);
+
+		event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, SHULKER_STATUE.get(), ShulkerStatueBlockEntity::getEnergyStorage);
+		event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, STATUE.get(), StatueBlockEntity::getEnergyStorage);
 	}
 }
