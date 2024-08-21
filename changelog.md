@@ -1,1 +1,1 @@
-* Fix the Statue Bat model rendering incorrectly
+* Add a config option `requiresPower` that force certain Statue upgrades to require power to function. (Looting, Spawning, Despawning and Killer)
