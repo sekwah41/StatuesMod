@@ -356,7 +356,7 @@ public abstract class AbstractStatueBlockEntity extends BlockEntity {
 		return StatuesConfig.COMMON.despawnPowerUsage.get();
 	}
 
-	public int getDrain() {
+	public int getPassiveDrain() {
 		return 100;
 	}
 

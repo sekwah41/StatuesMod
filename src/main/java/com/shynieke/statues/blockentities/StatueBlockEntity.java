@@ -68,6 +68,9 @@ public class StatueBlockEntity extends AbstractStatueBlockEntity implements IOwn
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, StatueBlockEntity blockEntity) {
 		if (state.getValue(AbstractStatueBase.INTERACTIVE) && state.getBlock() instanceof AbstractStatueBase) {
+			if (level.getGameTime() % level.tickRateManager().tickrate() == 0) {
+				blockEntity.drainPower(blockEntity.getPassiveDrain());
+			}
 			if (!blockEntity.isStatueInteractable()) {
 				blockEntity.interactCooldown--;
 
