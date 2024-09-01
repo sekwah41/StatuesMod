@@ -38,6 +38,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -171,9 +172,9 @@ public class ClientHandler {
 			Statues.LOGGER.info("Loaded {} translators.", TRANSLATORS.size());
 		}, "Statues Perks Data Loader").start();
 
-//		if (ModList.get().isLoaded("curios")) {
-//			com.shynieke.statues.compat.curios.client.StatueCurioRenderer.setupRenderer();
-//		}
+		if (ModList.get().isLoaded("curios")) {
+			com.shynieke.statues.compat.curios.client.StatueCurioRenderer.setupRenderer();
+		}
 	}
 
 	public static void onRegisterMenu(final RegisterMenuScreensEvent event) {
