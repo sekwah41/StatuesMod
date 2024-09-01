@@ -1,1 +1,2 @@
-* Add a config option `requiresPower` that force certain Statue upgrades to require power to function. (Looting, Spawning, Despawning and Killer)
+* Re-enable Curios support
+* Re-add Patchouli and Cactus Mod optional dependency
