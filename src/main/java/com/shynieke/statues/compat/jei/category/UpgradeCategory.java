@@ -9,7 +9,10 @@ import com.shynieke.statues.registry.StatueRegistry;
 import com.shynieke.statues.registry.StatueTags;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocus;
@@ -17,11 +20,13 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -57,6 +62,7 @@ public class UpgradeCategory implements IRecipeCategory<UpgradeRecipe> {
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, UpgradeRecipe recipe, IFocusGroup focuses) {
+		UpgradeTooltipCallback callback = new UpgradeTooltipCallback(recipe);
 		Minecraft minecraft = Minecraft.getInstance();
 		ClientLevel level = minecraft.level;
 		if (level == null) {
@@ -94,9 +100,9 @@ public class UpgradeCategory implements IRecipeCategory<UpgradeRecipe> {
 				} else {
 					setUpgradeSlots(outputStack, 1);
 				}
-				builder.addSlot(RecipeIngredientRole.OUTPUT, 127, 23).addItemStack(outputStack);
+				builder.addSlot(RecipeIngredientRole.OUTPUT, 127, 23).addItemStack(outputStack).addRichTooltipCallback(callback);
 			} else {
-				builder.addSlot(RecipeIngredientRole.OUTPUT, 127, 23).addItemStack(recipe.getResultItem(registryAccess));
+				builder.addSlot(RecipeIngredientRole.OUTPUT, 127, 23).addItemStack(recipe.getResultItem(registryAccess)).addRichTooltipCallback(callback);
 			}
 		} else {
 			List<ItemStack> centerList = new ArrayList<>();
@@ -132,9 +138,9 @@ public class UpgradeCategory implements IRecipeCategory<UpgradeRecipe> {
 					}
 					stackList.add(stack);
 				}
-				builder.addSlot(RecipeIngredientRole.OUTPUT, 127, 23).addItemStacks(stackList);
+				builder.addSlot(RecipeIngredientRole.OUTPUT, 127, 23).addItemStacks(stackList).addRichTooltipCallback(callback);
 			} else {
-				builder.addSlot(RecipeIngredientRole.OUTPUT, 127, 23).addItemStack(recipe.getResultItem(registryAccess));
+				builder.addSlot(RecipeIngredientRole.OUTPUT, 127, 23).addItemStack(recipe.getResultItem(registryAccess)).addRichTooltipCallback(callback);
 			}
 		}
 
@@ -170,6 +176,19 @@ public class UpgradeCategory implements IRecipeCategory<UpgradeRecipe> {
 	@Override
 	public void draw(UpgradeRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+	}
+
+	public class UpgradeTooltipCallback implements IRecipeSlotRichTooltipCallback {
+		public final MutableComponent component;
+
+		public UpgradeTooltipCallback(UpgradeRecipe recipe) {
+			this.component = recipe.getUpgradeName();
+		}
+
+		@Override
+		public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
+			tooltip.add(component);
+		}
 	}
 
 	@Override

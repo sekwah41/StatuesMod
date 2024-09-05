@@ -251,6 +251,7 @@ public class StatueLanguageProvider extends LanguageProvider {
 		add("statues.info.kills", "Kills:");
 		add("statues.info.upgrade_slots", "Upgrade Slots:");
 
+		add("statues.upgrade.upgrade_type", "Upgrade Type");
 		add("statues.upgrade.upgrade.name", "Upgrade");
 		add("statues.upgrade.glowing.name", "Glowing");
 		add("statues.upgrade.unglowing.name", "Unglowing");

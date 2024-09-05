@@ -9,9 +9,12 @@ import com.shynieke.statues.datacomponent.StatueUpgrades;
 import com.shynieke.statues.items.StatueBlockItem;
 import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.registry.StatueTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -78,6 +81,18 @@ public class UpgradeRecipe implements Recipe<RecipeInput> {
 
 	public UpgradeType getUpgradeType() {
 		return upgradeType;
+	}
+
+	public MutableComponent getUpgradeName() {
+		String descriptionID = "statues.upgrade." + getUpgradeType().getSerializedName() + ".name";
+		MutableComponent component = Component.translatable("statues.upgrade.upgrade_type").withStyle(ChatFormatting.YELLOW);
+		component.append(" : ");
+		component = component.append(Component.translatable(descriptionID).withStyle(ChatFormatting.GRAY));
+
+		if (getTier() > 0) {
+			component.append(" ").append(Component.translatable("enchantment.level." + getTier()));
+		}
+		return component;
 	}
 
 	@Override
