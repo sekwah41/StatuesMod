@@ -75,7 +75,6 @@ public class PlayerBER implements BlockEntityRenderer<PlayerBlockEntity> {
 		poseStack.translate(0.0D, -1.25D, 0.0D);
 
 		boolean isSupporter = false;
-//		boolean isTranslator = false;
 		if (profile != null) {
 			final String s = ChatFormatting.stripFormatting(profile.name().orElse("Steve"));
 			if ("Dinnerbone".equalsIgnoreCase(s) || "Grumm".equalsIgnoreCase(s)) {
@@ -83,14 +82,11 @@ public class PlayerBER implements BlockEntityRenderer<PlayerBlockEntity> {
 				poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 			}
 			isSupporter = ClientHandler.SUPPORTER.contains(profile.id().orElse(Util.NIL_UUID));
-//			isTranslator = ClientHandler.TRANSLATORS.contains(profile.getId());
 		}
 
 		int light = isSupporter ? 15728880 : combinedLight;
 		VertexConsumer vertexConsumer = bufferSource.getBuffer(getRenderType(profile));
 		StatuePlayerTileModel playerModel = isSlim ? slimModel : model;
-
-		//TODO: Implement Translator effect
 
 		playerModel.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
 
