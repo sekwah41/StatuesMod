@@ -10,6 +10,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
@@ -229,7 +230,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Tags.Items.STORAGE_BLOCKS_LAPIS),
 						Ingredient.of(Tags.Items.STORAGE_BLOCKS_LAPIS), Ingredient.of(Tags.Items.STORAGE_BLOCKS_LAPIS),
-						DataComponentIngredient.of(false, new ItemStack(Items.ENCHANTED_BOOK)))).tier(1) //TODO: Test upgrade
+						DataComponentIngredient.of(false, DataComponentPredicate.builder().build(), Items.ENCHANTED_BOOK))).tier(1)
 				.upgradeType(UpgradeType.MOB_KILLER).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrade/mob_killer_2"));
 
 		UpgradeRecipeBuilder.upgrade(Ingredient.of(StatueTags.UPGRADEABLE_STATUES), List.of(Ingredient.of(Items.EXPERIENCE_BOTTLE))).tier(2)
