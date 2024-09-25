@@ -1,4 +1,4 @@
-// 1.21.1	2024-08-13T22:18:22.7180583	Recipes
+// 1.21.1	2024-09-25T21:22:11.8593123	Recipes
 18e987dfadfe8b3a50e692cace2f8740225aa39b data/statues/advancement/recipes/decorations/display_stand_from_quartz_block_stonecutting.json
 63a4b8f8cbc1656364761abc74c1b083424037a7 data/statues/advancement/recipes/misc/info_statue.json
 b6d4957c7a93a1c517d6db67df0e43acd4d3ae97 data/statues/advancement/recipes/misc/statue_table.json
@@ -81,7 +81,7 @@ f0bd7c049600dacb24b3a01563282241b2fd09de data/statues/recipe/upgrade/despawner.j
 3d747c552ab24b0437b3aeb459fb8d23da3c8cca data/statues/recipe/upgrade/interaction.json
 b616a2fe6788e5b100dff5402550ff59329e3214 data/statues/recipe/upgrade/looting.json
 2715df4ee1bf327dac9963a667f2351dd1c0717a data/statues/recipe/upgrade/mob_killer.json
-ab6ecb1683d4ee65328a68d9d67f3331cc0e17da data/statues/recipe/upgrade/mob_killer_2.json
+c51b630b3e025faa28a9c284bd5ba5aa913b6157 data/statues/recipe/upgrade/mob_killer_2.json
 da908d72842b43a2f34ee4ad89c2b3077ea74cb0 data/statues/recipe/upgrade/mob_killer_3.json
 54d09babd75673b1a2d7ff03ae3bdca207df4ab0 data/statues/recipe/upgrade/sound.json
 79b18d5a10cf4010ef720739e9187a7dc5e645b1 data/statues/recipe/upgrade/spawner.json
