@@ -46,7 +46,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 	}
 
 	@Override
-	protected void buildRecipes(RecipeOutput consumer) {
+	protected void buildRecipes(RecipeOutput consumer, HolderLookup.Provider provider) {
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.BABY_ZOMBIE_STATUE.get()))
 				.result1(Items.ROTTEN_FLESH).result2(Items.IRON_NUGGET).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.BEE_STATUE.get(), StatueRegistry.ANGRY_BEE_STATUE.get(), StatueRegistry.TRANS_BEE_STATUE.get()))
