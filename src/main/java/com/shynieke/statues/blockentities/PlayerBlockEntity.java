@@ -7,7 +7,9 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.shynieke.statues.Statues;
 import com.shynieke.statues.blocks.statues.PlayerStatueBlock;
+import com.shynieke.statues.datacomponent.StatueUpgrades;
 import com.shynieke.statues.registry.StatueBlockEntities;
+import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -210,11 +212,6 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 		}
 	}
 
-	@Override
-	public void saveToItem(ItemStack stack, HolderLookup.Provider registries) {
-		super.saveToItem(stack, registries);
-	}
-
 	private void updateOwnerProfile() {
 		if (this.playerProfile != null && !this.playerProfile.isResolved()) {
 			this.resolve(this.playerProfile).thenAcceptAsync(profile -> {
@@ -294,6 +291,11 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void saveToItem(ItemStack stack, HolderLookup.Provider registries) {
+		super.saveToItem(stack, registries);
 	}
 
 	@Override
