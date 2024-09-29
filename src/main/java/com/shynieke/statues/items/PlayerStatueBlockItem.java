@@ -37,6 +37,7 @@ public class PlayerStatueBlockItem extends StatueBlockItem {
 		}
 	}
 
+	@SuppressWarnings("removal")
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		consumer.accept(new IClientItemExtensions() {
