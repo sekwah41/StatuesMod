@@ -11,6 +11,7 @@ import com.shynieke.statues.registry.StatueSerializers;
 import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Rotations;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -642,17 +643,13 @@ public class PlayerStatue extends LivingEntity {
 
 	private void breakPlayerStatue(ServerLevel serverLevel, DamageSource source) {
 		ItemStack stack = new ItemStack(StatueRegistry.PLAYER_STATUE.get());
-//		if (getGameProfile().isPresent()) { TODO: Re-implement?
-//			ResolvableProfile resolvableProfile = getGameProfile().get();
-//			if (resolvableProfile != null) {
-//				CompoundTag stackTag = stack.getTag() != null ? stack.getTag() : new CompoundTag();
-//				CompoundTag nbttagcompound = new CompoundTag();
-//				NbtUtils.writeGameProfile(nbttagcompound, resolvableProfile);
-//				stackTag.put("PlayerProfile", nbttagcompound);
-//				stack.setTag(stackTag);
-//				stack.setHoverName(Component.literal(resolvableProfile.getName()));
-//			}
-//		}
+		if (getGameProfile().isPresent()) {
+			ResolvableProfile resolvableProfile = getGameProfile().get();
+			if (resolvableProfile != null) {
+				stack.set(DataComponents.PROFILE, resolvableProfile);
+				stack.set(DataComponents.CUSTOM_NAME, Component.literal(resolvableProfile.gameProfile().getName()));
+			}
+		}
 
 		Block.popResource(this.level(), this.blockPosition(), stack);
 		Block.popResource(this.level(), this.blockPosition(), new ItemStack(StatueRegistry.STATUE_CORE.get()));
