@@ -1,6 +1,5 @@
 package com.shynieke.statues.client.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.shynieke.statues.Reference;
 import com.shynieke.statues.client.model.StatueBatModel;
 import com.shynieke.statues.entity.StatueBatEntity;
@@ -8,7 +7,6 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
 public class StatueBatRenderer extends MobRenderer<StatueBatEntity, StatueBatModel> {
 	private static final ResourceLocation BAT_TEXTURES = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/entity/statue_bat.png");
@@ -23,21 +21,5 @@ public class StatueBatRenderer extends MobRenderer<StatueBatEntity, StatueBatMod
 	@Override
 	public ResourceLocation getTextureLocation(StatueBatEntity statueBat) {
 		return BAT_TEXTURES;
-	}
-
-	@Override
-	protected void scale(StatueBatEntity batEntity, PoseStack poseStack, float partialTickTime) {
-		poseStack.scale(0.35F, 0.35F, 0.35F);
-	}
-
-	@Override
-	protected void setupRotations(StatueBatEntity batEntity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
-		if (batEntity.isResting()) {
-			poseStack.translate(0.0D, (double) -0.1F, 0.0D);
-		} else {
-			poseStack.translate(0.0D, (double) (Mth.cos(ageInTicks * 0.3F) * 0.1F), 0.0D);
-		}
-
-		super.setupRotations(batEntity, poseStack, ageInTicks, rotationYaw, partialTicks, scale);
 	}
 }
