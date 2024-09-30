@@ -5,10 +5,8 @@ import com.shynieke.statues.blocks.CoreFlowerCropBlock;
 import com.shynieke.statues.blocks.decorative.AzzaroStatueBlock;
 import com.shynieke.statues.blocks.decorative.BumboStatueBlock;
 import com.shynieke.statues.blocks.decorative.DisplayStandBlock;
-import com.shynieke.statues.blocks.statues.EndermiteStatueBlock;
 import com.shynieke.statues.blocks.decorative.PebbleBlock;
 import com.shynieke.statues.blocks.decorative.SombreroBlock;
-import com.shynieke.statues.blocks.statues.TadpoleStatueBlock;
 import com.shynieke.statues.blocks.decorative.TotemOfUndyingStatueBlock;
 import com.shynieke.statues.blocks.decorative.charity.EagleRayStatueBlock;
 import com.shynieke.statues.blocks.decorative.charity.SlabFishStatueBlock;
@@ -27,6 +25,7 @@ import com.shynieke.statues.blocks.statues.CowStatueBlock;
 import com.shynieke.statues.blocks.statues.CreeperStatueBlock;
 import com.shynieke.statues.blocks.statues.DetectivePlatypusStatueBlock;
 import com.shynieke.statues.blocks.statues.EndermanStatueBlock;
+import com.shynieke.statues.blocks.statues.EndermiteStatueBlock;
 import com.shynieke.statues.blocks.statues.EvokerStatueBlock;
 import com.shynieke.statues.blocks.statues.FloodStatueBlock;
 import com.shynieke.statues.blocks.statues.FoxStatueBlock;
@@ -49,6 +48,7 @@ import com.shynieke.statues.blocks.statues.ShulkerStatueBlock;
 import com.shynieke.statues.blocks.statues.SlimeStatueBlock;
 import com.shynieke.statues.blocks.statues.SnowGolemStatueBlock;
 import com.shynieke.statues.blocks.statues.SpiderStatueBlock;
+import com.shynieke.statues.blocks.statues.TadpoleStatueBlock;
 import com.shynieke.statues.blocks.statues.VillagerStatue;
 import com.shynieke.statues.blocks.statues.VindicatorStatueBlock;
 import com.shynieke.statues.blocks.statues.WardenStatueBlock;
@@ -86,6 +86,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -125,10 +126,15 @@ public class StatueRegistry {
 
 	public static final Supplier<EntityType<PlayerStatue>> PLAYER_STATUE_ENTITY = ENTITIES.register("player_statue",
 			() -> EntityType.Builder.<PlayerStatue>of(PlayerStatue::new, MobCategory.MISC)
-					.sized(0.6F, 1.8F).clientTrackingRange(10).build("player_statue"));
+					.sized(0.6F, 1.8F)
+					.eyeHeight(1.62F)
+					.vehicleAttachment(Player.DEFAULT_VEHICLE_ATTACHMENT)
+					.clientTrackingRange(32)
+					.updateInterval(2)
+					.build("player_statue"));
 	public static final Supplier<EntityType<StatueBatEntity>> STATUE_BAT = ENTITIES.register("statue_bat",
 			() -> EntityType.Builder.<StatueBatEntity>of(StatueBatEntity::new, MobCategory.AMBIENT)
-					.sized(0.5F, 0.9F).clientTrackingRange(5).build("statue_bat"));
+					.sized(0.5F, 0.9F).eyeHeight(0.45F).clientTrackingRange(5).build("statue_bat"));
 
 	public static final DeferredBlock<StatueTableBlock> STATUE_TABLE = registerStatue("statue_table", () -> new StatueTableBlock(blockBuilder()), blockItemBuilder());
 	public static final DeferredBlock<AngryBeeStatueBlock> ANGRY_BEE_STATUE = registerStatue("angry_bee_statue", () -> new AngryBeeStatueBlock(blockBuilder()), blockItemBuilder());
