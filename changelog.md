@@ -1,1 +1,0 @@
-* Fix the Statue Bat being scaled down
