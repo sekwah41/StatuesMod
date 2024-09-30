@@ -1,1 +1,1 @@
-* Fix the Mob Killer 2 upgrade requirements. The upgrade was expecting a blank enchanted book while it should be any enchanted book.
+* Fix the Statue Bat being scaled down
