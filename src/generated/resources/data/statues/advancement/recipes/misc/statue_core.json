@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_core_flower": {
+      "conditions": {
+        "items": [
+          {
+            "items": "statues:core_flower"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "statues:statue_core"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_core_flower"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "statues:statue_core"
+    ]
+  }
+}

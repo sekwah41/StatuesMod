@@ -19,6 +19,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +27,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -274,6 +276,11 @@ public class StatueRecipeProvider extends RecipeProvider {
 						StatueRegistry.DISPLAY_STAND.get(), 2)
 				.unlockedBy("has_quartz_block", has(Items.QUARTZ_BLOCK))
 				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "display_stand_from_quartz_block_stonecutting"));
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, StatueRegistry.STATUE_CORE)
+				.requires(StatueRegistry.CORE_FLOWER_ITEM)
+				.unlockedBy("has_core_flower", has(StatueRegistry.CORE_FLOWER_ITEM))
+				.save(consumer);
 
 	}
 
