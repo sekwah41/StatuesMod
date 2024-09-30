@@ -53,7 +53,8 @@ public class StatueBlockstateProvider extends BlockStateProvider {
 	}
 
 	private void crossBlock(DeferredHolder<Block, ? extends Block> block) {
-		simpleBlock(block.get(), models().cross(block.getId().getPath(), blockTexture(block.get())));
+		simpleBlock(block.get(), models().cross(block.getId().getPath(), blockTexture(block.get()))
+				.renderType(ResourceLocation.withDefaultNamespace("cutout")));
 	}
 
 	private void makeStatue(DeferredHolder<Block, ? extends Block> registryObject) {
