@@ -4,6 +4,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.shynieke.statues.registry.StatueLootModifiers;
 import com.shynieke.statues.registry.StatueRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.ItemStack;
@@ -32,6 +33,6 @@ public class SherdLootModifier extends LootModifier {
 
 	@Override
 	public MapCodec<? extends IGlobalLootModifier> codec() {
-		return CODEC.get();
+		return StatueLootModifiers.STATUES_SHERD.get();
 	}
 }

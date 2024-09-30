@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.shynieke.statues.config.StatuesConfig;
 import com.shynieke.statues.datacomponent.StatueStats;
 import com.shynieke.statues.registry.StatueDataComponents;
+import com.shynieke.statues.registry.StatueLootModifiers;
 import com.shynieke.statues.registry.StatueTags;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.Holder;
@@ -62,6 +63,6 @@ public class CityStatuesLootModifier extends LootModifier {
 
 	@Override
 	public MapCodec<? extends IGlobalLootModifier> codec() {
-		return CODEC.get();
+		return StatueLootModifiers.STATUES_CITY_LOOT.get();
 	}
 }
