@@ -27,7 +27,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -40,11 +39,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class StatueRecipeProvider extends RecipeProvider {
-	private final CompletableFuture<HolderLookup.Provider> registries;
-
 	public StatueRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
 		super(packOutput, lookupProvider);
-		this.registries = lookupProvider;
 	}
 
 	@Override
@@ -174,7 +170,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.WITCH_STATUE.get()))
 				.result1(Items.GLOWSTONE_DUST).result2(Items.REDSTONE).result3(Items.GLASS_BOTTLE).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.WASTELAND_STATUE.get()))
-				.result1(StatueRegistry.TEA.get()).result2(getWastelandBlock()).save(consumer);
+				.result1(StatueRegistry.TEA.get()).result2(getWastelandBlock(provider)).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.ZOMBIE_STATUE.get())).group("zombie")
 				.result1(Items.ROTTEN_FLESH).result3(Items.IRON_INGOT).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.PUFFERFISH_STATUE.get(),
@@ -291,12 +287,12 @@ public class StatueRecipeProvider extends RecipeProvider {
 		return paperStack;
 	}
 
-	private ItemStack getWastelandBlock() {
+	private ItemStack getWastelandBlock(HolderLookup.Provider provider) {
 		ItemStack wasteland = new ItemStack(Blocks.SAND);
 		wasteland.set(DataComponents.CUSTOM_NAME, Component.literal("Wasteland Block").withStyle(ChatFormatting.LIGHT_PURPLE));
 
 		try {
-			Holder.Reference<Enchantment> VANISHING = registries.get().lookupOrThrow(Registries.ENCHANTMENT)
+			Holder.Reference<Enchantment> VANISHING = provider.lookupOrThrow(Registries.ENCHANTMENT)
 					.getOrThrow(Enchantments.VANISHING_CURSE);
 			wasteland.enchant(VANISHING, 1);
 		} catch (Exception e) {
