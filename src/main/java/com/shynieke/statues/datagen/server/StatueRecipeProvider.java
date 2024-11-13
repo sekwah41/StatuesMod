@@ -60,7 +60,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 				.result1(Items.STRING).result3(getIOU()).save(consumer,
 						ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "loot/cat_statue")); //TODO: Allow the sleeping loot table
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.CHICKEN_STATUE.get()))
-				.result1(Items.FEATHER).result2(Items.CHICKEN).save(consumer);
+				.result1(Items.FEATHER).result2(Items.CHICKEN).result3(Items.EGG).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.CHICKEN_JOCKEY_STATUE.get()))
 				.result1(Items.ROTTEN_FLESH).result2(Items.FEATHER).save(consumer);
 		LootRecipeBuilder.loot(Ingredient.of(StatueRegistry.KING_CLUCK_STATUE.get()))

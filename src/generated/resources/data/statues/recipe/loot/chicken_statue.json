@@ -10,5 +10,9 @@
   "result2": {
     "count": 1,
     "id": "minecraft:chicken"
+  },
+  "result3": {
+    "count": 1,
+    "id": "minecraft:egg"
   }
 }
