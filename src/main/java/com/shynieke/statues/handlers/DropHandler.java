@@ -10,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Bee;
@@ -42,19 +43,17 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class DropHandler {
-	private static final Random rand = new Random();
-
 	@SubscribeEvent
 	public void onLivingDrop(LivingDropsEvent event) {
 		Entity entity = event.getEntity();
 		Entity source = event.getSource().getEntity();
 		Level level = entity.level();
+		RandomSource rand = level.random;
 
 		if (entity instanceof Villager) {
-			switch (level.random.nextInt(4)) {
+			switch (rand.nextInt(4)) {
 				case 1: {
 					dropLootStatues(entity, new ItemStack(StatueRegistry.VILLAGER_WH_STATUE.get()), source, event);
 					break;
@@ -86,7 +85,7 @@ public class DropHandler {
 			dropLootStatues(entity, itemStackToDrop, source, event);
 		} else if (entity instanceof Bee bee) {
 			ItemStack itemStackToDrop = new ItemStack(StatueRegistry.BEE_STATUE.get());
-			if (level.random.nextBoolean()) {
+			if (rand.nextBoolean()) {
 				itemStackToDrop = new ItemStack(StatueRegistry.ANGRY_BEE_STATUE.get());
 			}
 			String trans = "Trans Bee";
