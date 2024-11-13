@@ -31,7 +31,6 @@ import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.util.FakePlayer;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -109,8 +108,8 @@ public class InfoStatueBlock extends AbstractBaseBlock {
 				}
 			} else {
 				LocalDate localdate = LocalDate.now();
-				int i = localdate.get(ChronoField.DAY_OF_MONTH);
-				int j = localdate.get(ChronoField.MONTH_OF_YEAR);
+				int i = localdate.getDayOfMonth();
+				int j = localdate.getMonthValue();
 
 				if (level.random.nextDouble() <= 0.3D && j == 11 && i <= 20) {
 					randomMessage = Component.literal("Please check out our friends over at ")

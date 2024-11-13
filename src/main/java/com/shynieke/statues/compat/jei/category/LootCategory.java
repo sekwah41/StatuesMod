@@ -36,6 +36,7 @@ public class LootCategory implements IRecipeCategory<LootRecipe> {
 		return JEIPlugin.LOOT_TYPE;
 	}
 
+	@SuppressWarnings("removal")
 	@Override
 	public IDrawable getBackground() {
 		return background;

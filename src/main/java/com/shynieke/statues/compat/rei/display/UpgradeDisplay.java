@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class UpgradeDisplay implements Display {
-	protected final boolean requireCore;
+	private final boolean requireCore;
 	private final UpgradeType upgradeType;
 	private final int tier;
 

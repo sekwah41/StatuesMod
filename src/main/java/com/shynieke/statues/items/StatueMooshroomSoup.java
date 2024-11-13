@@ -19,7 +19,7 @@ public class StatueMooshroomSoup extends Item {
 
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entityIn) {
-		if (entityIn instanceof Player playerIn && !((Player) entityIn).hasInfiniteMaterials()) {
+		if (entityIn instanceof Player playerIn && !playerIn.hasInfiniteMaterials()) {
 			ItemStack bowlStack = new ItemStack(Items.BOWL);
 			Inventory playerInv = playerIn.getInventory();
 			playerIn.eat(level, stack);

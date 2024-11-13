@@ -44,7 +44,7 @@ public abstract class AbstractStatueBase extends AbstractBaseBlock implements En
 		super(builder.strength(0.6F));
 		this.registerDefaultState(this.defaultBlockState()
 				.setValue(FACING, Direction.NORTH)
-				.setValue(WATERLOGGED, Boolean.valueOf(false))
+				.setValue(WATERLOGGED, Boolean.FALSE)
 				.setValue(INTERACTIVE, false));
 	}
 

@@ -1,6 +1,7 @@
 package com.shynieke.statues.datagen.server;
 
 import com.shynieke.statues.Reference;
+import com.shynieke.statues.Statues;
 import com.shynieke.statues.datagen.server.recipe.LootRecipeBuilder;
 import com.shynieke.statues.datagen.server.recipe.UpgradeRecipeBuilder;
 import com.shynieke.statues.recipe.UpgradeType;
@@ -296,7 +297,7 @@ public class StatueRecipeProvider extends RecipeProvider {
 					.getOrThrow(Enchantments.VANISHING_CURSE);
 			wasteland.enchant(VANISHING, 1);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Statues.LOGGER.error("Failed to set vanishing enchant", e);
 		}
 
 		ItemEnchantments enchantments = wasteland.getEnchantments();

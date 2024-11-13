@@ -67,7 +67,7 @@ public class HardcoreRecipe extends ShapedRecipe {
 								CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(p_311732_ -> p_311732_.category),
 								ShapedRecipePattern.MAP_CODEC.forGetter(p_311733_ -> p_311733_.pattern),
 								ItemStack.STRICT_CODEC.fieldOf("result").forGetter(p_311730_ -> p_311730_.result),
-								Codec.BOOL.optionalFieldOf("show_notification", Boolean.valueOf(true)).forGetter(p_311731_ -> p_311731_.showNotification)
+								Codec.BOOL.optionalFieldOf("show_notification", Boolean.TRUE).forGetter(p_311731_ -> p_311731_.showNotification)
 						)
 						.apply(instance, HardcoreRecipe::new)
 		);

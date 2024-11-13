@@ -47,7 +47,7 @@ public class DisplayStandBlock extends Block implements SimpleWaterloggedBlock {
 
 	public DisplayStandBlock(Properties properties) {
 		super(properties.isRedstoneConductor(DisplayStandBlock::isntSolid));
-		this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(false)));
+		this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.FALSE));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -80,6 +80,6 @@ public class DisplayStandBlock extends Block implements SimpleWaterloggedBlock {
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockPos blockpos = context.getClickedPos();
 		FluidState fluidstate = context.getLevel().getFluidState(blockpos);
-		return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+		return this.defaultBlockState().setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 	}
 }

@@ -21,7 +21,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoField;
 
 public class StatueBatEntity extends Bat {
 	public StatueBatEntity(EntityType<? extends StatueBatEntity> type, Level level) {
@@ -74,8 +73,8 @@ public class StatueBatEntity extends Bat {
 
 	private static boolean isNearHalloween() {
 		LocalDate localdate = LocalDate.now();
-		int i = localdate.get(ChronoField.DAY_OF_MONTH);
-		int j = localdate.get(ChronoField.MONTH_OF_YEAR);
+		int i = localdate.getDayOfMonth();
+		int j = localdate.getMonthValue();
 		return j == 10 && i >= 20 || j == 11 && i <= 3;
 	}
 }

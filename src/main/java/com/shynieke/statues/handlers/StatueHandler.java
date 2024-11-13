@@ -56,10 +56,7 @@ public class StatueHandler {
 	public int getLevel(int killedMobs) {
 		if (killedMobs > 0) {
 			int level = (int) Math.floor(killedMobs / 10.0D);
-			if (level <= 16) {
-				return level;
-			}
-			return 16;
+			return Math.min(level, 16);
 		}
 		return 0;
 	}

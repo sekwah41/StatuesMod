@@ -7,9 +7,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.shynieke.statues.Statues;
 import com.shynieke.statues.blocks.statues.PlayerStatueBlock;
-import com.shynieke.statues.datacomponent.StatueUpgrades;
 import com.shynieke.statues.registry.StatueBlockEntities;
-import com.shynieke.statues.registry.StatueDataComponents;
 import com.shynieke.statues.registry.StatueRegistry;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -92,10 +90,10 @@ public class PlayerBlockEntity extends BlockEntity implements Nameable {
 		return services.profileCache()
 				.getAsync(name)
 				.thenCompose(
-						p_339545_ -> {
+						optionalProfile -> {
 							LoadingCache<UUID, CompletableFuture<Optional<GameProfile>>> loadingcache = profileCacheById;
-							return loadingcache != null && !p_339545_.isEmpty()
-									? loadingcache.getUnchecked(p_339545_.get().getId()).thenApply(p_339543_ -> p_339543_.or(() -> p_339545_))
+							return loadingcache != null && !optionalProfile.isEmpty()
+									? loadingcache.getUnchecked(optionalProfile.get().getId()).thenApply(p_339543_ -> p_339543_.or(() -> optionalProfile))
 									: CompletableFuture.completedFuture(Optional.empty());
 						}
 				);
