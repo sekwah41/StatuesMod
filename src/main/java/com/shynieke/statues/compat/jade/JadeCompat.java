@@ -29,7 +29,7 @@ public class JadeCompat implements IWailaPlugin {
 	}
 
 	public static class PastryBodyHandler implements IBlockComponentProvider {
-		private static final ResourceLocation BITES = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "upgrades");
+		private static final ResourceLocation BITES = Reference.modLoc("upgrades");
 
 		public static final PastryBodyHandler INSTANCE = new PastryBodyHandler();
 

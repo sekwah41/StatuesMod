@@ -55,8 +55,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class ClientHandler {
-	public static final ModelLayerLocation PLAYER_STATUE = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "player_statue"), "player_statue");
-	public static final ModelLayerLocation PLAYER_STATUE_SLIM = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "player_statue_slim"), "player_statue_slim");
+	public static final ModelLayerLocation PLAYER_STATUE = new ModelLayerLocation(Reference.modLoc("player_statue"), "player_statue");
+	public static final ModelLayerLocation PLAYER_STATUE_SLIM = new ModelLayerLocation(Reference.modLoc("player_statue_slim"), "player_statue_slim");
 	public static final List<UUID> SUPPORTER = new ArrayList<>();
 	public static final List<UUID> TRANSLATORS = new ArrayList<>();
 

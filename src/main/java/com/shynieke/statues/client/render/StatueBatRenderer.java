@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class StatueBatRenderer extends MobRenderer<StatueBatEntity, StatueBatModel> {
-	private static final ResourceLocation BAT_TEXTURES = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/entity/statue_bat.png");
+	private static final ResourceLocation BAT_TEXTURES = Reference.modLoc("textures/entity/statue_bat.png");
 
 	public StatueBatRenderer(Context context) {
 		super(context, new StatueBatModel(context.bakeLayer(ModelLayers.BAT)), 0.25F);

@@ -18,7 +18,7 @@ public class PatchouliCompat {
 			playerIn.getMainHandItem().shrink(1);
 			ItemStack patchouliBook = new ItemStack(guideBook);
 			patchouliBook.set(vazkii.patchouli.common.item.PatchouliDataComponents.BOOK,
-					ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "statues"));
+					Reference.modLoc("statues"));
 			Level level = playerIn.level();
 			if (!playerIn.addItem(patchouliBook)) {
 				level.addFreshEntity(new ItemEntity(level, playerIn.getX(), playerIn.getY(), playerIn.getZ(), patchouliBook));

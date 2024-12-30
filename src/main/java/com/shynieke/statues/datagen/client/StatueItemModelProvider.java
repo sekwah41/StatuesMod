@@ -28,7 +28,7 @@ public class StatueItemModelProvider extends ItemModelProvider {
 				} else {
 					if (registryObject.getId().equals(StatueRegistry.CORE_FLOWER_ITEM.getId()))
 						singleTexture(registryObject.getId().getPath(), ResourceLocation.withDefaultNamespace("item/generated"),
-								"layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + registryObject.getId().getPath()));
+								"layer0", Reference.modLoc("block/" + registryObject.getId().getPath()));
 					else
 						withBlockParent(registryObject.getId());
 				}
@@ -50,7 +50,7 @@ public class StatueItemModelProvider extends ItemModelProvider {
 
 	private void generatedItem(ResourceLocation location) {
 		singleTexture(location.getPath(), ResourceLocation.withDefaultNamespace("item/generated"),
-				"layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + location.getPath()));
+				"layer0", Reference.modLoc("item/" + location.getPath()));
 	}
 
 	private void generateStatueCompass(ResourceLocation location, ResourceLocation textureLocation) {

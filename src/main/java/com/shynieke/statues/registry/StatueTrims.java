@@ -15,7 +15,7 @@ public class StatueTrims {
 	public static final ResourceKey<TrimPattern> CORE = registerKey("core");
 
 	private static ResourceKey<TrimPattern> registerKey(String name) {
-		return ResourceKey.create(Registries.TRIM_PATTERN, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, name));
+		return ResourceKey.create(Registries.TRIM_PATTERN, Reference.modLoc(name));
 	}
 
 	public static void bootstrap(BootstrapContext<TrimPattern> context) {

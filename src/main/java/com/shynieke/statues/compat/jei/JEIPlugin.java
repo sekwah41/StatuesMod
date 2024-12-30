@@ -37,12 +37,12 @@ import java.util.Objects;
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
-	public static final ResourceLocation PLUGIN_UID = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "main");
+	public static final ResourceLocation PLUGIN_UID = Reference.modLoc("main");
 
-	public static final ResourceLocation LOOT_BACKGROUND = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/gui/jei/loot.png");
+	public static final ResourceLocation LOOT_BACKGROUND = Reference.modLoc("textures/gui/jei/loot.png");
 	public static final RecipeType<LootRecipe> LOOT_TYPE = RecipeType.create(Reference.MOD_ID, "loot", LootRecipe.class);
 
-	public static final ResourceLocation UPGRADE_BACKGROUND = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/gui/jei/upgrade.png");
+	public static final ResourceLocation UPGRADE_BACKGROUND = Reference.modLoc("textures/gui/jei/upgrade.png");
 	public static final RecipeType<UpgradeRecipe> UPGRADE_TYPE = RecipeType.create(Reference.MOD_ID, "upgrade", UpgradeRecipe.class);
 
 	@Nullable

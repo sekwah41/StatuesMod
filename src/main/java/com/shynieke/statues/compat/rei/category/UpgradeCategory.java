@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpgradeCategory implements DisplayCategory<UpgradeDisplay> {
-	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/gui/jei/upgrade.png");
+	private static final ResourceLocation TEXTURE = Reference.modLoc("textures/gui/jei/upgrade.png");
 
 	@Override
 	public CategoryIdentifier<? extends UpgradeDisplay> getCategoryIdentifier() {
