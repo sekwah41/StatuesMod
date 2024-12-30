@@ -76,11 +76,6 @@ public class StatueTableBER implements BlockEntityRenderer<StatueTableBlockEntit
 				float yOffset = 0;
 				float zOffset = 0;
 				switch (i) {
-					default -> {
-						xOffset = 0.0625f * 2;
-						yOffset = 0;
-						zOffset = 0.0625f * 2;
-					}
 					case 3 -> {
 						xOffset = -0.0625f * 2;
 						yOffset = 0;
@@ -95,6 +90,11 @@ public class StatueTableBER implements BlockEntityRenderer<StatueTableBlockEntit
 						xOffset = -0.0625f * 2;
 						yOffset = 0;
 						zOffset = -0.0625f * 2;
+					}
+					default -> {
+						xOffset = 0.0625f * 2;
+						yOffset = 0;
+						zOffset = 0.0625f * 2;
 					}
 				}
 				if (!statueStack.isEmpty()) {
