@@ -59,8 +59,8 @@ public class StatueTableBlock extends AbstractBaseBlock {
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
 			BlockEntity blockentity = level.getBlockEntity(pos);
-			if (blockentity instanceof StatueTableBlockEntity) {
-				IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+			if (blockentity instanceof StatueTableBlockEntity tableBlockEntity) {
+				IItemHandler handler = tableBlockEntity.getHandler();
 				if (handler != null) {
 					for (int i = 0; i < handler.getSlots(); ++i) {
 						Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
