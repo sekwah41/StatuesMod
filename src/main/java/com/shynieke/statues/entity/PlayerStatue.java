@@ -248,7 +248,6 @@ public class PlayerStatue extends LivingEntity {
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
 		compound.putBoolean("profileExists", entityData.get(RESOLVABLE_PROFILE).isPresent());
 		if (getGameProfile().isPresent()) {
 			ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(RESOLVABLE_PROFILE).get())
@@ -293,6 +292,8 @@ public class PlayerStatue extends LivingEntity {
 		compound.putInt("DisabledSlots", this.disabledSlots);
 
 		compound.put("Pose", this.writePose());
+
+		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
@@ -302,7 +303,6 @@ public class PlayerStatue extends LivingEntity {
 
 	@Override
 	public void load(CompoundTag compound) {
-		super.load(compound);
 		boolean profileExists = compound.getBoolean("profileExists");
 		if (profileExists) {
 			entityData.set(RESOLVABLE_PROFILE, ResolvableProfile.CODEC
@@ -311,6 +311,23 @@ public class PlayerStatue extends LivingEntity {
 		} else {
 			entityData.set(RESOLVABLE_PROFILE, Optional.empty());
 		}
+
+
+		if (compound.getBoolean("Locked")) {
+			UUID uuid;
+			if (compound.hasUUID("LockedBy")) {
+				uuid = compound.getUUID("LockedBy");
+			} else {
+				String s = compound.getString("LockedBy");
+				uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+			}
+
+			if (uuid != null) {
+				this.setLockedBy(uuid);
+			}
+		}
+
+		super.load(compound);
 	}
 
 	@Override
@@ -324,20 +341,6 @@ public class PlayerStatue extends LivingEntity {
 
 			for (int i = 0; i < this.armorItems.size(); ++i) {
 				this.armorItems.set(i, ItemStack.parseOptional(level().registryAccess(), listnbt.getCompound(i)));
-			}
-		}
-
-		if (compound.getBoolean("Locked")) {
-			UUID uuid;
-			if (compound.hasUUID("LockedBy")) {
-				uuid = compound.getUUID("LockedBy");
-			} else {
-				String s = compound.getString("LockedBy");
-				uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
-			}
-
-			if (uuid != null) {
-				this.setLockedBy(uuid);
 			}
 		}
 
@@ -416,12 +419,16 @@ public class PlayerStatue extends LivingEntity {
 		if (name != null) {
 			if (!isLocked()) {
 				super.setCustomName(name);
-
 				String username = name.getString().toLowerCase(Locale.ROOT);
 				PlayerBlockEntity.fetchGameProfile(username)
 						.thenAccept(
 								profile -> this.setGameProfile(new ResolvableProfile(profile.orElse(new GameProfile(Util.NIL_UUID, username))))
 						);
+			} else if(this.getCustomName() == null) {
+				// Very unlikely this would be an issue, the only time this would really trigger
+				// Would be on the initial load of a statue entity. Unless someone wanted to lock an unnamed player statue.
+				// Leaving as this as otherwise you'd need to track if it's the initial load and other parts.
+				super.setCustomName(name);
 			}
 		}
 	}
